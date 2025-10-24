@@ -2,6 +2,8 @@ import { ScrollRestoration } from "react-router";
 
 import Header from "@/components/header/Header";
 import Sidebar from "@/components/sidebar/Sidebar";
+import InvestmentChartCard from "@/components/footer/InvestmentChartCard";
+import InvestmentPieCard from "@/components/footer/InvestmentPieCard";
 
 export default function RootLayout() {
   return (
@@ -11,9 +13,13 @@ export default function RootLayout() {
 
       <main className="h-[calc(100vh-248px)] w-full flex gap-4">
         <Sidebar />
-
-        <div className="flex-1">
-
+        <div className="flex w-full gap-4">
+          <div className="w-1/2">
+            <InvestmentPieCard />
+          </div>
+          <div className="w-1/2">
+            <InvestmentChartCard />
+          </div>
         </div>
       </main>
     </div>
