@@ -38,7 +38,7 @@ export default function InvestmentPieCard() {
         </CardTitle>
       </CardHeader>
 
-      <CardContent className="h-[340px] flex justify-center items-center pt-2">
+      <CardContent className="h-[340px] flex justify-center items-center p-2">
         <ResponsiveContainer width="100%" height="100%">
           <PieChart>
             <Pie

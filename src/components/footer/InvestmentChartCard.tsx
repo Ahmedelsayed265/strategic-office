@@ -39,7 +39,7 @@ export default function InvestmentChartCard() {
         </CardTitle>
       </CardHeader>
 
-      <CardContent className="h-[340px] pt-3">
+      <CardContent className="h-[340px] p-2">
         <ResponsiveContainer width="100%" height="100%">
           <BarChart
             data={data}

@@ -5,6 +5,7 @@ import "./index.css";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { BrowserRouter } from "react-router";
+import { DirectionProvider } from "@radix-ui/react-direction";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -26,7 +27,9 @@ root.render(
   <BrowserRouter>
     <QueryClientProvider client={queryClient}>
       <ReactQueryDevtools initialIsOpen={false} />
-      <App />
+      <DirectionProvider dir="rtl">
+        <App />
+      </DirectionProvider>
     </QueryClientProvider>
   </BrowserRouter>
 );
