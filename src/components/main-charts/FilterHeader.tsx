@@ -61,7 +61,7 @@ export default function FilterHeader() {
           
           <Select>
             <SelectTrigger className="w-full px-4 !h-[40px] rounded-[8px] border-0 bg-[#F8F9FC]">
-              <SelectValue placeholder="نوع الرسم البياني" />
+              <SelectValue placeholder="النطاق العمراني" />
             </SelectTrigger>
 
             <SelectContent>
