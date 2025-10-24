@@ -33,11 +33,12 @@ const data: InvestmentData[] = [
 export default function InvestmentChartCard() {
   return (
     <Card className="w-full h-[420px]">
-      <CardHeader className="border-b-2 ">
-        <CardTitle className="text-[#333] text-[16px] font-semibold ">
+      <CardHeader className="border-b border-[#F4F5F6]">
+        <CardTitle className="text-[#333] text-[16px] font-semibold">
           حجم الإستثمار بالريال (مليون ريال)
         </CardTitle>
       </CardHeader>
+
       <CardContent className="h-[340px] pt-3">
         <ResponsiveContainer width="100%" height="100%">
           <BarChart

@@ -90,16 +90,4 @@
     accent-color: var(--main);
     cursor: pointer;
   }
-
-  .btn_basic {
-    padding: 12px 16px;
-    background: var(--main);
-    color: var(--white);
-    font-size: 14px;
-    transition: 0.3s ease-in-out;
-
-    &:hover {
-      background: var(--second);
-    }
-  }
 }

@@ -3,7 +3,6 @@ import { useThemeStore } from "./store";
 
 export default function Sections() {
   const { open, setOpen } = useThemeStore();
-
   const [searchParams, setSearchParams] = useSearchParams();
 
   const selectedSection = searchParams.get("section");
@@ -16,6 +15,7 @@ export default function Sections() {
       setSearchParams({ section: sectionName });
     }
   };
+
   const sections = [
     "استعمالات الأرضي",
     "الإبتكار",
@@ -24,11 +24,11 @@ export default function Sections() {
     "البنية التحتية",
     "الزراعة",
     "الصناعة",
-    
   ];
+
   return (
     <div
-      className={`h-full bg-[#25935F] pattern-overlay flex flex-col p-4 
+      className={`h-full bg-[#25935F] pattern-overlay flex flex-col p-4 transition-all 
         ${selectedSection ? "rounded-r-[12px]" : "rounded-[12px]"}
         ${open ? "w-[286px]" : "w-[120px]"} 
         ${open ? "gap-6" : "gap-4"} `}
@@ -74,7 +74,9 @@ export default function Sections() {
                 onClick={() => handleSelect(sectionName)}
                 className={`p-3 flex gap-2 rounded-[8px] cursor-pointer text-white ${
                   isActive ? "bg-white !text-[#25935F]" : "hover:bg-white/20"
-                } ${open ? "" : "flex justify-center gap-2"}`}
+                } ${
+                  open ? "" : "flex flex-col items-center justify-center gap-2"
+                }`}
               >
                 <img
                   src="/icons/chart-up.svg"
@@ -85,7 +87,7 @@ export default function Sections() {
                       : "brightness-0 invert group-hover:brightness-100 group-hover:invert-0"
                   } `}
                 />
-                {open && sectionName}
+                <span className={open ? "" : "text-center  text-[14px]"}>{sectionName}</span>
               </li>
             );
           })}

@@ -32,7 +32,7 @@ const COLORS = ["#7CCCCC", "#2F7ECC", "#F8A23B", "#25935F"];
 export default function InvestmentPieCard() {
   return (
     <Card className="w-full h-[420px]">
-      <CardHeader className="border-b-2">
+      <CardHeader className="border-b border-[#F4F5F6]">
         <CardTitle className=" text-[#333] text-[16px] font-semibold">
           حجم الاستثمار الأجنبي بالريال (مليون ريال)
         </CardTitle>

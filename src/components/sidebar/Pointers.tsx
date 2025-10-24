@@ -1,10 +1,7 @@
 import { useSearchParams } from "react-router";
-// import { useThemeStore } from "./store";
 
 export default function Pointers() {
-  // const { selectedSection} = useThemeStore();
-
-const [searchParams] = useSearchParams();
+  const [searchParams] = useSearchParams();
   const selectedSection = searchParams.get("section");
 
   const pointers = [
@@ -24,11 +21,11 @@ const [searchParams] = useSearchParams();
     "نسبة الخدمات غير اللاسلكية في القطاع العام",
     "نسبة الوصول إلى الإنترنت المنزلي",
   ];
-  if (!selectedSection) return null; 
+  if (!selectedSection) return null;
 
   return (
     <>
-      <div className="bg-white h-full w-[320px] p-4 overflow-y-auto rounded-l-[12px] flex flex-col gap-6">
+      <div className="bg-white h-full w-[300px] p-4 overflow-y-auto rounded-l-[12px] flex flex-col gap-6">
         <h6 className="font-semibold text-[#333] ">المؤشرات</h6>
         <div className="border border-[#D5D7DA8F] flex items-center gap-2 p-2 rounded-[8px] ">
           <img
