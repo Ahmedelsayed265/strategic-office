@@ -7,12 +7,12 @@ import {
   SelectTrigger,
   SelectValue,
 } from "../ui/select";
+import MultiRegionSelect from "../shared/MultiRegionSelect";
 
 export default function FilterHeader() {
   const [searchParams, setSearchParams] = useSearchParams();
 
   const chartType = searchParams.get("chartType") || "";
-  const region = searchParams.get("region") || "";
   const view = searchParams.get("view") || "chart";
   const mainView = searchParams.get("mainView") || "indicator";
 
@@ -80,37 +80,75 @@ export default function FilterHeader() {
       >
         {view === "chart" && (
           <div className="flex items-center gap-2">
-            <Select
-              value={chartType}
-              onValueChange={(val) => handleParamChange("chartType", val)}
-            >
-              <SelectTrigger className="w-full px-4 !h-[40px] rounded-[8px] border-0 bg-[#F8F9FC]">
-                <SelectValue placeholder="نوع الرسم البياني" />
-              </SelectTrigger>
+            {mainView === "indicator" && (
+              <Select
+                value={chartType}
+                onValueChange={(val) => handleParamChange("chartType", val)}
+              >
+                <SelectTrigger className="w-full px-4 !h-[40px] rounded-[8px] border-0 bg-[#F8F9FC]">
+                  <SelectValue placeholder="نوع الرسم البياني" />
+                </SelectTrigger>
 
-              <SelectContent>
-                <SelectItem value="cols">أعمدة</SelectItem>
-                <SelectItem value="lines">خطي</SelectItem>
-                <SelectItem value="circle">دائرى</SelectItem>
-                <SelectItem value="pie">قرص</SelectItem>
-              </SelectContent>
-            </Select>
+                <SelectContent>
+                  <SelectItem value="cols">أعمدة</SelectItem>
+                  <SelectItem value="lines">خطي</SelectItem>
+                  <SelectItem value="circle">دائرى</SelectItem>
+                  <SelectItem value="pie">قرص</SelectItem>
+                </SelectContent>
+              </Select>
+            )}
 
-            <Select
-              value={region}
-              onValueChange={(val) => handleParamChange("region", val)}
-            >
-              <SelectTrigger className="w-full px-4 !h-[40px] rounded-[8px] border-0 bg-[#F8F9FC]">
-                <SelectValue placeholder="النطاق العمراني" />
-              </SelectTrigger>
+            <MultiRegionSelect />
 
-              <SelectContent>
-                <SelectItem value="Jazan">منطقة جازان</SelectItem>
-                <SelectItem value="Asir">منطقة عسير</SelectItem>
-                <SelectItem value="Najran">منطقة نجران</SelectItem>
-                <SelectItem value="Baha">منطقة الباحة</SelectItem>
-              </SelectContent>
-            </Select>
+            {mainView !== "indicator" && (
+              <>
+                <Select
+                  value={chartType}
+                  onValueChange={(val) => handleParamChange("indicator", val)}
+                >
+                  <SelectTrigger className="w-full px-4 !h-[40px] rounded-[8px] border-0 bg-[#F8F9FC]">
+                    <SelectValue placeholder="المؤشر" />
+                  </SelectTrigger>
+
+                  <SelectContent>
+                    <SelectItem value="1">تطور معدل انتشار الإنترنت</SelectItem>
+                    <SelectItem value="2">
+                      مؤشرات نقل واستخدام تقنية المعلومات والاتصالات
+                    </SelectItem>
+                    <SelectItem value="3">
+                      جودة الخدمات - سرعة الشبكات من خلال الشركات المشغلة Zain
+                    </SelectItem>
+                    <SelectItem value="4">
+                      نسبة الخدمات غير اللاسلكية في القطاع العام
+                    </SelectItem>
+                  </SelectContent>
+                </Select>
+
+                <Select
+                  value={chartType}
+                  onValueChange={(val) => handleParamChange("year", val)}
+                >
+                  <SelectTrigger className="w-full px-4 !h-[40px] rounded-[8px] border-0 bg-[#F8F9FC]">
+                    <SelectValue placeholder="السنوات" />
+                  </SelectTrigger>
+
+                  <SelectContent>
+                    <SelectItem value="2025">2025</SelectItem>
+                    <SelectItem value="2024">2024</SelectItem>
+                    <SelectItem value="2023">2023</SelectItem>
+                    <SelectItem value="2022">2022</SelectItem>
+                    <SelectItem value="2021">2021</SelectItem>
+                    <SelectItem value="2020">2020</SelectItem>
+                    <SelectItem value="2019">2019</SelectItem>
+                    <SelectItem value="2018">2018</SelectItem>
+                    <SelectItem value="2017">2017</SelectItem>
+                    <SelectItem value="2016">2016</SelectItem>
+                    <SelectItem value="2015">2015</SelectItem>
+                    <SelectItem value="2014">2014</SelectItem>
+                  </SelectContent>
+                </Select>
+              </>
+            )}
           </div>
         )}
 

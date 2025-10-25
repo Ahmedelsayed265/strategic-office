@@ -117,10 +117,6 @@ export default function GisMap({ data = [] }: { data?: DataItem[] }) {
             props.id ||
             props.ID;
 
-          // Debug: log the area IDs we're seeing
-          console.log("Shapefile properties:", props);
-          console.log("Found Area_ID:", areaId, "Region Name:", regionName);
-
           if (areaId === 2000) {
             return {
               color: "black",
