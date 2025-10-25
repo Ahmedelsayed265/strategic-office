@@ -1,7 +1,7 @@
 import InvestmentChartCard from "./components/footer/InvestmentChartCard";
 import InvestmentPieCard from "./components/footer/InvestmentPieCard";
 import Header from "./components/header/Header";
-import MainCharts from "./components/main-charts/MainCharts";
+import MainCharts from "./components/main/MainCharts";
 import Sidebar from "./components/sidebar/Sidebar";
 
 function App() {

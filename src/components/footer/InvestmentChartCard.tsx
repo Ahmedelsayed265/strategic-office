@@ -116,7 +116,7 @@ export default function InvestmentChartCard() {
                   return (
                     <text
                       x={x}
-                      y={(Number(y) ?? 0) - 5}
+                      y={Number(y) - 5}
                       fill="#333"
                       fontSize={12}
                       textAnchor="middle"
