@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { Check, ChevronDown } from "lucide-react";
 import {
   Popover,
@@ -31,11 +31,6 @@ export default function MultiRegionSelect({
   const [open, setOpen] = useState(false);
   const [selectedRegions, setSelectedRegions] = useState<string[]>(value);
 
-  // ✅ Lock body scroll when dropdown open
-  useEffect(() => {
-    document.body.style.overflow = open ? "hidden" : "";
-  }, [open]);
-
   const toggleRegion = (val: string) => {
     const newRegions = selectedRegions.includes(val)
       ? selectedRegions.filter((r) => r !== val)
@@ -49,7 +44,7 @@ export default function MultiRegionSelect({
       <PopoverTrigger asChild>
         <Button
           variant="outline"
-          className="w-full justify-between bg-[#F8F9FC] border-0 px-4 h-[40px] rounded-[8px] text-gray-700"
+          className="w-full justify-between bg-[#F8F9FC] border-0 px-4 h-[40px] rounded-[8px] text-gray-700 hover:bg-[#F8F9FC]"
         >
           {selectedRegions.length > 0
             ? `${selectedRegions.length} مناطق مختارة`
@@ -63,7 +58,7 @@ export default function MultiRegionSelect({
         sideOffset={4}
         align="start"
         style={{
-          zIndex: 9999, // ✅ make sure it's above everything
+          zIndex: 9999,
         }}
       >
         <Command>
