@@ -1,45 +1,8 @@
+import type { DataItem, GeoJSONData } from "./types";
 import { useEffect, useRef, useMemo } from "react";
 import L from "leaflet";
 import shp from "shpjs";
 import chroma from "chroma-js";
-
-interface DataItem {
-  sector: string;
-  indicatorId: number;
-  indicator: string;
-  regionAreaId: number;
-  regonName: string;
-  govName1?: string | null;
-  govAreaId?: number | null;
-  migUnit: string;
-  maxYear: number;
-  minYear: number;
-  valueAvg: number;
-}
-
-interface GeoJSONFeature {
-  type: "Feature";
-  properties?: {
-    Area_ID?: string;
-    [key: string]: unknown;
-  };
-  geometry: {
-    type:
-      | "Point"
-      | "MultiPoint"
-      | "LineString"
-      | "MultiLineString"
-      | "Polygon"
-      | "MultiPolygon"
-      | "GeometryCollection";
-    coordinates: unknown;
-  };
-}
-
-interface GeoJSONData {
-  type: "FeatureCollection";
-  features: GeoJSONFeature[];
-}
 
 export default function GisMap({ data = [] }: { data?: DataItem[] }) {
   const mapRef = useRef<L.Map | null>(null);
@@ -107,9 +70,26 @@ export default function GisMap({ data = [] }: { data?: DataItem[] }) {
       .domain([minValue, maxValue]);
 
     const geojsonAttributes: Record<string, DataItem> = {};
+    const nameAttributes: Record<string, DataItem> = {};
+
     data.forEach((item) => {
-      const key = item.govAreaId?.toString() ?? item.regionAreaId.toString();
+      const key = item.regionAreaId.toString();
       geojsonAttributes[key] = item;
+
+      nameAttributes[item.regonName] = item;
+
+      const nameVariations = [
+        item.regonName,
+        item.regonName.replace("منطقة ", ""),
+        item.regonName.replace("منطقة ", "").replace(" ", ""),
+        item.regonName.replace(" ", ""),
+      ];
+
+      nameVariations.forEach((variation) => {
+        if (variation && variation !== item.regonName) {
+          nameAttributes[variation] = item;
+        }
+      });
     });
 
     shp("/GIS/shp.zip").then((shapefileData: GeoJSONData) => {
@@ -120,7 +100,26 @@ export default function GisMap({ data = [] }: { data?: DataItem[] }) {
       const styledLayer = L.geoJSON(null, {
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         style: (feature: any) => {
-          const areaId = feature?.properties?.Area_ID;
+          const props = feature?.properties || {};
+
+          // Get region name from shapefile (Name_Ar is the Arabic name)
+          const regionName =
+            props.Name_Ar ||
+            props.REGION_NAME ||
+            props.region_name ||
+            props.Region_Name ||
+            props.NAME ||
+            props.name;
+          const areaId =
+            props.Area_ID ||
+            props.AREA_ID ||
+            props.area_id ||
+            props.id ||
+            props.ID;
+
+          // Debug: log the area IDs we're seeing
+          console.log("Shapefile properties:", props);
+          console.log("Found Area_ID:", areaId, "Region Name:", regionName);
 
           if (areaId === 2000) {
             return {
@@ -131,9 +130,14 @@ export default function GisMap({ data = [] }: { data?: DataItem[] }) {
             };
           }
 
-          const value = areaId
-            ? geojsonAttributes[areaId]?.valueAvg ?? minValue
-            : minValue;
+          // Try to match by region name first (more reliable), then by area ID
+          let matchedData = regionName ? nameAttributes[regionName] : null;
+          if (!matchedData && areaId) {
+            matchedData = geojsonAttributes[areaId];
+          }
+
+          const value = matchedData?.valueAvg ?? minValue;
+
           return {
             color: "#333",
             weight: 2,
@@ -143,8 +147,27 @@ export default function GisMap({ data = [] }: { data?: DataItem[] }) {
         },
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         onEachFeature: (feature: any, layer: L.Layer) => {
-          const areaId = feature?.properties?.Area_ID;
-          const item = areaId ? geojsonAttributes[areaId] : undefined;
+          const props = feature?.properties || {};
+          const regionName =
+            props.Name_Ar ||
+            props.REGION_NAME ||
+            props.region_name ||
+            props.Region_Name ||
+            props.NAME ||
+            props.name;
+          const areaId =
+            props.Area_ID ||
+            props.AREA_ID ||
+            props.area_id ||
+            props.id ||
+            props.ID;
+
+          let item = regionName ? nameAttributes[regionName] : null;
+
+          if (!item && areaId) {
+            item = geojsonAttributes[areaId];
+          }
+
           layer.on("click", (e: L.LeafletMouseEvent) => {
             const popupContent = `
               <div dir="rtl" style="text-align:right; font-family: Arial, sans-serif; min-width: 200px;">
@@ -177,8 +200,26 @@ export default function GisMap({ data = [] }: { data?: DataItem[] }) {
       const filteredFeatures = shapefileData.features
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         .map((feature: any) => {
-          const areaId = feature.properties?.Area_ID;
-          const jsonData = geojsonAttributes[areaId];
+          const props = feature.properties || {};
+          const regionName =
+            props.Name_Ar ||
+            props.REGION_NAME ||
+            props.region_name ||
+            props.Region_Name ||
+            props.NAME ||
+            props.name;
+          const areaId =
+            props.Area_ID ||
+            props.AREA_ID ||
+            props.area_id ||
+            props.id ||
+            props.ID;
+
+          let jsonData = regionName ? nameAttributes[regionName] : null;
+
+          if (!jsonData && areaId) {
+            jsonData = geojsonAttributes[areaId];
+          }
 
           if (jsonData) {
             feature.properties = { ...feature.properties, ...jsonData };

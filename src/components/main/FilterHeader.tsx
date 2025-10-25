@@ -46,29 +46,31 @@ export default function FilterHeader() {
           ))}
         </div>
 
-        <div className="flex items-center gap-6 bg-[#F8F9FC] py-3 px-6 rounded-md text-[#1F2A37]">
-          <h6>طريقة العرض</h6>
+        {mainView === "indicator" && (
+          <div className="flex items-center gap-6 bg-[#F8F9FC] py-3 px-6 rounded-md text-[#1F2A37]">
+            <h6>طريقة العرض</h6>
 
-          <RadioGroup
-            value={view}
-            onValueChange={(val) => handleParamChange("view", val)}
-            className="flex flex-row gap-4"
-          >
-            <div className="flex items-center gap-2">
-              <RadioGroupItem value="chart" id="chart" />
-              <label htmlFor="chart" className="text-[#6C737F]">
-                رسم بياني
-              </label>
-            </div>
+            <RadioGroup
+              value={view}
+              onValueChange={(val) => handleParamChange("view", val)}
+              className="flex flex-row gap-4"
+            >
+              <div className="flex items-center gap-2">
+                <RadioGroupItem value="chart" id="chart" />
+                <label htmlFor="chart" className="text-[#6C737F]">
+                  رسم بياني
+                </label>
+              </div>
 
-            <div className="flex items-center gap-2">
-              <RadioGroupItem value="table" id="table" />
-              <label htmlFor="table" className="text-[#6C737F]">
-                جدول
-              </label>
-            </div>
-          </RadioGroup>
-        </div>
+              <div className="flex items-center gap-2">
+                <RadioGroupItem value="table" id="table" />
+                <label htmlFor="table" className="text-[#6C737F]">
+                  جدول
+                </label>
+              </div>
+            </RadioGroup>
+          </div>
+        )}
       </div>
 
       <div
@@ -89,6 +91,7 @@ export default function FilterHeader() {
               <SelectContent>
                 <SelectItem value="cols">أعمدة</SelectItem>
                 <SelectItem value="lines">خطي</SelectItem>
+                <SelectItem value="circle">دائرى</SelectItem>
                 <SelectItem value="pie">قرص</SelectItem>
               </SelectContent>
             </Select>

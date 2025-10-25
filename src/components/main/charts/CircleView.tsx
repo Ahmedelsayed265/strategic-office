@@ -1,19 +1,19 @@
 import { PieChart, Pie, Cell, Tooltip, ResponsiveContainer } from "recharts";
 
-interface ForeignInvestmentData {
+interface RegionData {
   name: string;
   value: number;
   [key: string]: string | number;
 }
 
-const data: ForeignInvestmentData[] = [
-  { name: "منطقة جازان", value: 45000 },
-  { name: "منطقة عسير", value: 15000 },
-  { name: "منطقة نجران", value: 24000 },
-  { name: "منطقة الباحة", value: 12000 },
+const data: RegionData[] = [
+  { name: "المنطقة الشرقية", value: 22000 },
+  { name: "منطقة مكة المكرمة", value: 34000 },
+  { name: "منطقة الرياض", value: 28000 },
+  { name: "منطقة المدينة المنورة", value: 18000 },
 ];
 
-const COLORS = ["#7CCCCC", "#2F7ECC", "#F8A23B", "#25935F"];
+const COLORS = ["#2F7ECC", "#7CCCCC", "#F8A23B", "#25935F"];
 
 interface LabelProps {
   cx: number;
@@ -46,7 +46,7 @@ const renderLabel = (props: LabelProps) => {
   );
 };
 
-export default function PieView() {
+export default function CircleView() {
   return (
     <div className="h-[430px] flex flex-col justify-center items-center p-2">
       {/* Legend */}
@@ -65,6 +65,7 @@ export default function PieView() {
         ))}
       </div>
 
+      {/* Full Pie Chart */}
       <ResponsiveContainer width="100%" height="100%">
         <PieChart>
           <Pie
@@ -74,22 +75,17 @@ export default function PieView() {
             cx="50%"
             cy="50%"
             outerRadius={120}
-            innerRadius={40}
+            innerRadius={0} // full pie (no hole)
             label={(props) => renderLabel(props as unknown as LabelProps)}
             labelLine={false}
             stroke="none"
           >
             {data.map((_, index) => (
-              <Cell
-                key={`cell-${index}`}
-                fill={COLORS[index % COLORS.length]}
-              />
+              <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
             ))}
           </Pie>
 
-          <Tooltip
-            formatter={(value: number) => `${value.toLocaleString()} ريال`}
-          />
+          <Tooltip formatter={(value: number) => `${value.toLocaleString()} ريال`} />
         </PieChart>
       </ResponsiveContainer>
     </div>

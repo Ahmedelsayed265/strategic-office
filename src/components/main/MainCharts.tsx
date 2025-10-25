@@ -6,9 +6,10 @@ import FilterHeader from "./FilterHeader";
 import PieView from "./charts/PieView";
 import LinesView from "./charts/LinesView";
 import ColsView from "./charts/ColsView";
+import CircleView from "./charts/CircleView";
 
 import Table from "./Table";
-import GisMap from "./GisMap";
+import GisMap from "./gis-map/GisMap";
 
 const sampleData = [
   {
@@ -22,7 +23,7 @@ const sampleData = [
     migUnit: "حالة وفاه بحادث مروري/100000 نسمة",
     maxYear: 2022,
     minYear: 2016,
-    valueAvg: 28.149999999999995,
+    valueAvg: 28.15,
   },
   {
     sector: "الأمن والسلامة",
@@ -50,6 +51,58 @@ const sampleData = [
     minYear: 2016,
     valueAvg: 42.8,
   },
+  {
+    sector: "الأمن والسلامة",
+    indicatorId: 322,
+    indicator: "عدد الوفيات الناتجة عن الحوادث المروية",
+    regionAreaId: 716,
+    regonName: "منطقة جازان",
+    govName1: null,
+    govAreaId: null,
+    migUnit: "حالة وفاه بحادث مروري/100000 نسمة",
+    maxYear: 2022,
+    minYear: 2016,
+    valueAvg: 31.5,
+  },
+  {
+    sector: "الأمن والسلامة",
+    indicatorId: 322,
+    indicator: "عدد الوفيات الناتجة عن الحوادث المروية",
+    regionAreaId: 717,
+    regonName: "منطقة عسير",
+    govName1: null,
+    govAreaId: null,
+    migUnit: "حالة وفاه بحادث مروري/100000 نسمة",
+    maxYear: 2022,
+    minYear: 2016,
+    valueAvg: 37.9,
+  },
+  {
+    sector: "الأمن والسلامة",
+    indicatorId: 322,
+    indicator: "عدد الوفيات الناتجة عن الحوادث المروية",
+    regionAreaId: 718,
+    regonName: "منطقة نجران",
+    govName1: null,
+    govAreaId: null,
+    migUnit: "حالة وفاه بحادث مروري/100000 نسمة",
+    maxYear: 2022,
+    minYear: 2016,
+    valueAvg: 40.2,
+  },
+  {
+    sector: "الأمن والسلامة",
+    indicatorId: 322,
+    indicator: "عدد الوفيات الناتجة عن الحوادث المروية",
+    regionAreaId: 719,
+    regonName: "منطقة الباحة",
+    govName1: null,
+    govAreaId: null,
+    migUnit: "حالة وفاه بحادث مروري/100000 نسمة",
+    maxYear: 2022,
+    minYear: 2016,
+    valueAvg: 33.7,
+  },
 ];
 
 export default function MainCharts() {
@@ -71,6 +124,7 @@ export default function MainCharts() {
             {initialChartType === "pie" && <PieView />}
             {initialChartType === "lines" && <LinesView />}
             {initialChartType === "cols" && <ColsView />}
+            {initialChartType === "circle" && <CircleView />}
           </>
         )}
 
