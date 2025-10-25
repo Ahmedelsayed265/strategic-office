@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Check, ChevronDown } from "lucide-react";
 import {
   Popover,
@@ -21,16 +21,27 @@ const regions = [
   { label: "منطقة الباحة", value: "Baha" },
 ];
 
-export default function MultiRegionSelect() {
+export default function MultiRegionSelect({
+  value = [],
+  onChange,
+}: {
+  value?: string[];
+  onChange?: (val: string[]) => void;
+}) {
   const [open, setOpen] = useState(false);
-  const [selectedRegions, setSelectedRegions] = useState<string[]>([]);
+  const [selectedRegions, setSelectedRegions] = useState<string[]>(value);
 
-  const toggleRegion = (value: string) => {
-    setSelectedRegions((prev) =>
-      prev.includes(value)
-        ? prev.filter((r) => r !== value)
-        : [...prev, value]
-    );
+  // ✅ Lock body scroll when dropdown open
+  useEffect(() => {
+    document.body.style.overflow = open ? "hidden" : "";
+  }, [open]);
+
+  const toggleRegion = (val: string) => {
+    const newRegions = selectedRegions.includes(val)
+      ? selectedRegions.filter((r) => r !== val)
+      : [...selectedRegions, val];
+    setSelectedRegions(newRegions);
+    onChange?.(newRegions);
   };
 
   return (
@@ -38,7 +49,7 @@ export default function MultiRegionSelect() {
       <PopoverTrigger asChild>
         <Button
           variant="outline"
-          className="w-full justify-between bg-[#F8F9FC] border-0 px-4 h-[40px] rounded-[8px] hover:bg-[#F8F9FC]"
+          className="w-full justify-between bg-[#F8F9FC] border-0 px-4 h-[40px] rounded-[8px] text-gray-700"
         >
           {selectedRegions.length > 0
             ? `${selectedRegions.length} مناطق مختارة`
@@ -47,7 +58,14 @@ export default function MultiRegionSelect() {
         </Button>
       </PopoverTrigger>
 
-      <PopoverContent className="w-[250px] p-0">
+      <PopoverContent
+        className="w-[250px] p-0 rounded-lg shadow-lg border bg-white"
+        sideOffset={4}
+        align="start"
+        style={{
+          zIndex: 9999, // ✅ make sure it's above everything
+        }}
+      >
         <Command>
           <CommandList>
             <CommandGroup>
@@ -55,11 +73,11 @@ export default function MultiRegionSelect() {
                 <CommandItem
                   key={region.value}
                   onSelect={() => toggleRegion(region.value)}
-                  className="flex items-center gap-2"
+                  className="flex items-center gap-2 cursor-pointer select-none"
                 >
                   <Check
                     className={cn(
-                      "h-4 w-4",
+                      "h-4 w-4 transition-opacity duration-150",
                       selectedRegions.includes(region.value)
                         ? "opacity-100 text-green-600"
                         : "opacity-0"
