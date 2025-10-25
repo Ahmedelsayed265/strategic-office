@@ -1,3 +1,4 @@
+import PieContent from "../content-charts/PieContent";
 import { Card, CardContent, CardHeader } from "../ui/card";
 import FilterHeader from "./FilterHeader";
 
@@ -8,7 +9,9 @@ export default function MainCharts() {
         <FilterHeader />
       </CardHeader>
 
-      <CardContent className="h-[340px] p-2"></CardContent>
+      <CardContent className="h-[340px] p-2">
+        <PieContent/>
+      </CardContent>
     </Card>
   );
 }
