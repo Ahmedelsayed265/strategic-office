@@ -10,6 +10,7 @@ import CircleView from "./charts/CircleView";
 
 import Table from "./Table";
 import GisMap from "./gis-map/GisMap";
+import IndicatorDetails from "./IndicatorDetails";
 
 const sampleData = [
   {
@@ -133,6 +134,11 @@ export default function MainCharts() {
         {mainView === "map" && (
           <div>
             <GisMap data={sampleData} />
+          </div>
+        )}
+        {mainView === "metadata" && (
+          <div>
+            <IndicatorDetails/>
           </div>
         )}
       </CardContent>
