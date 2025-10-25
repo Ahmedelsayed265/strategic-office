@@ -14,6 +14,7 @@ export default function FilterHeader() {
   const chartType = searchParams.get("chartType") || "";
   const region = searchParams.get("region") || "";
   const view = searchParams.get("view") || "chart";
+  const mainView = searchParams.get("mainView") || "indicator";
 
   const handleParamChange = (key: string, value: string) => {
     const params = new URLSearchParams(searchParams);
@@ -26,15 +27,23 @@ export default function FilterHeader() {
     <>
       <div className="flex items-center justify-between">
         <div className="flex items-center bg-[#F8F9FC] p-1 rounded-md">
-          <button className="py-2 px-4 text-[#fff] bg-[#25935F] rounded-md">
-            عرض المؤشر
-          </button>
-          <button className="py-2 px-4 text-[#6C737F] rounded-md">
-            بيانات وصفية
-          </button>
-          <button className="py-2 px-4 text-[#6C737F] rounded-md">
-            عرض علي الخريطة
-          </button>
+          {[
+            { key: "indicator", label: "عرض المؤشر" },
+            { key: "metadata", label: "بيانات وصفية" },
+            { key: "map", label: "عرض علي الخريطة" },
+          ].map((btn) => (
+            <button
+              key={btn.key}
+              onClick={() => handleParamChange("mainView", btn.key)}
+              className={`py-2 px-4 rounded-md transition-colors ${
+                mainView === btn.key
+                  ? "bg-[#25935F] text-white"
+                  : "text-[#6C737F] hover:text-[#1F2A37]"
+              }`}
+            >
+              {btn.label}
+            </button>
+          ))}
         </div>
 
         <div className="flex items-center gap-6 bg-[#F8F9FC] py-3 px-6 rounded-md text-[#1F2A37]">
