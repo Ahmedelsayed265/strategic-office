@@ -6,16 +6,16 @@ import FilterHeader from "./FilterHeader";
 import PieView from "./charts/PieView";
 import LinesView from "./charts/LinesView";
 import ColsView from "./charts/ColsView";
+import Table from "./Table";
 
 export default function MainCharts() {
   const [searchParams] = useSearchParams();
 
-  const initialChartType = searchParams.get("chartType") || "pie";
+  const initialView = searchParams.get("view") || "chart";
+  const initialChartType = searchParams.get("chartType") || "lines";
   // const initialRegion = searchParams.get("region") || "";
-  // const initialView = searchParams.get("view") || "chart";
 
   console.log(initialChartType);
-  
 
   return (
     <Card className="w-full">
@@ -24,9 +24,15 @@ export default function MainCharts() {
       </CardHeader>
 
       <CardContent className="p-2">
-        {initialChartType === "pie" && <PieView />}
-        {initialChartType === "lines" && <LinesView />}
-        {initialChartType === "cols" && <ColsView />}
+        {initialView === "chart" && (
+          <>
+            {initialChartType === "pie" && <PieView />}
+            {initialChartType === "lines" && <LinesView />}
+            {initialChartType === "cols" && <ColsView />}
+          </>
+        )}
+
+        {initialView === "table" && <Table />}
       </CardContent>
     </Card>
   );

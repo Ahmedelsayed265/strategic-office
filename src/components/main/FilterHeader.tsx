@@ -62,39 +62,45 @@ export default function FilterHeader() {
         </div>
       </div>
 
-      <div className="flex items-center justify-between mt-4">
-        <div className="flex items-center gap-2">
-          <Select
-            value={chartType}
-            onValueChange={(val) => handleParamChange("chartType", val)}
-          >
-            <SelectTrigger className="w-full px-4 !h-[40px] rounded-[8px] border-0 bg-[#F8F9FC]">
-              <SelectValue placeholder="نوع الرسم البياني" />
-            </SelectTrigger>
+      <div
+        className={`flex items-center mt-4 ${
+          view === "chart" ? "justify-between" : "justify-end"
+        }`}
+      >
+        {view === "chart" && (
+          <div className="flex items-center gap-2">
+            <Select
+              value={chartType}
+              onValueChange={(val) => handleParamChange("chartType", val)}
+            >
+              <SelectTrigger className="w-full px-4 !h-[40px] rounded-[8px] border-0 bg-[#F8F9FC]">
+                <SelectValue placeholder="نوع الرسم البياني" />
+              </SelectTrigger>
 
-            <SelectContent>
-              <SelectItem value="cols">أعمدة</SelectItem>
-              <SelectItem value="lines">خطي</SelectItem>
-              <SelectItem value="pie">قرص</SelectItem>
-            </SelectContent>
-          </Select>
+              <SelectContent>
+                <SelectItem value="cols">أعمدة</SelectItem>
+                <SelectItem value="lines">خطي</SelectItem>
+                <SelectItem value="pie">قرص</SelectItem>
+              </SelectContent>
+            </Select>
 
-          <Select
-            value={region}
-            onValueChange={(val) => handleParamChange("region", val)}
-          >
-            <SelectTrigger className="w-full px-4 !h-[40px] rounded-[8px] border-0 bg-[#F8F9FC]">
-              <SelectValue placeholder="النطاق العمراني" />
-            </SelectTrigger>
+            <Select
+              value={region}
+              onValueChange={(val) => handleParamChange("region", val)}
+            >
+              <SelectTrigger className="w-full px-4 !h-[40px] rounded-[8px] border-0 bg-[#F8F9FC]">
+                <SelectValue placeholder="النطاق العمراني" />
+              </SelectTrigger>
 
-            <SelectContent>
-              <SelectItem value="Jazan">منطقة جازان</SelectItem>
-              <SelectItem value="Asir">منطقة عسير</SelectItem>
-              <SelectItem value="Najran">منطقة نجران</SelectItem>
-              <SelectItem value="Baha">منطقة الباحة</SelectItem>
-            </SelectContent>
-          </Select>
-        </div>
+              <SelectContent>
+                <SelectItem value="Jazan">منطقة جازان</SelectItem>
+                <SelectItem value="Asir">منطقة عسير</SelectItem>
+                <SelectItem value="Najran">منطقة نجران</SelectItem>
+                <SelectItem value="Baha">منطقة الباحة</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+        )}
 
         <div className="flex items-center gap-2">
           <button className="bg-[#DFF6E7] p-2 rounded-[8px]">
