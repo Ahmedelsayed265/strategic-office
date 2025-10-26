@@ -28,24 +28,30 @@ export default function IndicatorDetails() {
     {
       label: "وحدة القياس",
       value: "الريال",
-      icon: <ChartNoAxesCombined  className="text-[#057731]" size={20} />,
+      icon: <ChartNoAxesCombined className="text-[#057731]" size={20} />,
     },
   ];
+
   return (
-    <Card className="border-none shadow-none bg-transparent">
+    <Card className="border-none shadow-none bg-transparent p-[20px]">
       <CardTitle>
-        <div className="flex items-center gap-2 p-4 border border-r-4 border-l-0 border-t-0 border-b-0 border-[#057731] rounded">
-          <span className="text-gray-600   leading-relaxed">تعريف المؤشر : </span>
+        <div className="flex items-center gap-2 mb-3">
+          <p  className="w-[2px] h-6 bg-[#25935F] block rounded"/>
+          <span className="text-gray-600 leading-relaxed">
+            تعريف المؤشر :{" "}
+          </span>
           <p className=" text-[18px]">حجم الاستثمار الأجنبي بالمليون ريال</p>
         </div>
       </CardTitle>
-      <CardContent className="flex flex-col gap-4">
+
+      <CardContent className="flex flex-col gap-3 p-0">
         {details.map((item, index) => (
           <div key={index}>
             <div className="bg-[#F8F9FB] rounded-xl px-4 py-3 flex gap-4 items-center mt-2">
-              <div className="flex items-center justify-center bg-white rounded-lg p-2 shadow-sm">
+              <div className="flex items-center justify-center bg-white rounded-lg p-3 shadow-sm">
                 {item.icon}
               </div>
+
               <div className="flex flex-col gap-2">
                 <span className="text-gray-700">{item.label}</span>
                 <p className=" text-[18px] ">{item.value}</p>
