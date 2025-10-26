@@ -90,10 +90,18 @@ export default function FilterHeader() {
                 </SelectTrigger>
 
                 <SelectContent>
-                  <SelectItem value="cols">أعمدة</SelectItem>
-                  <SelectItem value="lines">خطي</SelectItem>
-                  <SelectItem value="circle">دائرى</SelectItem>
-                  <SelectItem value="pie">قرص</SelectItem>
+                  <SelectItem className="px-3" value="cols">
+                    أعمدة
+                  </SelectItem>
+                  <SelectItem className="px-3" value="lines">
+                    خطي
+                  </SelectItem>
+                  <SelectItem className="px-3" value="circle">
+                    دائرى
+                  </SelectItem>
+                  <SelectItem className="px-3" value="pie">
+                    قرص
+                  </SelectItem>
                 </SelectContent>
               </Select>
             )}
@@ -122,10 +130,10 @@ export default function FilterHeader() {
                     <SelectItem value="2">
                       مؤشرات نقل واستخدام تقنية المعلومات والاتصالات
                     </SelectItem>
-                    <SelectItem value="3">
+                    <SelectItem className="px-3" value="3">
                       جودة الخدمات - سرعة الشبكات من خلال الشركات المشغلة Zain
                     </SelectItem>
-                    <SelectItem value="4">
+                    <SelectItem className="px-3" value="4">
                       نسبة الخدمات غير اللاسلكية في القطاع العام
                     </SelectItem>
                   </SelectContent>
@@ -146,19 +154,19 @@ export default function FilterHeader() {
                   </SelectTrigger>
 
                   <SelectContent>
-                    <SelectItem value="all">الكل</SelectItem>
-                    <SelectItem value="2025">2025</SelectItem>
-                    <SelectItem value="2024">2024</SelectItem>
-                    <SelectItem value="2023">2023</SelectItem>
-                    <SelectItem value="2022">2022</SelectItem>
-                    <SelectItem value="2021">2021</SelectItem>
-                    <SelectItem value="2020">2020</SelectItem>
-                    <SelectItem value="2019">2019</SelectItem>
-                    <SelectItem value="2018">2018</SelectItem>
-                    <SelectItem value="2017">2017</SelectItem>
-                    <SelectItem value="2016">2016</SelectItem>
-                    <SelectItem value="2015">2015</SelectItem>
-                    <SelectItem value="2014">2014</SelectItem>
+                    <SelectItem className="px-3" value="all">الكل</SelectItem>
+                    <SelectItem className="px-3" value="2025">2025</SelectItem>
+                    <SelectItem className="px-3" value="2024">2024</SelectItem>
+                    <SelectItem className="px-3" value="2023">2023</SelectItem>
+                    <SelectItem className="px-3" value="2022">2022</SelectItem>
+                    <SelectItem className="px-3" value="2021">2021</SelectItem>
+                    <SelectItem className="px-3" value="2020">2020</SelectItem>
+                    <SelectItem className="px-3" value="2019">2019</SelectItem>
+                    <SelectItem className="px-3" value="2018">2018</SelectItem>
+                    <SelectItem className="px-3" value="2017">2017</SelectItem>
+                    <SelectItem className="px-3" value="2016">2016</SelectItem>
+                    <SelectItem className="px-3" value="2015">2015</SelectItem>
+                    <SelectItem className="px-3" value="2014">2014</SelectItem>
                   </SelectContent>
                 </Select>
               </>
