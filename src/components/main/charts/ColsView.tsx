@@ -11,7 +11,6 @@ import {
   Cell,
 } from "recharts";
 
-// Each region has a single year with its corresponding value
 const data = [
   { region: "الشرقية", year: "2024", value: 13000 },
   { region: "الباحة", year: "2023", value: 24000 },
@@ -28,24 +27,23 @@ const data = [
   { region: "تبوك", year: "2013", value: 45000 },
 ];
 
-const YEAR_COLORS: Record<string, string> = {
-  "2024": "#A066FF",
-  "2023": "#3E9FFF",
-  "2022": "#6EE7E7",
-  "2021": "#FF3EB5",
-  "2020": "#3EC7FF",
-  "2019": "#FFC93E",
-  "2018": "#FFB13E",
-  "2017": "#FF7A3E",
-  "2016": "#3EB9FF",
-  "2015": "#6CC3FF",
-  "2014": "#3E87FF",
-  "2013": "#25935F",
+const REGION_COLORS: Record<string, string> = {
+  الشرقية: "#A066FF",
+  الباحة: "#3E9FFF",
+  السعودية: "#6EE7E7",
+  جازان: "#FF3EB5",
+  القصيم: "#3EC7FF",
+  المدينة: "#FFC93E",
+  "مكة المكرمة": "#FFB13E",
+  حائل: "#FF7A3E",
+  نجران: "#3EB9FF",
+  الجوف: "#6CC3FF",
+  الحدود: "#3E87FF",
+  تبوك: "#25935F",
 };
 
 export default function ColsView() {
-  // Unique years for legend
-  const years = [...new Set(data.map((item) => item.year))];
+  const regions = [...new Set(data.map((item) => item.region))];
 
   return (
     <div className="h-[430px] p-2">
@@ -74,7 +72,7 @@ export default function ColsView() {
             labelFormatter={(label) => `المنطقة: ${label}`}
           />
 
-          {/* Custom Legend */}
+          {/* مفتاح المناطق */}
           <Legend
             verticalAlign="top"
             align="center"
@@ -88,12 +86,12 @@ export default function ColsView() {
                   gap: "12px",
                   fontSize: "12px",
                   color: "#333",
-                  paddingBottom: "12px"
+                  paddingBottom: "12px",
                 }}
               >
-                {years.map((year) => (
+                {regions.map((region) => (
                   <div
-                    key={year}
+                    key={region}
                     style={{
                       display: "flex",
                       alignItems: "center",
@@ -105,10 +103,10 @@ export default function ColsView() {
                         width: 10,
                         height: 10,
                         borderRadius: "50%",
-                        backgroundColor: YEAR_COLORS[year] || "#ccc",
+                        backgroundColor: REGION_COLORS[region] || "#ccc",
                       }}
                     />
-                    <span>{year}</span>
+                    <span>{region}</span>
                   </div>
                 ))}
               </div>
@@ -119,14 +117,14 @@ export default function ColsView() {
             dataKey="value"
             radius={[6, 6, 0, 0]}
             barSize={35}
-            isAnimationActive={true}
+            isAnimationActive
             animationDuration={1000}
             animationEasing="ease-out"
           >
             {data.map((entry, index) => (
               <Cell
                 key={`cell-${index}`}
-                fill={YEAR_COLORS[entry.year] || "#ccc"}
+                fill={REGION_COLORS[entry.region] || "#ccc"}
               />
             ))}
 

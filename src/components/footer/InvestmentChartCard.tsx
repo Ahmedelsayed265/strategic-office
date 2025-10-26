@@ -25,7 +25,6 @@ const data: InvestmentData[] = [
   { region: "منطقة الباحة", year: "2013", value: 45000, color: "#25935F" },
 ];
 
-
 export default function InvestmentChartCard() {
   return (
     <Card className="w-full h-[420px]">
@@ -54,6 +53,8 @@ export default function InvestmentChartCard() {
               dx={25}
               interval={0}
             />
+
+            {/* 🔹 مفتاح المناطق بدل السنوات */}
             <Legend
               verticalAlign="top"
               align="center"
@@ -70,14 +71,9 @@ export default function InvestmentChartCard() {
                     marginTop: "8px",
                   }}
                 >
-                  {[
-                    { year: "2023", color: "#7CCCCC" },
-                    { year: "2016", color: "#2F7ECC" },
-                    { year: "2014", color: "#F8A23B" },
-                    { year: "2013", color: "#25935F" },
-                  ].map((item) => (
+                  {data.map((item) => (
                     <div
-                      key={item.year}
+                      key={item.region}
                       style={{
                         display: "flex",
                         alignItems: "center",
@@ -92,7 +88,9 @@ export default function InvestmentChartCard() {
                           backgroundColor: item.color,
                         }}
                       />
-                      <span>{item.year}</span>
+                      <span>
+                        {item.region} ({item.year})
+                      </span>
                     </div>
                   ))}
                 </div>
@@ -111,20 +109,17 @@ export default function InvestmentChartCard() {
               <LabelList
                 dataKey="value"
                 position="top"
-                content={(props) => {
-                  const { x, y, value } = props;
-                  return (
-                    <text
-                      x={x}
-                      y={Number(y) - 5}
-                      fill="#333"
-                      fontSize={12}
-                      textAnchor="middle"
-                    >
-                      {value ? Number(value).toLocaleString() : ""}
-                    </text>
-                  );
-                }}
+                content={({ x, y, value }) => (
+                  <text
+                    x={x}
+                    y={Number(y) - 5}
+                    fill="#333"
+                    fontSize={12}
+                    textAnchor="middle"
+                  >
+                    {value ? Number(value).toLocaleString() : ""}
+                  </text>
+                )}
               />
             </Bar>
           </BarChart>

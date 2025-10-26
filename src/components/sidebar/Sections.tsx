@@ -1,6 +1,5 @@
 import { useSearchParams } from "react-router";
 import { useThemeStore } from "./store";
-import { ScrollArea } from "../ui/scroll-area";
 
 export default function Sections() {
   const { open, setOpen } = useThemeStore();
@@ -25,6 +24,11 @@ export default function Sections() {
     "البنية التحتية",
     "الزراعة",
     "الصناعة",
+     "الإبتكار",
+    "الإستثمار",
+    "الاتصالات وتقنية المعلومات",
+    "البنية التحتية",
+    "الزراعة",
   ];
 
   return (
@@ -65,7 +69,7 @@ export default function Sections() {
         </div>
       )}
 
-      <ScrollArea className="flex-1">
+      <div className="overflow-y-auto h-full p-1 sections">
         <ul className="flex flex-col gap-2 overflow-y-auto">
           {sections.map((sectionName) => {
             const isActive = selectedSection === sectionName;
@@ -95,7 +99,7 @@ export default function Sections() {
             );
           })}
         </ul>
-      </ScrollArea>
+      </div>
     </div>
   );
 }

@@ -4,7 +4,6 @@ import InvestmentPieCard from "./components/footer/InvestmentPieCard";
 import Header from "./components/header/Header";
 import MainCharts from "./components/main/MainCharts";
 import Sidebar from "./components/sidebar/Sidebar";
-import { ScrollArea } from "./components/ui/scroll-area";
 import TableFilter from "./components/main/TableFilter";
 
 function App() {
@@ -17,25 +16,19 @@ function App() {
       <main className="h-[calc(100vh-248px)] w-full flex gap-4">
         <Sidebar />
 
-        <div className="flex flex-col w-full gap-4 ">
-          <ScrollArea className="flex-1">
-            <MainCharts />
+        <div className="flex flex-col w-full gap-4 h-full overflow-y-auto">
+          <MainCharts />
 
-            <div className="flex w-full gap-4">
-              {mainView == "indicator" && (
-                <>
-                  <InvestmentPieCard />
-                  <InvestmentChartCard />
-                </>
-              )} 
-              {mainView == "map" && (
-                <>
-                  
-                  <TableFilter />
-                </>
-              )}
-            </div>
-          </ScrollArea>
+          <div className="flex w-full gap-4">
+            {mainView == "indicator" && (
+              <>
+                <InvestmentPieCard />
+                <InvestmentChartCard />
+              </>
+            )}
+
+            {mainView == "map" && <TableFilter />}
+          </div>
         </div>
       </main>
     </div>

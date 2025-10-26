@@ -17,6 +17,37 @@ const data: ForeignInvestmentData[] = [
 
 const COLORS = ["#7CCCCC", "#2F7ECC", "#F8A23B", "#25935F"];
 
+interface LabelProps {
+  cx: number;
+  cy: number;
+  midAngle: number;
+  innerRadius: number;
+  outerRadius: number;
+  value: number;
+}
+
+const renderLabel = (props: LabelProps) => {
+  const { cx, cy, midAngle, innerRadius, outerRadius, value } = props;
+  const RADIAN = Math.PI / 180;
+  const radius = innerRadius + (outerRadius - innerRadius) * 0.6;
+  const x = cx + radius * Math.cos(-midAngle * RADIAN);
+  const y = cy + radius * Math.sin(-midAngle * RADIAN);
+
+  return (
+    <text
+      x={x}
+      y={y}
+      fill="#fff"
+      textAnchor="middle"
+      dominantBaseline="central"
+      fontSize={13}
+      fontWeight="600"
+    >
+      {value.toLocaleString()}
+    </text>
+  );
+};
+
 export default function InvestmentPieCard() {
   return (
     <Card className="w-full h-[420px]">
@@ -27,30 +58,33 @@ export default function InvestmentPieCard() {
       </CardHeader>
 
       <CardContent className="h-[340px] flex flex-col justify-center items-center p-2">
-        <ResponsiveContainer width="100%" height="100%">
-          <PieChart>
-            <Pie
-              data={data}
-              dataKey="value"
-              cx="50%"
-              cy="50%"
-              outerRadius={120}
-              innerRadius={0}
-              labelLine={false}
-              stroke="none" 
-            >
-              {data.map((_, index) => (
-                <Cell
-                  key={`cell-${index}`}
-                  fill={COLORS[index % COLORS.length]}
-                />
-              ))}
-            </Pie>
-            <Tooltip
-              formatter={(value: number) => `${value.toLocaleString()} ريال`}
-            />
-          </PieChart>
-        </ResponsiveContainer>
+             <ResponsiveContainer width="100%" height="100%">
+        <PieChart>
+          <Pie
+            data={data}
+            dataKey="value"
+            nameKey="name"
+            cx="50%"
+            cy="50%"
+            outerRadius={120}
+            innerRadius={40}
+            label={(props) => renderLabel(props as unknown as LabelProps)}
+            labelLine={false}
+            stroke="none"
+          >
+            {data.map((_, index) => (
+              <Cell
+                key={`cell-${index}`}
+                fill={COLORS[index % COLORS.length]}
+              />
+            ))}
+          </Pie>
+
+          <Tooltip
+            formatter={(value: number) => `${value.toLocaleString()} ريال`}
+          />
+        </PieChart>
+      </ResponsiveContainer>
         <div className="flex flex-wrap justify-center gap-x-6 gap-y-2 mt-4 text-sm">
           {data.map((entry, index) => (
             <div key={index} className="flex items-center gap-2">

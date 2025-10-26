@@ -111,7 +111,7 @@ export default function MainCharts() {
 
   const mainView = searchParams.get("mainView") || "indicator";
   const chartType = searchParams.get("view") || "chart";
-  const initialChartType = searchParams.get("chartType") || "lines";
+  const initialChartType = searchParams.get("chartType") || "cols";
 
   return (
     <Card className="w-full">

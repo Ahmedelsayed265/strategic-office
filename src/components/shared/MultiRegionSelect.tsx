@@ -25,7 +25,7 @@ const ALL_VALUE = "all";
 
 export default function MultiRegionSelect() {
   const [open, setOpen] = useState(false);
-  const [selectedRegions, setSelectedRegions] = useState<string[]>(value);
+  const [selectedRegions, setSelectedRegions] = useState<string[]>([]);
 
   const toggleRegion = (value: string) => {
     if (value === ALL_VALUE) {
@@ -55,7 +55,7 @@ export default function MultiRegionSelect() {
       <PopoverTrigger asChild>
         <Button
           variant="outline"
-          className="w-full justify-between bg-[#F8F9FC] border-0 px-4 h-[40px] rounded-[8px] text-gray-700 hover:bg-[#F8F9FC]"
+          className="w-full justify-between bg-[#F8F9FC] border-0 px-4 h-[40px] rounded-[8px] hover:bg-[#F8F9FC]"
         >
           {selectedRegions.length > 0
             ? isAllSelected
@@ -66,24 +66,17 @@ export default function MultiRegionSelect() {
         </Button>
       </PopoverTrigger>
 
-      <PopoverContent
-        className="w-[250px] p-0 rounded-lg shadow-lg border bg-white"
-        sideOffset={4}
-        align="start"
-        style={{
-          zIndex: 9999,
-        }}
-      >
+      <PopoverContent className="w-[200px] p-0 right-0">
         <Command>
           <CommandList>
             <CommandGroup>
               <CommandItem
                 onSelect={() => toggleRegion(ALL_VALUE)}
-                className="flex items-center gap-2 font-semibold"
+                className="flex items-center gap-2 font-semibold cursor-pointer"
               >
                 <Check
                   className={cn(
-                    "h-4 w-4",
+                    "h-4 w-4 border rounded",
                     isAllSelected ? "opacity-100 text-green-600" : "opacity-0"
                   )}
                 />
@@ -94,11 +87,11 @@ export default function MultiRegionSelect() {
                 <CommandItem
                   key={region.value}
                   onSelect={() => toggleRegion(region.value)}
-                  className="flex items-center gap-2 cursor-pointer select-none"
+                  className="flex items-center gap-2 cursor-pointer"
                 >
                   <Check
                     className={cn(
-                      "h-4 w-4 transition-opacity duration-150",
+                      "h-4 w-4 border rounded",
                       selectedRegions.includes(region.value)
                         ? "opacity-100 text-green-600"
                         : "opacity-0"

@@ -55,7 +55,25 @@
   }
 
   ::-webkit-scrollbar {
-    display: none;
+    width: 4px;
+    background: #eeeeee;
+    border-radius: 20px;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    width: 2px;
+    border-radius: 20px;
+    background: #25935f;
+  }
+
+  .sections {
+    &::-webkit-scrollbar {
+      background: #F8F9FC1A;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      background: #fff;
+    }
   }
 
   ::placeholder {
