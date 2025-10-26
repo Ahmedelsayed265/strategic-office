@@ -1,5 +1,6 @@
 import { useSearchParams } from "react-router";
 import { useThemeStore } from "./store";
+import { ScrollArea } from "../ui/scroll-area";
 
 export default function Sections() {
   const { open, setOpen } = useThemeStore();
@@ -64,7 +65,7 @@ export default function Sections() {
         </div>
       )}
 
-      <div className="overflow-y-auto h-full">
+      <ScrollArea className="flex-1">
         <ul className="flex flex-col gap-2 overflow-y-auto">
           {sections.map((sectionName) => {
             const isActive = selectedSection === sectionName;
@@ -87,12 +88,14 @@ export default function Sections() {
                       : "brightness-0 invert group-hover:brightness-100 group-hover:invert-0"
                   } `}
                 />
-                <span className={open ? "" : "text-center  text-[14px]"}>{sectionName}</span>
+                <span className={open ? "" : "text-center  text-[14px]"}>
+                  {sectionName}
+                </span>
               </li>
             );
           })}
         </ul>
-      </div>
+      </ScrollArea>
     </div>
   );
 }

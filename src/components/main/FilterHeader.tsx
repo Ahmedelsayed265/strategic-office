@@ -112,17 +112,22 @@ export default function FilterHeader() {
               <>
                 <Select
                   value={chartType}
-                  onValueChange={(val) => handleParamChange("indicator", val)}
+                  onValueChange={(val) => {
+                    if (val === "all") {
+                      handleParamChange("indicator", "all");
+                    } else {
+                      handleParamChange("indicator", val);
+                    }
+                  }}
                 >
                   <SelectTrigger className="w-full px-4 !h-[40px] rounded-[8px] border-0 bg-[#F8F9FC]">
                     <SelectValue placeholder="المؤشر" />
                   </SelectTrigger>
 
                   <SelectContent>
-                    <SelectItem className="px-3" value="1">
-                      تطور معدل انتشار الإنترنت
-                    </SelectItem>
-                    <SelectItem className="px-3" value="2">
+                    <SelectItem value="all">الكل</SelectItem>
+                    <SelectItem value="1">تطور معدل انتشار الإنترنت</SelectItem>
+                    <SelectItem value="2">
                       مؤشرات نقل واستخدام تقنية المعلومات والاتصالات
                     </SelectItem>
                     <SelectItem className="px-3" value="3">
@@ -136,49 +141,32 @@ export default function FilterHeader() {
 
                 <Select
                   value={chartType}
-                  onValueChange={(val) => handleParamChange("year", val)}
+                  onValueChange={(val) => {
+                    if (val === "all") {
+                      handleParamChange("year", "all");
+                    } else {
+                      handleParamChange("year", val);
+                    }
+                  }}
                 >
                   <SelectTrigger className="w-full px-4 !h-[40px] rounded-[8px] border-0 bg-[#F8F9FC]">
                     <SelectValue placeholder="السنوات" />
                   </SelectTrigger>
 
                   <SelectContent>
-                    <SelectItem className="px-3" value="2025">
-                      2025
-                    </SelectItem>
-                    <SelectItem className="px-3" value="2024">
-                      2024
-                    </SelectItem>
-                    <SelectItem className="px-3" value="2023">
-                      2023
-                    </SelectItem>
-                    <SelectItem className="px-3" value="2022">
-                      2022
-                    </SelectItem>
-                    <SelectItem className="px-3" value="2021">
-                      2021
-                    </SelectItem>
-                    <SelectItem className="px-3" value="2020">
-                      2020
-                    </SelectItem>
-                    <SelectItem className="px-3" value="2019">
-                      2019
-                    </SelectItem>
-                    <SelectItem className="px-3" value="2018">
-                      2018
-                    </SelectItem>
-                    <SelectItem className="px-3" value="2017">
-                      2017
-                    </SelectItem>
-                    <SelectItem className="px-3" value="2016">
-                      2016
-                    </SelectItem>
-                    <SelectItem className="px-3" value="2015">
-                      2015
-                    </SelectItem>
-                    <SelectItem className="px-3" value="2014">
-                      2014
-                    </SelectItem>
+                    <SelectItem className="px-3" value="all">الكل</SelectItem>
+                    <SelectItem className="px-3" value="2025">2025</SelectItem>
+                    <SelectItem className="px-3" value="2024">2024</SelectItem>
+                    <SelectItem className="px-3" value="2023">2023</SelectItem>
+                    <SelectItem className="px-3" value="2022">2022</SelectItem>
+                    <SelectItem className="px-3" value="2021">2021</SelectItem>
+                    <SelectItem className="px-3" value="2020">2020</SelectItem>
+                    <SelectItem className="px-3" value="2019">2019</SelectItem>
+                    <SelectItem className="px-3" value="2018">2018</SelectItem>
+                    <SelectItem className="px-3" value="2017">2017</SelectItem>
+                    <SelectItem className="px-3" value="2016">2016</SelectItem>
+                    <SelectItem className="px-3" value="2015">2015</SelectItem>
+                    <SelectItem className="px-3" value="2014">2014</SelectItem>
                   </SelectContent>
                 </Select>
               </>
