@@ -21,17 +21,34 @@ const regions = [
   { label: "منطقة الباحة", value: "Baha" },
 ];
 
+const ALL_VALUE = "all";
+
 export default function MultiRegionSelect() {
   const [open, setOpen] = useState(false);
   const [selectedRegions, setSelectedRegions] = useState<string[]>([]);
 
   const toggleRegion = (value: string) => {
-    setSelectedRegions((prev) =>
-      prev.includes(value)
-        ? prev.filter((r) => r !== value)
-        : [...prev, value]
-    );
+    if (value === ALL_VALUE) {
+      if (selectedRegions.length === regions.length) {
+        setSelectedRegions([]);
+      } else {
+        setSelectedRegions(regions.map((r) => r.value));
+      }
+      return;
+    }
+
+    let updated = selectedRegions.includes(value)
+      ? selectedRegions.filter((r) => r !== value)
+      : [...selectedRegions, value];
+
+    if (updated.length === regions.length) {
+      updated = regions.map((r) => r.value);
+    }
+
+    setSelectedRegions(updated);
   };
+
+  const isAllSelected = selectedRegions.length === regions.length;
 
   return (
     <Popover open={open} onOpenChange={setOpen}>
@@ -41,7 +58,9 @@ export default function MultiRegionSelect() {
           className="w-full justify-between bg-[#F8F9FC] border-0 px-4 h-[40px] rounded-[8px] hover:bg-[#F8F9FC]"
         >
           {selectedRegions.length > 0
-            ? `${selectedRegions.length} مناطق مختارة`
+            ? isAllSelected
+              ? "الكل"
+              : `${selectedRegions.length} مناطق مختارة`
             : "النطاق العمراني"}
           <ChevronDown className="h-4 w-4 opacity-50" />
         </Button>
@@ -51,6 +70,19 @@ export default function MultiRegionSelect() {
         <Command>
           <CommandList>
             <CommandGroup>
+              <CommandItem
+                onSelect={() => toggleRegion(ALL_VALUE)}
+                className="flex items-center gap-2 font-semibold"
+              >
+                <Check
+                  className={cn(
+                    "h-4 w-4",
+                    isAllSelected ? "opacity-100 text-green-600" : "opacity-0"
+                  )}
+                />
+                الكل
+              </CommandItem>
+
               {regions.map((region) => (
                 <CommandItem
                   key={region.value}

@@ -104,13 +104,20 @@ export default function FilterHeader() {
               <>
                 <Select
                   value={chartType}
-                  onValueChange={(val) => handleParamChange("indicator", val)}
+                  onValueChange={(val) => {
+                    if (val === "all") {
+                      handleParamChange("indicator", "all");
+                    } else {
+                      handleParamChange("indicator", val);
+                    }
+                  }}
                 >
                   <SelectTrigger className="w-full px-4 !h-[40px] rounded-[8px] border-0 bg-[#F8F9FC]">
                     <SelectValue placeholder="المؤشر" />
                   </SelectTrigger>
 
                   <SelectContent>
+                    <SelectItem value="all">الكل</SelectItem>
                     <SelectItem value="1">تطور معدل انتشار الإنترنت</SelectItem>
                     <SelectItem value="2">
                       مؤشرات نقل واستخدام تقنية المعلومات والاتصالات
@@ -126,13 +133,20 @@ export default function FilterHeader() {
 
                 <Select
                   value={chartType}
-                  onValueChange={(val) => handleParamChange("year", val)}
+                  onValueChange={(val) => {
+                    if (val === "all") {
+                      handleParamChange("year", "all");
+                    } else {
+                      handleParamChange("year", val);
+                    }
+                  }}
                 >
                   <SelectTrigger className="w-full px-4 !h-[40px] rounded-[8px] border-0 bg-[#F8F9FC]">
                     <SelectValue placeholder="السنوات" />
                   </SelectTrigger>
 
                   <SelectContent>
+                    <SelectItem value="all">الكل</SelectItem>
                     <SelectItem value="2025">2025</SelectItem>
                     <SelectItem value="2024">2024</SelectItem>
                     <SelectItem value="2023">2023</SelectItem>

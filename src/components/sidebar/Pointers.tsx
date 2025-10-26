@@ -1,4 +1,5 @@
 import { useSearchParams } from "react-router";
+import { ScrollArea } from "../ui/scroll-area";
 
 export default function Pointers() {
   const [searchParams] = useSearchParams();
@@ -39,23 +40,23 @@ export default function Pointers() {
             className="bg-transparent text-[#333] placeholder:text-[#999] outline-none w-full"
           />
         </div>
-        <div className="overflow-y-auto h-full">
-          <ul className="flex flex-col gap-2">
-            {pointers.map((pointer, i) => (
-              <li
-                key={i}
-                className={`p-3 rounded-[8px] cursor-pointer text-sm ${
-                  i === 0
-                    ? "bg-[#25935F]/10 text-[#25935F] font-semibold"
-                    : "hover:bg-[#F2F2F2]"
-                }`}
-              >
-                {pointer}
-              </li>
-            ))}
-          </ul>
+          <ScrollArea className="flex-1">
+            <ul className="flex flex-col gap-2">
+              {pointers.map((pointer, i) => (
+                <li
+                  key={i}
+                  className={`p-3 rounded-[8px] cursor-pointer text-sm ${
+                    i === 0
+                      ? "bg-[#25935F]/10 text-[#25935F] font-semibold"
+                      : "hover:bg-[#F2F2F2]"
+                  }`}
+                >
+                  {pointer}
+                </li>
+              ))}
+            </ul>
+          </ScrollArea>
         </div>
-      </div>
     </>
   );
 }
