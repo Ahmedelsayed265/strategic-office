@@ -7,7 +7,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "../ui/select";
-import MultiRegionSelect from "../shared/MultiRegionSelect";
+import MultiOptionSelect from "../shared/MultiOptionSelect";
 
 export default function FilterHeader() {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -110,99 +110,68 @@ export default function FilterHeader() {
               </Select>
             )}
 
-            <MultiRegionSelect />
+            <MultiOptionSelect
+              paramKey="region"
+              options={[
+                { label: "منطقة جازان", value: "Jazan" },
+                { label: "منطقة عسير", value: "Asir" },
+                { label: "منطقة نجران", value: "Najran" },
+                { label: "منطقة الباحة", value: "Baha" },
+              ]}
+              placeholder="النطاق العمراني"
+              onChange={(key, values) => {
+                const params = new URLSearchParams(searchParams);
+                if (values.length === 0) params.delete(key);
+                else params.set(key, values.join(","));
+                setSearchParams(params);
+              }}
+            />
 
             {mainView !== "indicator" && (
               <>
-                <Select
-                  value={chartType}
-                  onValueChange={(val) => {
-                    if (val === "all") {
-                      handleParamChange("indicator", "all");
-                    } else {
-                      handleParamChange("indicator", val);
-                    }
+                <MultiOptionSelect
+                  placeholder="المؤشر"
+                  paramKey="indicator"
+                  options={[
+                    { label: "تطور معدل انتشار الإنترنت", value: "1" },
+                    {
+                      label: "مؤشرات نقل واستخدام تقنية المعلومات",
+                      value: "2",
+                    },
+                    {
+                      label:
+                        "جودة الخدمات - سرعة الشبكات من خلال الشركات المشغلة Zain",
+                      value: "3",
+                    },
+                    {
+                      label: "نسبة الخدمات غير اللاسلكية في القطاع العام",
+                      value: "4",
+                    },
+                  ]}
+                  onChange={(key, values) => {
+                    const params = new URLSearchParams(searchParams);
+                    if (values.length === 0) params.delete(key);
+                    else params.set(key, values.join(","));
+                    setSearchParams(params);
                   }}
-                >
-                  <SelectTrigger className="w-full px-4 !h-[40px] rounded-[8px] border-0 bg-[#F8F9FC]">
-                    <SelectValue placeholder="المؤشر" />
-                  </SelectTrigger>
+                />
 
-                  <SelectContent>
-                    <SelectItem className="px-3" value="all">
-                      الكل
-                    </SelectItem>
-                    <SelectItem className="px-3" value="1">
-                      تطور معدل انتشار الإنترنت
-                    </SelectItem>
-                    <SelectItem className="px-3" value="2">
-                      مؤشرات نقل واستخدام تقنية المعلومات والاتصالات
-                    </SelectItem>
-                    <SelectItem className="px-3" value="3">
-                      جودة الخدمات - سرعة الشبكات من خلال الشركات المشغلة Zain
-                    </SelectItem>
-                    <SelectItem className="px-3" value="4">
-                      نسبة الخدمات غير اللاسلكية في القطاع العام
-                    </SelectItem>
-                  </SelectContent>
-                </Select>
-
-                <Select
-                  value={chartType}
-                  onValueChange={(val) => {
-                    if (val === "all") {
-                      handleParamChange("year", "all");
-                    } else {
-                      handleParamChange("year", val);
-                    }
+                <MultiOptionSelect
+                  placeholder="السنوات"
+                  paramKey="year"
+                  options={[
+                    ...Array.from({ length: 12 }, (_, i) => ({
+                      label: `${2025 - i}`,
+                      value: `${2025 - i}`,
+                    })),
+                  ]}
+                  onChange={(key, values) => {
+                    const params = new URLSearchParams(searchParams);
+                    if (values.length === 0) params.delete(key);
+                    else params.set(key, values.join(","));
+                    setSearchParams(params);
                   }}
-                >
-                  <SelectTrigger className="w-full px-4 !h-[40px] rounded-[8px] border-0 bg-[#F8F9FC]">
-                    <SelectValue placeholder="السنوات" />
-                  </SelectTrigger>
-
-                  <SelectContent>
-                    <SelectItem className="px-3" value="all">
-                      الكل
-                    </SelectItem>
-                    <SelectItem className="px-3" value="2025">
-                      2025
-                    </SelectItem>
-                    <SelectItem className="px-3" value="2024">
-                      2024
-                    </SelectItem>
-                    <SelectItem className="px-3" value="2023">
-                      2023
-                    </SelectItem>
-                    <SelectItem className="px-3" value="2022">
-                      2022
-                    </SelectItem>
-                    <SelectItem className="px-3" value="2021">
-                      2021
-                    </SelectItem>
-                    <SelectItem className="px-3" value="2020">
-                      2020
-                    </SelectItem>
-                    <SelectItem className="px-3" value="2019">
-                      2019
-                    </SelectItem>
-                    <SelectItem className="px-3" value="2018">
-                      2018
-                    </SelectItem>
-                    <SelectItem className="px-3" value="2017">
-                      2017
-                    </SelectItem>
-                    <SelectItem className="px-3" value="2016">
-                      2016
-                    </SelectItem>
-                    <SelectItem className="px-3" value="2015">
-                      2015
-                    </SelectItem>
-                    <SelectItem className="px-3" value="2014">
-                      2014
-                    </SelectItem>
-                  </SelectContent>
-                </Select>
+                />
               </>
             )}
           </div>

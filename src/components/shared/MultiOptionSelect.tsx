@@ -14,41 +14,51 @@ import {
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
-const regions = [
-  { label: "منطقة جازان", value: "Jazan" },
-  { label: "منطقة عسير", value: "Asir" },
-  { label: "منطقة نجران", value: "Najran" },
-  { label: "منطقة الباحة", value: "Baha" },
-];
+interface Option {
+  label: string;
+  value: string;
+}
+
+interface MultiOptionSelectProps {
+  placeholder?: string;
+  options: Option[];
+  paramKey: string;
+  onChange: (key: string, values: string[]) => void;
+}
 
 const ALL_VALUE = "all";
 
-export default function MultiRegionSelect() {
+export default function MultiOptionSelect({
+  placeholder = "اختر",
+  options,
+  paramKey,
+  onChange,
+}: MultiOptionSelectProps) {
   const [open, setOpen] = useState(false);
-  const [selectedRegions, setSelectedRegions] = useState<string[]>([]);
+  const [selectedValues, setSelectedValues] = useState<string[]>([]);
 
-  const toggleRegion = (value: string) => {
+  const toggleValue = (value: string) => {
     if (value === ALL_VALUE) {
-      if (selectedRegions.length === regions.length) {
-        setSelectedRegions([]);
+      if (selectedValues.length === options.length) {
+        setSelectedValues([]);
+        onChange(paramKey, []);
       } else {
-        setSelectedRegions(regions.map((r) => r.value));
+        const allValues = options.map((opt) => opt.value);
+        setSelectedValues(allValues);
+        onChange(paramKey, allValues);
       }
       return;
     }
 
-    let updated = selectedRegions.includes(value)
-      ? selectedRegions.filter((r) => r !== value)
-      : [...selectedRegions, value];
+    let updated = selectedValues.includes(value)
+      ? selectedValues.filter((v) => v !== value)
+      : [...selectedValues, value];
 
-    if (updated.length === regions.length) {
-      updated = regions.map((r) => r.value);
-    }
-
-    setSelectedRegions(updated);
+    setSelectedValues(updated);
+    onChange(paramKey, updated);
   };
 
-  const isAllSelected = selectedRegions.length === regions.length;
+  const isAllSelected = selectedValues.length === options.length;
 
   return (
     <Popover open={open} onOpenChange={setOpen}>
@@ -57,21 +67,21 @@ export default function MultiRegionSelect() {
           variant="outline"
           className="w-full justify-between bg-[#F8F9FC] border-0 px-4 h-[40px] rounded-[8px] hover:bg-[#F8F9FC]"
         >
-          {selectedRegions.length > 0
+          {selectedValues.length > 0
             ? isAllSelected
               ? "الكل"
-              : `${selectedRegions.length} مناطق مختارة`
-            : "النطاق العمراني"}
+              : `${selectedValues.length} عناصر مختارة`
+            : placeholder}
           <ChevronDown className="h-4 w-4 opacity-50" />
         </Button>
       </PopoverTrigger>
 
-      <PopoverContent className="w-[200px] p-0 right-0">
+      <PopoverContent className="w-[220px] p-0 right-0">
         <Command>
           <CommandList>
             <CommandGroup>
               <CommandItem
-                onSelect={() => toggleRegion(ALL_VALUE)}
+                onSelect={() => toggleValue(ALL_VALUE)}
                 className="flex items-center gap-2 font-semibold cursor-pointer"
               >
                 <Check
@@ -83,21 +93,21 @@ export default function MultiRegionSelect() {
                 الكل
               </CommandItem>
 
-              {regions.map((region) => (
+              {options.map((opt) => (
                 <CommandItem
-                  key={region.value}
-                  onSelect={() => toggleRegion(region.value)}
+                  key={opt.value}
+                  onSelect={() => toggleValue(opt.value)}
                   className="flex items-center gap-2 cursor-pointer"
                 >
                   <Check
                     className={cn(
                       "h-4 w-4 border rounded",
-                      selectedRegions.includes(region.value)
+                      selectedValues.includes(opt.value)
                         ? "opacity-100 text-green-600"
                         : "opacity-0"
                     )}
                   />
-                  {region.label}
+                  {opt.label}
                 </CommandItem>
               ))}
             </CommandGroup>
