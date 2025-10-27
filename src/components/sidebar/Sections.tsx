@@ -33,7 +33,7 @@ export default function Sections() {
 
   return (
     <div
-      className={`h-full bg-[#25935F] pattern-overlay flex flex-col p-4 transition-all 
+      className={`h-full bg-[#019a8c] pattern-overlay flex flex-col p-4 transition-all 
         ${selectedSection ? "rounded-r-[12px]" : "rounded-[12px]"}
         ${open ? "w-[286px]" : "w-[120px]"} 
         ${open ? "gap-6" : "gap-4"} `}
