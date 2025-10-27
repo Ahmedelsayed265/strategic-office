@@ -34,7 +34,11 @@ export default function FilterHeader() {
           ].map((btn) => (
             <button
               key={btn.key}
-              onClick={() => handleParamChange("mainView", btn.key)}
+              onClick={() => {
+                const params = new URLSearchParams();
+                params.set("mainView", btn.key);
+                setSearchParams(params);
+              }}
               className={`py-2 px-4 rounded-md transition-colors ${
                 mainView === btn.key
                   ? "bg-[#25935F] text-white"
