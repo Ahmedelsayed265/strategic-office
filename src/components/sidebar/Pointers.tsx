@@ -25,10 +25,15 @@ export default function Pointers() {
 
   return (
     <>
-      <div className="bg-white h-full w-[300px] p-4 overflow-y-auto rounded-l-[12px] flex flex-col gap-6">
+      <div
+        className="bg-white h-full  p-4 overflow-y-auto  flex flex-col gap-6"
+        style={{
+          width: "var(--card-width)",
+        }}
+      >
         <h6 className="font-semibold text-[#333] ">المؤشرات</h6>
 
-        <div className="border border-[#D5D7DA8F] flex items-center gap-2 p-2 rounded-[8px] ">
+        <div className="border border-[#D5D7DA8F] flex items-center gap-2 p-2 ">
           <img
             src="/icons/search.svg"
             alt="search"
@@ -47,7 +52,7 @@ export default function Pointers() {
             {pointers.map((pointer, i) => (
               <li
                 key={i}
-                className={`p-3 rounded-[8px] cursor-pointer text-sm ${
+                className={`p-3 cursor-pointer text-sm ${
                   i === 0
                     ? "bg-[#25935F]/10 text-[#25935F] font-semibold"
                     : "hover:bg-[#F2F2F2]"

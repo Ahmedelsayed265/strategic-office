@@ -34,6 +34,10 @@
     --chart-4: 43 74% 66%;
     --chart-5: 27 87% 67%;
     --radius: 0.5rem;
+    --cards-gap: 1.3rem;
+    --cards-count: 5;
+    --card-width: calc((100vw - (var(--cards-gap) * (var(--cards-count) ))) / var(--cards-count));
+
   }
 
   @font-face {

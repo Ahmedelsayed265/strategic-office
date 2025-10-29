@@ -24,7 +24,7 @@ export default function Sections() {
     "البنية التحتية",
     "الزراعة",
     "الصناعة",
-     "الإبتكار",
+    "الإبتكار",
     "الإستثمار",
     "الاتصالات وتقنية المعلومات",
     "البنية التحتية",
@@ -34,10 +34,11 @@ export default function Sections() {
   return (
     <div
       className={`h-full bg-[#019a8c] pattern-overlay flex flex-col p-4 transition-all 
-        ${selectedSection ? "rounded-r-[12px]" : "rounded-[12px]"}
-        ${open ? "w-[286px]" : "w-[120px]"} 
         ${open ? "gap-6" : "gap-4"} `}
-    >
+      style={{
+        width: open ? "var(--card-width)" : "100px",
+      }}
+      >
       <div
         className={`flex items-center ${
           open ? "justify-between" : "justify-center mb-2"
@@ -51,7 +52,7 @@ export default function Sections() {
       </div>
 
       {open ? (
-        <div className="border border-[#D5D7DA8F] flex items-center gap-2 p-2 rounded-[8px]">
+        <div className="border border-[#D5D7DA8F] flex items-center gap-2 p-2 ">
           <img src="/icons/search.svg" alt="search" className="h-4" />
           <input
             type="text"
@@ -77,7 +78,7 @@ export default function Sections() {
               <li
                 key={sectionName}
                 onClick={() => handleSelect(sectionName)}
-                className={`p-3 flex gap-2 rounded-[8px] cursor-pointer text-white ${
+                className={`p-3 flex gap-2 cursor-pointer text-white ${
                   isActive ? "bg-white !text-[#25935F]" : "hover:bg-white/20"
                 } ${
                   open ? "" : "flex flex-col items-center justify-center gap-2"

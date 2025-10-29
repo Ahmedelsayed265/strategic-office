@@ -26,7 +26,7 @@ export default function FilterHeader() {
   return (
     <>
       <div className="flex items-center justify-between">
-        <div className="flex items-center bg-[#F8F9FC] p-1 rounded-md">
+        <div className="flex items-center bg-[#F8F9FC] p-1 ">
           {[
             { key: "indicator", label: "عرض المؤشر" },
             { key: "metadata", label: "بيانات وصفية" },
@@ -39,7 +39,7 @@ export default function FilterHeader() {
                 params.set("mainView", btn.key);
                 setSearchParams(params);
               }}
-              className={`py-2 px-4 rounded-md transition-colors ${
+              className={`py-2 px-4 transition-colors ${
                 mainView === btn.key
                   ? "bg-[#25935F] text-white"
                   : "text-[#6C737F] hover:text-[#1F2A37]"
@@ -51,7 +51,7 @@ export default function FilterHeader() {
         </div>
 
         {mainView === "indicator" && (
-          <div className="flex items-center gap-6 bg-[#F8F9FC] py-3 px-6 rounded-md text-[#1F2A37]">
+          <div className="flex items-center gap-6 bg-[#F8F9FC] py-3 px-6  text-[#1F2A37]">
             <h6>طريقة العرض</h6>
 
             <RadioGroup
@@ -75,6 +75,16 @@ export default function FilterHeader() {
             </RadioGroup>
           </div>
         )}
+        {mainView === "metadata" && (
+          <div className="flex items-center gap-2">
+            <button className="bg-[#DFF6E7] p-2 ">
+              <img src="/icons/pdf-02.svg" alt="pdf" />
+            </button>
+            <button className="bg-[#DFF6E7] p-2 ">
+              <img src="/icons/Vector.svg" alt="excel" />
+            </button>
+          </div>
+        )}
       </div>
 
       <div
@@ -89,7 +99,7 @@ export default function FilterHeader() {
                 value={chartType}
                 onValueChange={(val) => handleParamChange("chartType", val)}
               >
-                <SelectTrigger className="w-full px-4 !h-[40px] rounded-[8px] border-0 bg-[#F8F9FC]">
+                <SelectTrigger className="w-full px-4 !h-[40px] border-0 bg-[#F8F9FC]">
                   <SelectValue placeholder="نوع الرسم البياني" />
                 </SelectTrigger>
 
@@ -109,25 +119,25 @@ export default function FilterHeader() {
                 </SelectContent>
               </Select>
             )}
-
-            <MultiOptionSelect
-              paramKey="region"
-              options={[
-                { label: "منطقة جازان", value: "Jazan" },
-                { label: "منطقة عسير", value: "Asir" },
-                { label: "منطقة نجران", value: "Najran" },
-                { label: "منطقة الباحة", value: "Baha" },
-              ]}
-              placeholder="النطاق العمراني"
-              onChange={(key, values) => {
-                const params = new URLSearchParams(searchParams);
-                if (values.length === 0) params.delete(key);
-                else params.set(key, values.join(","));
-                setSearchParams(params);
-              }}
-            />
-
-            {mainView !== "indicator" && (
+            {mainView !== "metadata" && (
+              <MultiOptionSelect
+                paramKey="region"
+                options={[
+                  { label: "منطقة جازان", value: "Jazan" },
+                  { label: "منطقة عسير", value: "Asir" },
+                  { label: "منطقة نجران", value: "Najran" },
+                  { label: "منطقة الباحة", value: "Baha" },
+                ]}
+                placeholder="النطاق العمراني"
+                onChange={(key, values) => {
+                  const params = new URLSearchParams(searchParams);
+                  if (values.length === 0) params.delete(key);
+                  else params.set(key, values.join(","));
+                  setSearchParams(params);
+                }}
+              />
+            )}
+            {mainView === "map" && (
               <>
                 <MultiOptionSelect
                   placeholder="المؤشر"
@@ -176,15 +186,16 @@ export default function FilterHeader() {
             )}
           </div>
         )}
-
-        <div className="flex items-center gap-2">
-          <button className="bg-[#DFF6E7] p-2 rounded-[8px]">
-            <img src="/icons/pdf-02.svg" alt="pdf" />
-          </button>
-          <button className="bg-[#DFF6E7] p-2 rounded-[8px]">
-            <img src="/icons/Vector.svg" alt="excel" />
-          </button>
-        </div>
+        {mainView !== "metadata" && (
+          <div className="flex items-center gap-2">
+            <button className="bg-[#DFF6E7] p-2">
+              <img src="/icons/pdf-02.svg" alt="pdf" />
+            </button>
+            <button className="bg-[#DFF6E7] p-2">
+              <img src="/icons/Vector.svg" alt="excel" />
+            </button>
+          </div>
+        )}
       </div>
     </>
   );

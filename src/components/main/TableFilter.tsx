@@ -25,9 +25,9 @@ export default function TableFilter() {
   });
 
   return (
-    <div className="bg-white rounded-lg p-4 shadow-sm w-full">
+    <div className="bg-white p-4 shadow-sm w-full">
       <h3 className="text-[#1F2A37] font-semibold mb-4 text-lg">
-        البيانات حسب الفلترة
+        بيانات المؤشر
       </h3>
 
       <ScrollArea className="h-[400px]">
@@ -36,22 +36,22 @@ export default function TableFilter() {
           style={{ borderSpacing: "0 12px" }}
         >
           <thead className="text-[#6C737F] text-sm">
-            <tr className="bg-[#F3F4F6] rounded-md">
-              <th className="py-3 px-4 rounded-r-md">النطاق الجغرافي</th>
+            <tr className="bg-[#F3F4F6] ">
+              <th className="py-3 px-4 ">النطاق الجغرافي</th>
               <th className="py-3 px-4">الأعوام</th>
-              <th className="py-3 px-4 rounded-l-md">قيمة المؤشر</th>
+              <th className="py-3 px-4 ">قيمة المؤشر</th>
             </tr>
           </thead>
 
           <tbody>
             {filteredData.length > 0 ? (
               filteredData.map((row, index) => (
-                <tr key={index} className="bg-[#ffffff] shadow-sm rounded-lg">
-                  <td className="py-4 px-4 rounded-r-lg text-[#374151]">
+                <tr key={index} className="bg-[#ffffff] shadow-sm ">
+                  <td className="py-4 px-4  text-[#374151]">
                     {row.region}
                   </td>
                   <td className="py-4 px-4 text-[#374151]">{row.year}</td>
-                  <td className="py-4 px-4 rounded-l-lg font-semibold text-[#111928]">
+                  <td className="py-4 px-4  font-semibold text-[#111928]">
                     {row.value}
                   </td>
                 </tr>
