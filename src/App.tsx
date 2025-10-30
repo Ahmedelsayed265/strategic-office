@@ -13,7 +13,7 @@ function App() {
     <div className="bg-[#F8F9FC] h-full w-full p-5 flex flex-col gap-4">
       <Header />
 
-      <main className="h-[calc(100vh-248px)] w-full flex gap-4">
+      <main className="h-[calc(100vh-282px)] w-full flex gap-4">
         <Sidebar />
 
         <div className="flex flex-col w-full gap-4 h-full overflow-y-auto">
