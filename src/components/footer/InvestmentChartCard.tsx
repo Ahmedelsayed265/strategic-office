@@ -19,16 +19,16 @@ interface InvestmentData {
 }
 
 const data: InvestmentData[] = [
-  { id: 1, region: "محافظة العقيق", value: 13000, color: "#7CCCCC" },
-  { id: 2, region: "محافظة الحجرة", value: 24000, color: "#2F7ECC" },
-  { id: 3, region: "محافظة القرى", value: 12000, color: "#F8A23B" },
-  { id: 4, region: "محافظة المخواة", value: 45000, color: "#25935F" },
-  { id: 5, region: "محافظة المندق", value: 32000, color: "#7C4DFF" },
-  { id: 6, region: "محافظة بلجرشي", value: 18000, color: "#FF5722" },
-  { id: 7, region: "محافظة بنى حسن", value: 27000, color: "#009688" },
-  { id: 10, region: "محافظة غامد الزناد", value: 21000, color: "#FFC107" },
-  { id: 11, region: "محافظة قلوة", value: 36000, color: "#9C27B0" },
-  { id: 12, region: "محافظة الباحة", value: 42000, color: "#E91E63" },
+  { id: 1, region: "العقيق", value: 13000, color: "#7CCCCC" },
+  { id: 2, region: "الحجرة", value: 24000, color: "#2F7ECC" },
+  { id: 3, region: "القرى", value: 12000, color: "#F8A23B" },
+  { id: 4, region: "المخواة", value: 45000, color: "#25935F" },
+  { id: 5, region: "المندق", value: 32000, color: "#7C4DFF" },
+  { id: 6, region: "بلجرشي", value: 18000, color: "#FF5722" },
+  { id: 7, region: "بنى حسن", value: 27000, color: "#009688" },
+  { id: 10, region: "غامد الزناد", value: 21000, color: "#FFC107" },
+  { id: 11, region: "قلوة", value: 36000, color: "#9C27B0" },
+  { id: 12, region: "الباحة", value: 42000, color: "#E91E63" },
 ];
 
 export default function InvestmentChartCard() {
@@ -54,7 +54,6 @@ export default function InvestmentChartCard() {
               tickMargin={8}
               interval={0}
               height={60}
-              angle={-45}
               textAnchor="end"
             />
             <YAxis
