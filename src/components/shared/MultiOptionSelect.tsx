@@ -50,7 +50,7 @@ export default function MultiOptionSelect({
       return;
     }
 
-    let updated = selectedValues.includes(value)
+    const updated = selectedValues.includes(value)
       ? selectedValues.filter((v) => v !== value)
       : [...selectedValues, value];
 
@@ -65,7 +65,7 @@ export default function MultiOptionSelect({
       <PopoverTrigger asChild>
         <Button
           variant="outline"
-          className="w-full justify-between bg-[#F8F9FC] border-0 px-4 h-[40px] rounded-[8px] hover:bg-[#F8F9FC]"
+          className="w-full justify-between bg-[#F8F9FC] border-0 px-4 h-[40px] hover:bg-[#F8F9FC]"
         >
           {selectedValues.length > 0
             ? isAllSelected
@@ -86,7 +86,7 @@ export default function MultiOptionSelect({
               >
                 <Check
                   className={cn(
-                    "h-4 w-4 border rounded",
+                    "h-4 w-4 border ",
                     isAllSelected ? "opacity-100 text-green-600" : "opacity-0"
                   )}
                 />
@@ -101,7 +101,7 @@ export default function MultiOptionSelect({
                 >
                   <Check
                     className={cn(
-                      "h-4 w-4 border rounded",
+                      "h-4 w-4 border ",
                       selectedValues.includes(opt.value)
                         ? "opacity-100 text-green-600"
                         : "opacity-0"

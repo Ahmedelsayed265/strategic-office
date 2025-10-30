@@ -2,8 +2,8 @@ import GaugeComponent from "react-gauge-component";
 
 export default function PointerChart() {
   return (
-    <div className="bg-white p-4 rounded-[12px] flex flex-col ">
-      <h6 className="relative text-sm mb-2 after:content-[''] after:absolute after:start-[-16px] after:top-0 after:h-full after:w-[2px] after:rounded-full after:bg-[#25935F]">
+    <div className="bg-white p-4 flex flex-col ">
+      <h6 className="relative text-md mb-2 after:content-[''] after:absolute after:start-[-16px] after:top-0 after:h-full after:w-[2px] after:rounded-full after:bg-[#25935F]">
         قيمة المؤشر لعام 2025 = <b className="text-[#25935F]">{79.44}</b>
       </h6>
 

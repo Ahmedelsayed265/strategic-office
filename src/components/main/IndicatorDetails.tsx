@@ -36,7 +36,7 @@ export default function IndicatorDetails() {
     <Card className="border-none shadow-none bg-transparent p-[20px]">
       <CardTitle>
         <div className="flex items-center gap-2 mb-3">
-          <p  className="w-[2px] h-6 bg-[#25935F] block rounded"/>
+          <p  className="w-[2px] h-6 bg-[#25935F] block "/>
           <span className="text-gray-600 leading-relaxed">
             تعريف المؤشر :{" "}
           </span>
@@ -47,8 +47,8 @@ export default function IndicatorDetails() {
       <CardContent className="flex flex-col gap-3 p-0">
         {details.map((item, index) => (
           <div key={index}>
-            <div className="bg-[#F8F9FB] rounded-xl px-4 py-3 flex gap-4 items-center mt-2">
-              <div className="flex items-center justify-center bg-white rounded-lg p-3 shadow-sm">
+            <div className="bg-[#F8F9FB]  px-4 py-3 flex gap-4 items-center mt-2">
+              <div className="flex items-center justify-center bg-white p-3 shadow-sm">
                 {item.icon}
               </div>
 

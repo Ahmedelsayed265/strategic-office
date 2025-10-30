@@ -236,7 +236,7 @@ export default function GisMap({ data = [] }: { data?: DataItem[] }) {
 
   return (
     <div className="relative">
-      <div ref={mapContainerRef} className="w-full h-[430px] rounded-lg"></div>
+      <div ref={mapContainerRef} className="w-full h-[430px]"></div>
     </div>
   );
 }
