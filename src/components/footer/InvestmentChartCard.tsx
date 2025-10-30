@@ -12,17 +12,23 @@ import {
 } from "recharts";
 
 interface InvestmentData {
+  id: number;
   region: string;
-  year: string;
   value: number;
   color: string;
 }
 
 const data: InvestmentData[] = [
-  { region: "منطقة جازان", year: "2023", value: 13000, color: "#7CCCCC" },
-  { region: "منطقة عسير", year: "2016", value: 24000, color: "#2F7ECC" },
-  { region: "منطقة نجران", year: "2014", value: 12000, color: "#F8A23B" },
-  { region: "منطقة الباحة", year: "2013", value: 45000, color: "#25935F" },
+  { id: 1, region: "محافظة العقيق", value: 13000, color: "#7CCCCC" },
+  { id: 2, region: "محافظة الحجرة", value: 24000, color: "#2F7ECC" },
+  { id: 3, region: "محافظة القرى", value: 12000, color: "#F8A23B" },
+  { id: 4, region: "محافظة المخواة", value: 45000, color: "#25935F" },
+  { id: 5, region: "محافظة المندق", value: 32000, color: "#7C4DFF" },
+  { id: 6, region: "محافظة بلجرشي", value: 18000, color: "#FF5722" },
+  { id: 7, region: "محافظة بنى حسن", value: 27000, color: "#009688" },
+  { id: 10, region: "محافظة غامد الزناد", value: 21000, color: "#FFC107" },
+  { id: 11, region: "محافظة قلوة", value: 36000, color: "#9C27B0" },
+  { id: 12, region: "محافظة الباحة", value: 42000, color: "#E91E63" },
 ];
 
 export default function InvestmentChartCard() {
@@ -39,9 +45,18 @@ export default function InvestmentChartCard() {
           <BarChart
             data={data}
             margin={{ top: 10, right: 10, left: 10, bottom: 20 }}
+            barSize={30}
           >
             <CartesianGrid strokeDasharray="3 3" vertical={false} />
-            <XAxis dataKey="region" tick={{ fontSize: 12 }} tickMargin={8} />
+            <XAxis
+              dataKey="region"
+              tick={{ fontSize: 10 }}
+              tickMargin={8}
+              interval={0}
+              height={60}
+              angle={-45}
+              textAnchor="end"
+            />
             <YAxis
               orientation="right"
               tick={{ fontSize: 12 }}
@@ -54,7 +69,6 @@ export default function InvestmentChartCard() {
               interval={0}
             />
 
-            {/* 🔹 مفتاح المناطق بدل السنوات */}
             <Legend
               verticalAlign="top"
               align="center"
@@ -65,15 +79,15 @@ export default function InvestmentChartCard() {
                     display: "flex",
                     justifyContent: "center",
                     flexWrap: "wrap",
-                    gap: "16px",
-                    fontSize: "12px",
+                    gap: "12px",
+                    fontSize: "11px",
                     color: "#333",
                     marginTop: "8px",
                   }}
                 >
-                  {data.map((item) => (
+                  {data.slice(0, 5).map((item) => (
                     <div
-                      key={item.region}
+                      key={item.id}
                       style={{
                         display: "flex",
                         alignItems: "center",
@@ -82,14 +96,14 @@ export default function InvestmentChartCard() {
                     >
                       <span
                         style={{
-                          width: 10,
-                          height: 10,
+                          width: 8,
+                          height: 8,
                           borderRadius: "50%",
                           backgroundColor: item.color,
                         }}
                       />
                       <span>
-                        {item.region} ({item.year})
+                        {item.region} (ID: {item.id})
                       </span>
                     </div>
                   ))}
@@ -99,7 +113,7 @@ export default function InvestmentChartCard() {
 
             <Bar
               dataKey="value"
-              radius={[6, 6, 0, 0]}
+              radius={[4, 4, 0, 0]}
               isAnimationActive={false}
             >
               {data.map((entry, index) => (

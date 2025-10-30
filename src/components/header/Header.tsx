@@ -26,7 +26,7 @@ export default function Header() {
       <PointerChart />
 
       <div className="bg-white p-4 flex flex-col justify-between ">
-        <h6 className="relative  text-md after:content-[''] after:absolute after:start-[-16px] after:top-0 after:h-full after:w-[2px] after:rounded-full after:bg-[#25935F]">
+        <h6 className="relative text-[18px] after:content-[''] after:absolute after:start-[-16px] after:top-0 after:h-full after:w-[2px] after:rounded-full after:bg-[#25935F]">
           معدل التغير : = <b className="text-[#25935F]">25%</b>
         </h6>
 
