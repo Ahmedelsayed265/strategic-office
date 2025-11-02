@@ -182,9 +182,6 @@ export default function GisMap({ data = [] }: { data?: DataItem[] }) {
                 <div style="background-color: #f8f9fa; padding: 8px; border-radius: 4px;">
                   <b>القيمة:</b> ${item?.valueAvg?.toFixed(2) || "-"}<br/>
                   <b>الوحدة:</b> ${item?.migUnit || "-"}<br/>
-                  <b>الفترة:</b> ${item?.minYear || "-"} - ${
-              item?.maxYear || "-"
-            }
                 </div>
               </div>`;
             L.popup().setLatLng(e.latlng).setContent(popupContent).openOn(map);

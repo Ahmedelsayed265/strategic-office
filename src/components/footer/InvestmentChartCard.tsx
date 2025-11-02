@@ -19,16 +19,16 @@ interface InvestmentData {
 }
 
 const data: InvestmentData[] = [
-  { id: 1, region: "العقيق", value: 13000, color: "#7CCCCC" },
-  { id: 2, region: "الحجرة", value: 24000, color: "#2F7ECC" },
-  { id: 3, region: "القرى", value: 12000, color: "#F8A23B" },
-  { id: 4, region: "المخواة", value: 45000, color: "#25935F" },
-  { id: 5, region: "المندق", value: 32000, color: "#7C4DFF" },
-  { id: 6, region: "بلجرشي", value: 18000, color: "#FF5722" },
-  { id: 7, region: "بنى حسن", value: 27000, color: "#009688" },
-  { id: 10, region: "غامد الزناد", value: 21000, color: "#FFC107" },
-  { id: 11, region: "قلوة", value: 36000, color: "#9C27B0" },
-  { id: 12, region: "الباحة", value: 42000, color: "#E91E63" },
+  { id: 1, region: "العقيق", value: 13000, color: "#ded3b3" },
+  { id: 2, region: "الحجرة", value: 24000, color: "#b7e1e3" },
+  { id: 3, region: "القرى", value: 12000, color: "#b1bfe6" },
+  { id: 4, region: "المخواة", value: 45000, color: "#abe8af" },
+  { id: 5, region: "المندق", value: 32000, color: "#363b3e" },
+  { id: 6, region: "بلجرشي", value: 18000, color: "#f05e50" },
+  { id: 7, region: "بنى حسن", value: 27000, color: "#f1984f" },
+  { id: 10, region: "غامد الزناد", value: 21000, color: "#43cff9" },
+  { id: 11, region: "قلوة", value: 36000, color: "#594a44" },
+  { id: 12, region: "الباحة", value: 42000, color: "#019a8c" },
 ];
 
 export default function InvestmentChartCard() {

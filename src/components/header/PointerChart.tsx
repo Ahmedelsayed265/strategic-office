@@ -3,7 +3,7 @@ import GaugeComponent from "react-gauge-component";
 export default function PointerChart() {
   return (
     <div className="bg-white p-4 flex flex-col ">
-      <h6 className="relative text-[18px] mb-2 after:content-[''] after:absolute after:start-[-16px] after:top-0 after:h-full after:w-[2px] after:rounded-full after:bg-[#25935F]">
+      <h6 className="relative text-[24px] mb-2 after:content-[''] after:absolute after:start-[-16px] after:top-0 after:h-full after:w-[2px] after:rounded-full after:bg-[#25935F]">
         قيمة المؤشر لعام 2025 = <b className="text-[#25935F]">{79.44}</b>
       </h6>
 
