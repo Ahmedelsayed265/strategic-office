@@ -9,13 +9,13 @@ export default function Header() {
 
       <div className="bg-white p-6 flex items-center ">
         <div className="flex flex-col gap-3">
-          <p className="text-[20px]">
+          <p className="text-[16px]">
             القطاع : <b className="text-[#384250]">الإستثمار</b>
           </p>
-          <p className="text-[20px]">
+          <p className="text-[16px]">
             المؤشر : <b className="text-[#25935F]">تطور معدل انتشار الإنترنت</b>
           </p>
-          <p className="text-[20px]">
+          <p className="text-[16px]">
             وحدة القياس : <b className="text-[#25935F]">مليون ريال</b>
           </p>
         </div>
@@ -26,7 +26,7 @@ export default function Header() {
       <PointerChart />
 
       <div className="bg-white p-4 flex flex-col justify-between ">
-        <h6 className="relative text-[24px] after:content-[''] after:absolute after:start-[-16px] after:top-0 after:h-full after:w-[2px] after:rounded-full after:bg-[#25935F]">
+        <h6 className="relative text-[18px] after:content-[''] after:absolute after:start-[-16px] after:top-0 after:h-full after:w-[2px] after:rounded-full after:bg-[#25935F]">
           معدل التغير : = <b className="text-[#25935F]">25%</b>
         </h6>
 

@@ -1,11 +1,11 @@
 import { useSearchParams } from "react-router";
 import { useState } from "react";
+import { ChevronDown, ChevronUp } from "lucide-react";
 import InvestmentChartCard from "./components/footer/InvestmentChartCard";
 import Header from "./components/header/Header";
 import MainCharts from "./components/main/MainCharts";
 import Sidebar from "./components/sidebar/Sidebar";
 import TableFilter from "./components/main/TableFilter";
-import { ChevronDown, ChevronUp } from "lucide-react";
 
 function App() {
   const [showChart, setShowChart] = useState(false);
@@ -16,7 +16,7 @@ function App() {
     <div className="bg-[#F8F9FC] h-full w-full p-5 flex flex-col gap-4">
       <Header />
 
-      <main className="h-[calc(100vh-282px)] w-full flex gap-4">
+      <main className="h-[calc(100vh-260px)] w-full flex gap-4">
         <Sidebar />
 
         <div className="flex flex-col w-full gap-4 h-full overflow-y-auto">

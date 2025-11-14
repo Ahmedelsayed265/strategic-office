@@ -1,27 +1,17 @@
+import useGetPointers from "@/hooks/useGetPointers";
 import { useSearchParams } from "react-router";
 
 export default function Pointers() {
-  const [searchParams] = useSearchParams();
-  const selectedSection = searchParams.get("section");
+  const { data } = useGetPointers();
+  const pointers = data?.data;
 
-  const pointers = [
-    "تطور معدل انتشار الإنترنت",
-    "مؤشرات نقل واستخدام تقنية المعلومات والاتصالات",
-    "جودة الخدمات - سرعة الشبكات من خلال الشركات المشغلة Zain",
-    "نسبة الخدمات غير اللاسلكية في القطاع العام",
-    "نسبة الوصول إلى الإنترنت المنزلي",
-    "تطور معدل انتشار الإنترنت",
-    "مؤشرات نقل واستخدام تقنية المعلومات والاتصالات",
-    "جودة الخدمات - سرعة الشبكات من خلال الشركات المشغلة Zain",
-    "نسبة الخدمات غير اللاسلكية في القطاع العام",
-    "نسبة الوصول إلى الإنترنت المنزلي",
-    "تطور معدل انتشار الإنترنت",
-    "مؤشرات نقل واستخدام تقنية المعلومات والاتصالات",
-    "جودة الخدمات - سرعة الشبكات من خلال الشركات المشغلة Zain",
-    "نسبة الخدمات غير اللاسلكية في القطاع العام",
-    "نسبة الوصول إلى الإنترنت المنزلي",
-  ];
+  const [searchParams, setSearchParams] = useSearchParams();
+  const selectedSection = searchParams.get("section");
   if (!selectedSection) return null;
+
+  const handleSelectPointer = (id: string) => {
+    setSearchParams({ section: id });
+  };
 
   return (
     <>
@@ -49,16 +39,17 @@ export default function Pointers() {
 
         <div className="overflow-y-auto h-full p-1">
           <ul className="flex flex-col gap-2">
-            {pointers.map((pointer, i) => (
+            {pointers?.map((pointer) => (
               <li
-                key={i}
+                onClick={() => handleSelectPointer(pointer.id.toString())}
+                key={pointer.id}
                 className={`p-3 cursor-pointer text-sm ${
-                  i === 0
+                  pointer.id.toString() === selectedSection
                     ? "bg-[#25935F]/10 text-[#25935F] font-semibold"
                     : "hover:bg-[#F2F2F2]"
                 }`}
               >
-                {pointer}
+                {pointer.id}
               </li>
             ))}
           </ul>

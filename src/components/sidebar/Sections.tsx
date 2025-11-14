@@ -1,35 +1,18 @@
 import { useSearchParams } from "react-router";
 import { useThemeStore } from "./store";
+import useGetSections from "@/hooks/useGetSections";
 
 export default function Sections() {
   const { open, setOpen } = useThemeStore();
+  const { data } = useGetSections();
   const [searchParams, setSearchParams] = useSearchParams();
 
   const selectedSection = searchParams.get("section");
+  const sectors = data?.data.mainSectors;
 
-  const handleSelect = (sectionName: string) => {
-    if (selectedSection === sectionName) {
-      searchParams.delete("section");
-      setSearchParams(searchParams);
-    } else {
-      setSearchParams({ section: sectionName });
-    }
+  const handleSelect = (sectionId: number) => {
+    setSearchParams({ section: sectionId.toString() });
   };
-
-  const sections = [
-    "استعمالات الأرضي",
-    "الإبتكار",
-    "الإستثمار",
-    "الاتصالات وتقنية المعلومات",
-    "البنية التحتية",
-    "الزراعة",
-    "الصناعة",
-    "الإبتكار",
-    "الإستثمار",
-    "الاتصالات وتقنية المعلومات",
-    "البنية التحتية",
-    "الزراعة",
-  ];
 
   return (
     <div
@@ -38,7 +21,7 @@ export default function Sections() {
       style={{
         width: open ? "var(--card-width)" : "100px",
       }}
-      >
+    >
       <div
         className={`flex items-center ${
           open ? "justify-between" : "justify-center mb-2"
@@ -72,12 +55,13 @@ export default function Sections() {
 
       <div className="overflow-y-auto h-full p-1 sections">
         <ul className="flex flex-col gap-2 overflow-y-auto">
-          {sections.map((sectionName) => {
-            const isActive = selectedSection === sectionName;
+          {sectors?.map((sector) => {
+            const isActive = selectedSection === sector?.id?.toString();
+
             return (
               <li
-                key={sectionName}
-                onClick={() => handleSelect(sectionName)}
+                key={sector.id}
+                onClick={() => handleSelect(sector.id)}
                 className={`p-3 flex gap-2 cursor-pointer text-white ${
                   isActive ? "bg-white !text-[#25935F]" : "hover:bg-white/20"
                 } ${
@@ -94,7 +78,7 @@ export default function Sections() {
                   } `}
                 />
                 <span className={open ? "" : "text-center  text-[14px]"}>
-                  {sectionName}
+                  {sector.name}
                 </span>
               </li>
             );
