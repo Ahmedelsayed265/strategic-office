@@ -3,7 +3,7 @@ import { postRequest } from "@/lib/axiosApi";
 import { useQuery } from "@tanstack/react-query";
 import { useSearchParams } from "react-router";
 
-export default function useGetPointers() {
+export default function useGetPointers(enabled: boolean) {
   const [searchParams] = useSearchParams();
   const mainSectorId = searchParams.get("section");
 
@@ -13,6 +13,7 @@ export default function useGetPointers() {
       postRequest<PointrersResponse>("/get-indicators-from-main-sector", {
         mainSectorId,
       }),
+    enabled,
   });
 
   return { isLoading, data, isError };
