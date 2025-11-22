@@ -1,3 +1,4 @@
+import useGetLineChartData from "@/hooks/useGetLineChartData";
 import {
   LineChart,
   Line,
@@ -9,52 +10,68 @@ import {
   ResponsiveContainer,
 } from "recharts";
 
-const data = [
-  {
-    region: "منطقة جازان",
-    "2013": 35000,
-    "2014": 20000,
-    "2016": 25000,
-    "2023": 30000,
-  },
-  {
-    region: "منطقة نجران",
-    "2013": 15000,
-    "2014": 27000,
-    "2016": 32000,
-    "2023": 20000,
-  },
-  {
-    region: "منطقة عسير",
-    "2013": 40000,
-    "2014": 18000,
-    "2016": 28000,
-    "2023": 23000,
-  },
-  {
-    region: "منطقة الباحة",
-    "2013": 20000,
-    "2014": 33000,
-    "2016": 18000,
-    "2023": 25000,
-  },
-];
-
-const YEARS = ["2013", "2014", "2016", "2023"];
-const COLORS = ["#25935F", "#F8A23B", "#2F7ECC", "#7CCCCC"];
-
 export default function LinesView() {
+  const { data: lineData, isLoading } = useGetLineChartData();
+
+  const transformData = () => {
+    if (!lineData?.data?.data?.datasets?.length) return [];
+
+    const { years, datasets } = lineData.data.data;
+
+    return datasets.map((dataset) => {
+      const dataPoint: { [key: string]: string | number } = {
+        region: dataset.label,
+      };
+
+      years.forEach((year, index) => {
+        dataPoint[year] = dataset.data[index] || 0;
+      });
+
+      return dataPoint;
+    });
+  };
+
+  const chartData = transformData();
+  const colors = lineData?.data?.data?.colors || [
+    "#25935F",
+    "#F8A23B",
+    "#2F7ECC",
+    "#7CCCCC",
+  ];
+  const years = lineData?.data?.data?.years || [];
+
+  if (isLoading) {
+    return (
+      <div className="h-[430px] p-2 flex items-center justify-center">
+        <div>جاري تحميل البيانات...</div>
+      </div>
+    );
+  }
+
+  if (!chartData.length) {
+    return (
+      <div className="h-[430px] p-2 flex items-center justify-center">
+        <div>لا توجد بيانات متاحة</div>
+      </div>
+    );
+  }
+
   return (
     <div className="h-[430px] p-2">
       <ResponsiveContainer width="100%" height="100%">
         <LineChart
-          data={data}
+          data={chartData}
           margin={{ top: 10, right: 10, left: 10, bottom: 20 }}
         >
           <CartesianGrid strokeDasharray="3 3" vertical={false} />
 
-          <XAxis dataKey="region" tick={{ fontSize: 12 }} tickMargin={8} color="#f4f4f4" />
-          
+          <XAxis
+            dataKey="region"
+            tick={{ fontSize: 12 }}
+            tickMargin={8}
+            color="#f4f4f4"
+          />
+
           <YAxis
             orientation="right"
             tick={{ fontSize: 12 }}
@@ -89,7 +106,7 @@ export default function LinesView() {
                   marginTop: "8px",
                 }}
               >
-                {YEARS.map((year, index) => (
+                {years.map((year, index) => (
                   <div
                     key={year}
                     style={{
@@ -103,7 +120,7 @@ export default function LinesView() {
                         width: 10,
                         height: 10,
                         borderRadius: "50%",
-                        backgroundColor: COLORS[index % COLORS.length],
+                        backgroundColor: colors[index % colors.length],
                       }}
                     />
                     <span>{year}</span>
@@ -113,12 +130,12 @@ export default function LinesView() {
             )}
           />
 
-          {YEARS.map((year, index) => (
+          {years.map((year, index) => (
             <Line
               key={year}
               type="monotone"
               dataKey={year}
-              stroke={COLORS[index % COLORS.length]}
+              stroke={colors[index % colors.length]}
               strokeWidth={3}
               dot={{ r: 5 }}
               activeDot={{ r: 7 }}

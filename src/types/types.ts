@@ -45,6 +45,26 @@ export interface TableData {
   message: string | null;
 }
 
+export interface LineChartDataWrapper {
+  success: boolean;
+  chartType: number;
+  data: LineChartContent;
+  message: string | null;
+}
+
+export interface LineChartContent {
+  years: string[];
+  datasets: LineChartDataset[];
+  colors: string[];
+}
+
+export interface LineChartDataset {
+  label: string;
+  data: number[];
+}
+
+// responses
+
 export interface GisIndicatorValuesData {
   success: boolean;
   data: GisIndicatorPoint[];
@@ -103,4 +123,10 @@ export interface GisIndicatorValuesResponse {
   errorCode: number;
   errorMessage: string;
   data: GisIndicatorValuesData;
+}
+
+export interface LineChartResponse {
+  errorCode: number;
+  errorMessage: string;
+  data: LineChartDataWrapper;
 }
