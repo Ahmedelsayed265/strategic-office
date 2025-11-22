@@ -1,3 +1,4 @@
+import useGetBarChartData from "@/hooks/useGetBarChartData";
 import {
   BarChart,
   Bar,
@@ -11,139 +12,266 @@ import {
   Cell,
 } from "recharts";
 
-const data = [
-  { region: "الشرقية", year: "2024", value: 13000 },
-  { region: "الباحة", year: "2023", value: 24000 },
-  { region: "السعودية", year: "2022", value: 12000 },
-  { region: "جازان", year: "2021", value: 45000 },
-  { region: "القصيم", year: "2020", value: 13000 },
-  { region: "المدينة", year: "2019", value: 24000 },
-  { region: "جازان", year: "2018", value: 12000 },
-  { region: "مكة المكرمة", year: "2017", value: 45000 },
-  { region: "حائل", year: "2016", value: 12000 },
-  { region: "نجران", year: "2015", value: 13000 },
-  { region: "الجوف", year: "2014", value: 24000 },
-  { region: "الحدود", year: "2013", value: 12000 },
-  { region: "تبوك", year: "2013", value: 45000 },
-];
-
-const REGION_COLORS: Record<string, string> = {
-  الشرقية: "#ded3b3",
-  الباحة: "#019a8c",
-  السعودية: "#594a44",
-  جازان: "#ded3b3",
-  القصيم: "#ded3b3",
-  المدينة: "#ded3b3",
-  "مكة المكرمة": "#ded3b3",
-  حائل: "#ded3b3",
-  نجران: "#ded3b3",
-  الجوف: "#ded3b3",
-  الحدود: "#ded3b3",
-  تبوك: "#ded3b3",
-};
-
 export default function ColsView() {
-  const regions = [...new Set(data.map((item) => item.region))];
+  const { data: barChartData, isLoading, isError } = useGetBarChartData();
+
+  const isSingleDataset = barChartData?.data?.data?.datasets?.length === 1;
+
+  const transformData = () => {
+    if (
+      !barChartData?.data?.data?.xLabels?.length ||
+      !barChartData?.data?.data?.datasets?.length
+    ) {
+      return [];
+    }
+
+    const { xLabels, datasets } = barChartData.data.data;
+
+    if (isSingleDataset) {
+      return xLabels.map((region, index) => ({
+        region: region,
+        value: datasets[0].values[index] || 0,
+      }));
+    } else {
+      return xLabels.map((year, yearIndex) => {
+        const dataPoint: { [key: string]: string | number } = {
+          year: year,
+        };
+
+        datasets.forEach((dataset) => {
+          dataPoint[dataset.name] = dataset.values[yearIndex] || 0;
+        });
+
+        return dataPoint;
+      });
+    }
+  };
+
+  const chartData = transformData();
+  const apiColors = barChartData?.data?.data?.colors || [];
+
+  const getDataKeys = () => {
+    if (isSingleDataset) {
+      return ["value"];
+    } else {
+      return (
+        barChartData?.data?.data?.datasets?.map((dataset) => dataset.name) || []
+      );
+    }
+  };
+
+  const dataKeys = getDataKeys();
+  const xAxisKey = isSingleDataset ? "region" : "year";
+
+  const getBarColor = (index: number) => {
+    return apiColors[index] || `hsl(${index * 30}, 70%, 50%)`;
+  };
+
+  const maxValue =
+    chartData.length > 0
+      ? Math.max(
+          ...chartData.flatMap((item) =>
+            dataKeys.map(
+              (key) => Number((item as Record<string, unknown>)[key]) || 0
+            )
+          )
+        ) * 1.1
+      : 100;
+
+  if (isLoading) {
+    return (
+      <div className="h-[430px] p-2 flex items-center justify-center">
+        <div>جاري تحميل البيانات...</div>
+      </div>
+    );
+  }
+
+  if (isError) {
+    return (
+      <div className="h-[430px] p-2 flex items-center justify-center">
+        <div>حدث خطأ في تحميل البيانات</div>
+      </div>
+    );
+  }
+
+  if (!chartData.length) {
+    return (
+      <div className="h-[430px] p-2 flex items-center justify-center">
+        <div>لا توجد بيانات متاحة</div>
+      </div>
+    );
+  }
 
   return (
     <div className="h-[430px] p-2">
       <ResponsiveContainer width="100%" height="100%">
         <BarChart
-          data={data}
-          margin={{ top: 30, right: 20, left: 10, bottom: 30 }}
-          barCategoryGap="40%"
+          data={chartData}
+          margin={{
+            top: 30,
+            right: 20,
+            left: 10,
+            bottom: isSingleDataset ? 60 : 30,
+          }}
+          barCategoryGap={isSingleDataset ? "20%" : "10%"}
+          barGap={2}
         >
           <CartesianGrid strokeDasharray="3 3" vertical={false} />
-          <XAxis dataKey="region" tick={{ fontSize: 12 }} tickMargin={8} />
+          <XAxis
+            dataKey={xAxisKey}
+            tick={{ fontSize: 12 }}
+            tickMargin={8}
+            interval={0}
+            angle={0}
+            textAnchor={isSingleDataset ? "end" : "middle"}
+            height={isSingleDataset ? 80 : 40}
+          />
           <YAxis
             orientation="right"
             tick={{ fontSize: 12 }}
-            domain={[0, 45000]}
-            tickFormatter={(value) => value.toLocaleString()}
+            domain={[0, maxValue]}
+            tickFormatter={(value) =>
+              `${value}${barChartData?.data?.data?.migUnit || "%"}`
+            }
             tickLine={false}
             axisLine={false}
             dx={25}
           />
           <Tooltip
-            formatter={(value: number, _name, props) => [
-              `${value.toLocaleString()} ريال`,
-              `السنة ${props.payload.year}`,
+            formatter={(value: number, name: string) => [
+              `${value}${barChartData?.data?.data?.migUnit || "%"}`,
+              isSingleDataset ? "القيمة" : name,
             ]}
-            labelFormatter={(label) => `المنطقة: ${label}`}
+            labelFormatter={(label) =>
+              isSingleDataset ? `المنطقة: ${label}` : `السنة: ${label}`
+            }
           />
 
-          {/* مفتاح المناطق */}
-          <Legend
-            verticalAlign="top"
-            align="center"
-            height={40}
-            content={() => (
-              <div
-                style={{
-                  display: "flex",
-                  justifyContent: "center",
-                  flexWrap: "wrap",
-                  gap: "12px",
-                  fontSize: "12px",
-                  color: "#333",
-                  paddingBottom: "12px",
-                }}
-              >
-                {regions.map((region) => (
-                  <div
-                    key={region}
-                    style={{
-                      display: "flex",
-                      alignItems: "center",
-                      gap: "6px",
-                    }}
-                  >
-                    <span
-                      style={{
-                        width: 10,
-                        height: 10,
-                        borderRadius: "50%",
-                        backgroundColor: REGION_COLORS[region] || "#ccc",
-                      }}
-                    />
-                    <span>{region}</span>
-                  </div>
-                ))}
-              </div>
-            )}
-          />
-
-          <Bar
-            dataKey="value"
-            radius={[6, 6, 0, 0]}
-            barSize={35}
-            isAnimationActive
-            animationDuration={1000}
-            animationEasing="ease-out"
-          >
-            {data.map((entry, index) => (
-              <Cell
-                key={`cell-${index}`}
-                fill={REGION_COLORS[entry.region] || "#ccc"}
-              />
-            ))}
-
-            <LabelList
-              dataKey="value"
-              position="top"
-              content={({ x, y, value }) => (
-                <text
-                  x={x}
-                  y={Number(y) - 5}
-                  fill="#333"
-                  fontSize={11}
-                  textAnchor="middle"
+          {!isSingleDataset && (
+            <Legend
+              verticalAlign="top"
+              align="center"
+              height={80}
+              content={() => (
+                <div
+                  style={{
+                    display: "flex",
+                    justifyContent: "center",
+                    flexWrap: "wrap",
+                    gap: "12px",
+                    fontSize: "11px",
+                    color: "#333",
+                    paddingBottom: "12px",
+                    maxHeight: "60px",
+                    overflowY: "auto",
+                  }}
                 >
-                  {value ? Number(value).toLocaleString() : ""}
-                </text>
+                  {dataKeys.map((key, index) => (
+                    <div
+                      key={key}
+                      style={{
+                        display: "flex",
+                        alignItems: "center",
+                        gap: "6px",
+                      }}
+                    >
+                      <span
+                        style={{
+                          width: 10,
+                          height: 10,
+                          borderRadius: "50%",
+                          backgroundColor: getBarColor(index),
+                        }}
+                      />
+                      <span
+                        style={{
+                          maxWidth: "120px",
+                          overflow: "hidden",
+                          textOverflow: "ellipsis",
+                          whiteSpace: "nowrap",
+                        }}
+                      >
+                        {key}
+                      </span>
+                    </div>
+                  ))}
+                </div>
               )}
             />
-          </Bar>
+          )}
+
+          {isSingleDataset ? (
+            <Bar
+              dataKey="value"
+              name={barChartData?.data?.data?.datasets?.[0]?.name || "القيمة"}
+              radius={[6, 6, 0, 0]}
+              barSize={35}
+              isAnimationActive
+              animationDuration={1000}
+              animationEasing="ease-out"
+            >
+              {chartData.map((_, index) => (
+                <Cell key={`cell-${index}`} fill={getBarColor(index)} />
+              ))}
+              <LabelList
+                dataKey="value"
+                position="top"
+                formatter={(value: React.ReactNode) =>
+                  `${value}${barChartData?.data?.data?.migUnit || "%"}`
+                }
+                fontSize={11}
+                fill="#333"
+              />
+            </Bar>
+          ) : (
+            dataKeys.map((key, keyIndex) => (
+              <Bar
+                key={key}
+                dataKey={key}
+                name={key}
+                fill={getBarColor(keyIndex)}
+                radius={[6, 6, 0, 0]}
+                barSize={20}
+                isAnimationActive
+                animationDuration={1000}
+                animationEasing="ease-out"
+              >
+                {chartData.map((_, index) => (
+                  <Cell
+                    key={`cell-${keyIndex}-${index}`}
+                    fill={getBarColor(keyIndex)}
+                  />
+                ))}
+
+                {keyIndex === 0 && (
+                  <LabelList
+                    dataKey={key}
+                    position="top"
+                    content={({ x, y, value, index }) => {
+                      if (index === chartData.length - 1) {
+                        return (
+                          <text
+                            x={x}
+                            y={Number(y) - 5}
+                            fill="#333"
+                            fontSize={10}
+                            textAnchor="middle"
+                          >
+                            {value
+                              ? `${value}${
+                                  barChartData?.data?.data?.migUnit || "%"
+                                }`
+                              : ""}
+                          </text>
+                        );
+                      }
+                      return null;
+                    }}
+                  />
+                )}
+              </Bar>
+            ))
+          )}
         </BarChart>
       </ResponsiveContainer>
     </div>

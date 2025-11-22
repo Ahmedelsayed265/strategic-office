@@ -1,19 +1,5 @@
+import useGetPieChartData from "@/hooks/useGetPieChartData";
 import { PieChart, Pie, Cell, Tooltip, ResponsiveContainer } from "recharts";
-
-interface RegionData {
-  name: string;
-  value: number;
-  [key: string]: string | number;
-}
-
-const data: RegionData[] = [
-  { name: "المنطقة الشرقية", value: 22000 },
-  { name: "منطقة مكة المكرمة", value: 34000 },
-  { name: "منطقة الرياض", value: 28000 },
-  { name: "منطقة المدينة المنورة", value: 18000 },
-];
-
-const COLORS = ["#2F7ECC", "#7CCCCC", "#F8A23B", "#25935F"];
 
 interface LabelProps {
   cx: number;
@@ -47,15 +33,41 @@ const renderLabel = (props: LabelProps) => {
 };
 
 export default function CircleView() {
+  const { data: pieChartData } = useGetPieChartData();
+
+  const chartData = pieChartData?.data?.data
+    ? pieChartData.data.data.labels.map((label, index) => ({
+        name: label,
+        value: pieChartData.data.data.values[index],
+      }))
+    : [];
+
+  const colors = pieChartData?.data?.data?.backgroundColors || [];
+
+  if (!pieChartData) {
+    return (
+      <div className="h-[430px] flex items-center justify-center">
+        <div>Loading...</div>
+      </div>
+    );
+  }
+
+  if (chartData.length === 0) {
+    return (
+      <div className="h-[430px] flex items-center justify-center">
+        <div>No data available</div>
+      </div>
+    );
+  }
+
   return (
     <div className="h-[430px] flex flex-col justify-center items-center p-2">
-      {/* Legend */}
       <div className="flex flex-wrap justify-center gap-x-6 gap-y-2 mt-4 text-sm">
-        {data.map((entry, index) => (
+        {chartData.map((entry, index) => (
           <div key={index} className="flex items-center gap-2">
             <span
               className="inline-block w-3 h-3 rounded-full"
-              style={{ backgroundColor: COLORS[index % COLORS.length] }}
+              style={{ backgroundColor: colors[index] || "#ccc" }}
             ></span>
             <span>{entry.name}</span>
             <span className="text-gray-500">
@@ -65,27 +77,28 @@ export default function CircleView() {
         ))}
       </div>
 
-      {/* Full Pie Chart */}
       <ResponsiveContainer width="100%" height="100%">
         <PieChart>
           <Pie
-            data={data}
+            data={chartData}
             dataKey="value"
             nameKey="name"
             cx="50%"
             cy="50%"
             outerRadius={120}
-            innerRadius={0} // full pie (no hole)
+            innerRadius={0}
             label={(props) => renderLabel(props as unknown as LabelProps)}
             labelLine={false}
             stroke="none"
           >
-            {data.map((_, index) => (
-              <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+            {chartData.map((_, index) => (
+              <Cell key={`cell-${index}`} fill={colors[index] || "#ccc"} />
             ))}
           </Pie>
 
-          <Tooltip formatter={(value: number) => `${value.toLocaleString()} ريال`} />
+          <Tooltip
+            formatter={(value: number) => `${value.toLocaleString()} ريال`}
+          />
         </PieChart>
       </ResponsiveContainer>
     </div>

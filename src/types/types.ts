@@ -63,6 +63,39 @@ export interface LineChartDataset {
   data: number[];
 }
 
+export interface BarChartDataWrapper {
+  success: boolean;
+  chartType: number | null;
+  data: BarChartData;
+  message: string | null;
+}
+
+export interface BarChartData {
+  xLabels: string[];
+  datasets: BarChartDataset[];
+  colors: string[];
+  migUnit: string;
+}
+
+export interface BarChartDataset {
+  name: string;
+  values: number[];
+}
+
+export interface PieChartDataWrapper {
+  success: boolean;
+  chartType: number | null;
+  data: PieChartData;
+  message: string | null;
+}
+
+export interface PieChartData {
+  labels: string[];
+  values: number[];
+  backgroundColors: string[];
+  nameOfRegion: string;
+}
+
 // responses
 
 export interface GisIndicatorValuesData {
@@ -129,4 +162,16 @@ export interface LineChartResponse {
   errorCode: number;
   errorMessage: string;
   data: LineChartDataWrapper;
+}
+
+export interface BarChartResponse {
+  errorCode: number;
+  errorMessage: string;
+  data: BarChartDataWrapper;
+}
+
+export interface PieChartResponse {
+  errorCode: number;
+  errorMessage: string;
+  data: PieChartDataWrapper;
 }

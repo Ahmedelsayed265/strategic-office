@@ -1,19 +1,5 @@
+import useGetPieChartData from "@/hooks/useGetPieChartData";
 import { PieChart, Pie, Cell, Tooltip, ResponsiveContainer } from "recharts";
-
-interface ForeignInvestmentData {
-  name: string;
-  value: number;
-  [key: string]: string | number;
-}
-
-const data: ForeignInvestmentData[] = [
-  { name: "منطقة جازان", value: 45000 },
-  { name: "منطقة عسير", value: 15000 },
-  { name: "منطقة نجران", value: 24000 },
-  { name: "منطقة الباحة", value: 12000 },
-];
-
-const COLORS = ["#7CCCCC", "#2F7ECC", "#F8A23B", "#25935F"];
 
 interface LabelProps {
   cx: number;
@@ -47,15 +33,43 @@ const renderLabel = (props: LabelProps) => {
 };
 
 export default function PieView() {
+  const { data: pieChartData } = useGetPieChartData();
+
+  // Transform the API data to the format expected by Recharts
+  const chartData = pieChartData?.data?.data
+    ? pieChartData.data.data.labels.map((label, index) => ({
+        name: label,
+        value: pieChartData.data.data.values[index],
+      }))
+    : [];
+
+  const colors = pieChartData?.data?.data?.backgroundColors || [];
+
+  if (!pieChartData) {
+    return (
+      <div className="h-[430px] flex items-center justify-center">
+        <div>Loading...</div>
+      </div>
+    );
+  }
+
+  if (chartData.length === 0) {
+    return (
+      <div className="h-[430px] flex items-center justify-center">
+        <div>No data available</div>
+      </div>
+    );
+  }
+
   return (
     <div className="h-[430px] flex flex-col justify-center items-center p-2">
       {/* Legend */}
       <div className="flex flex-wrap justify-center gap-x-6 gap-y-2 mt-4 text-sm">
-        {data.map((entry, index) => (
+        {chartData.map((entry, index) => (
           <div key={index} className="flex items-center gap-2">
             <span
               className="inline-block w-3 h-3 rounded-full"
-              style={{ backgroundColor: COLORS[index % COLORS.length] }}
+              style={{ backgroundColor: colors[index] || "#ccc" }}
             ></span>
             <span>{entry.name}</span>
             <span className="text-gray-500">
@@ -68,7 +82,7 @@ export default function PieView() {
       <ResponsiveContainer width="100%" height="100%">
         <PieChart>
           <Pie
-            data={data}
+            data={chartData}
             dataKey="value"
             nameKey="name"
             cx="50%"
@@ -79,11 +93,8 @@ export default function PieView() {
             labelLine={false}
             stroke="none"
           >
-            {data.map((_, index) => (
-              <Cell
-                key={`cell-${index}`}
-                fill={COLORS[index % COLORS.length]}
-              />
+            {chartData.map((_, index) => (
+              <Cell key={`cell-${index}`} fill={colors[index] || "#ccc"} />
             ))}
           </Pie>
 
