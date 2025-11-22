@@ -1,16 +1,24 @@
+import useGetFilterData from "@/hooks/useGetFilterData";
 import PointerChart from "./PointerChart";
 
 export default function Header() {
+  const { data } = useGetFilterData();
+
   return (
     <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
       <div className="bg-[#019a8c] p-3 flex items-center justify-center ">
-        <img src="/images/logo.png" alt="logo" className="h-[180px] object-contain" />
+        <img
+          src="/images/logo.png"
+          alt="logo"
+          className="h-[180px] object-contain"
+        />
       </div>
 
       <div className="bg-white p-6 flex items-center ">
         <div className="flex flex-col gap-3">
           <p className="text-[18px]">
-            المؤشر : <b className="text-[#25935F]">تطور معدل انتشار الإنترنت</b>
+            المؤشر :{" "}
+            <b className="text-[#25935F]">{data?.data.indicatorNameAndUnit}</b>
           </p>
         </div>
       </div>

@@ -1,4 +1,5 @@
 import { Card, CardContent, CardTitle } from "@/components/ui/card";
+import useGetFilterData from "@/hooks/useGetFilterData";
 import { Gauge, Link2, Calculator, ChartNoAxesCombined } from "lucide-react";
 
 interface IndicatorDetail {
@@ -8,10 +9,13 @@ interface IndicatorDetail {
 }
 
 export default function IndicatorDetails() {
+  const {data} = useGetFilterData();
+  const detailsContent = data?.data.indicatorCardDetails;
+
   const details: IndicatorDetail[] = [
     {
       label: "المؤشر",
-      value: "حجم الاستثمار الأجنبي بالمليون ريال",
+      value: detailsContent?.sector || "",
       icon: <Gauge className="text-[#057731]" size={20} />,
     },
     {
@@ -22,7 +26,7 @@ export default function IndicatorDetails() {
     },
     {
       label: "طريقة الحساب",
-      value: "حجم الاستثمار الأجنبي بالمليون ريال",
+      value: detailsContent?.calculateMethod || "",
       icon: <Calculator className="text-[#057731]" size={20} />,
     },
     {
@@ -40,7 +44,7 @@ export default function IndicatorDetails() {
           <span className="text-gray-600 leading-relaxed">
             تعريف المؤشر :{" "}
           </span>
-          <p className=" text-[18px]">حجم الاستثمار الأجنبي بالمليون ريال</p>
+          <p className=" text-[18px]">{detailsContent?.definition}</p>
         </div>
       </CardTitle>
 
