@@ -9,14 +9,8 @@ export default function Header() {
 
       <div className="bg-white p-6 flex items-center ">
         <div className="flex flex-col gap-3">
-          <p className="text-[16px]">
-            القطاع : <b className="text-[#384250]">الإستثمار</b>
-          </p>
-          <p className="text-[16px]">
+          <p className="text-[18px]">
             المؤشر : <b className="text-[#25935F]">تطور معدل انتشار الإنترنت</b>
-          </p>
-          <p className="text-[16px]">
-            وحدة القياس : <b className="text-[#25935F]">مليون ريال</b>
           </p>
         </div>
       </div>

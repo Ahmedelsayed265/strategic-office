@@ -57,7 +57,7 @@ export default function GisMap({ data = [] }: { data?: DataItem[] }) {
   }, [saBounds]);
 
   useEffect(() => {
-    if (!data || !mapRef.current) return;
+    if (!data || !mapRef.current || data.length === 0) return;
     const map = mapRef.current;
 
     const values = data.map((d) => d.valueAvg).filter((v) => v != null);

@@ -7,7 +7,7 @@ export default function Pointers() {
   const selectedSection = searchParams.get("section");
   const selectedPointer = searchParams.get("pointer");
 
-  const { data, isLoading } = useGetPointers(!!selectedSection);
+  const { data, isLoading } = useGetPointers();
   const [pointers, setPointers] = useState(data?.data ?? []);
   const [searchTerm, setSearchTerm] = useState("");
 

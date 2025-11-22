@@ -36,8 +36,9 @@
     --radius: 0.5rem;
     --cards-gap: 1.3rem;
     --cards-count: 5;
-    --card-width: calc((100vw - (var(--cards-gap) * (var(--cards-count) ))) / var(--cards-count));
-
+    --card-width: calc(
+      (100vw - (var(--cards-gap) * (var(--cards-count)))) / var(--cards-count)
+    );
   }
 
   @font-face {
@@ -72,7 +73,7 @@
 
   .sections {
     &::-webkit-scrollbar {
-      background: #F8F9FC1A;
+      background: #f8f9fc1a;
     }
 
     &::-webkit-scrollbar-thumb {
@@ -111,5 +112,19 @@
     height: 15px;
     accent-color: var(--main);
     cursor: pointer;
+  }
+
+  thead tr {
+    background: #f8f9fc;
+    color: #374151;
+
+    th {
+      padding: 12px;
+      font-weight: 600;
+    }
+  }
+
+  td{
+    padding: 12px;
   }
 }

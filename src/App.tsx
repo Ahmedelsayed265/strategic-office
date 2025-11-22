@@ -1,16 +1,16 @@
-import { useSearchParams } from "react-router";
-import { useState } from "react";
-import { ChevronDown, ChevronUp } from "lucide-react";
-import InvestmentChartCard from "./components/footer/InvestmentChartCard";
+// import { useSearchParams } from "react-router";
+// import { useState } from "react";
+// import { ChevronDown, ChevronUp } from "lucide-react";
+// import InvestmentChartCard from "./components/footer/InvestmentChartCard";
+// import TableFilter from "./components/main/TableFilter";
 import Header from "./components/header/Header";
 import MainCharts from "./components/main/MainCharts";
 import Sidebar from "./components/sidebar/Sidebar";
-import TableFilter from "./components/main/TableFilter";
 
 function App() {
-  const [showChart, setShowChart] = useState(false);
-  const [searchParams] = useSearchParams();
-  const mainView = searchParams.get("mainView") || "indicator";
+  // const [showChart, setShowChart] = useState(false);
+  // const [searchParams] = useSearchParams();
+  // const mainView = searchParams.get("mainView") || "indicator";
 
   return (
     <div className="bg-[#F8F9FC] h-full w-full p-5 flex flex-col gap-4">
@@ -22,7 +22,7 @@ function App() {
         <div className="flex flex-col w-full gap-4 h-full overflow-y-auto">
           <MainCharts />
 
-          <div className="flex w-full gap-4 flex-col items-center">
+          {/* <div className="flex w-full gap-4 flex-col items-center">
             {mainView == "indicator" && (
               <>
                 <div className="flex items-center justify-end mb-2">
@@ -38,7 +38,7 @@ function App() {
             )}
 
             {mainView == "map" && <TableFilter />}
-          </div>
+          </div> */}
         </div>
       </main>
     </div>

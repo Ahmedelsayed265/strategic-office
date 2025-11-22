@@ -1,110 +1,15 @@
 import { useSearchParams } from "react-router";
 import { Card, CardContent, CardHeader } from "../ui/card";
-import FilterHeader from "./FilterHeader";
+import FilterHeader from "./filter/FilterHeader";
 
-// charts types
 import PieView from "./charts/PieView";
 import LinesView from "./charts/LinesView";
 import ColsView from "./charts/ColsView";
 import CircleView from "./charts/CircleView";
 
 import Table from "./Table";
-import GisMap from "./gis-map/GisMap";
+import MapView from "./gis-map/MapView";
 import IndicatorDetails from "./IndicatorDetails";
-
-const sampleData = [
-  {
-    sector: "الأمن والسلامة",
-    indicatorId: 322,
-    indicator: "عدد الوفيات الناتجة عن الحوادث المروية",
-    regionAreaId: 713,
-    regonName: "منطقة الجوف",
-    govName1: null,
-    govAreaId: null,
-    migUnit: "حالة وفاه بحادث مروري/100000 نسمة",
-    maxYear: 2022,
-    minYear: 2016,
-    valueAvg: 28.15,
-  },
-  {
-    sector: "الأمن والسلامة",
-    indicatorId: 322,
-    indicator: "عدد الوفيات الناتجة عن الحوادث المروية",
-    regionAreaId: 714,
-    regonName: "منطقة الحدود الشمالية",
-    govName1: null,
-    govAreaId: null,
-    migUnit: "حالة وفاه بحادث مروري/100000 نسمة",
-    maxYear: 2022,
-    minYear: 2016,
-    valueAvg: 35.2,
-  },
-  {
-    sector: "الأمن والسلامة",
-    indicatorId: 322,
-    indicator: "عدد الوفيات الناتجة عن الحوادث المروية",
-    regionAreaId: 715,
-    regonName: "منطقة تبوك",
-    govName1: null,
-    govAreaId: null,
-    migUnit: "حالة وفاه بحادث مروري/100000 نسمة",
-    maxYear: 2022,
-    minYear: 2016,
-    valueAvg: 42.8,
-  },
-  {
-    sector: "الأمن والسلامة",
-    indicatorId: 322,
-    indicator: "عدد الوفيات الناتجة عن الحوادث المروية",
-    regionAreaId: 716,
-    regonName: "منطقة جازان",
-    govName1: null,
-    govAreaId: null,
-    migUnit: "حالة وفاه بحادث مروري/100000 نسمة",
-    maxYear: 2022,
-    minYear: 2016,
-    valueAvg: 31.5,
-  },
-  {
-    sector: "الأمن والسلامة",
-    indicatorId: 322,
-    indicator: "عدد الوفيات الناتجة عن الحوادث المروية",
-    regionAreaId: 717,
-    regonName: "منطقة عسير",
-    govName1: null,
-    govAreaId: null,
-    migUnit: "حالة وفاه بحادث مروري/100000 نسمة",
-    maxYear: 2022,
-    minYear: 2016,
-    valueAvg: 37.9,
-  },
-  {
-    sector: "الأمن والسلامة",
-    indicatorId: 322,
-    indicator: "عدد الوفيات الناتجة عن الحوادث المروية",
-    regionAreaId: 718,
-    regonName: "منطقة نجران",
-    govName1: null,
-    govAreaId: null,
-    migUnit: "حالة وفاه بحادث مروري/100000 نسمة",
-    maxYear: 2022,
-    minYear: 2016,
-    valueAvg: 40.2,
-  },
-  {
-    sector: "الأمن والسلامة",
-    indicatorId: 322,
-    indicator: "عدد الوفيات الناتجة عن الحوادث المروية",
-    regionAreaId: 719,
-    regonName: "منطقة الباحة",
-    govName1: null,
-    govAreaId: null,
-    migUnit: "حالة وفاه بحادث مروري/100000 نسمة",
-    maxYear: 2022,
-    minYear: 2016,
-    valueAvg: 33.7,
-  },
-];
 
 export default function MainCharts() {
   const [searchParams] = useSearchParams();
@@ -126,21 +31,25 @@ export default function MainCharts() {
             {initialChartType === "lines" && <LinesView />}
             {initialChartType === "cols" && <ColsView />}
             {initialChartType === "circle" && <CircleView />}
+
+            <div className="flex items-center justify-between">
+              <p className="text-[16px]">
+                وحدة القياس : <b className="text-[#25935F]">مليون ريال</b>
+              </p>
+
+              <div className="flex items-center gap-2">
+                <button className="p-2 px-4 bg-gray-100">السابق</button>
+                <button className="p-2 px-4 bg-gray-100">التالى</button>
+              </div>
+            </div>
           </>
         )}
 
         {chartType === "table" && mainView === "indicator" && <Table />}
 
-        {mainView === "map" && (
-          <div>
-            <GisMap data={sampleData} />
-          </div>
-        )}
-        {mainView === "metadata" && (
-          <div>
-            <IndicatorDetails/>
-          </div>
-        )}
+        {mainView === "map" && <MapView />}
+
+        {mainView === "metadata" && <IndicatorDetails />}
       </CardContent>
     </Card>
   );

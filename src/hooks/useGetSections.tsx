@@ -6,7 +6,7 @@ export default function useGetSections() {
   const { isLoading, data, isError } = useQuery({
     queryKey: ["main-sectors"],
     queryFn: (): Promise<MainSectionsResponse> =>
-      getRequest<MainSectionsResponse>("/home"),
+      getRequest<MainSectionsResponse>("/IndicatorsApi/home"),
   });
 
   return { isLoading, data, isError };
