@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Check, ChevronDown } from "lucide-react";
 import {
   Popover,
@@ -13,6 +13,7 @@ import {
 } from "@/components/ui/command";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+import { useSearchParams } from "react-router";
 
 interface Option {
   label: string;
@@ -36,6 +37,17 @@ export default function MultiOptionSelect({
 }: MultiOptionSelectProps) {
   const [open, setOpen] = useState(false);
   const [selectedValues, setSelectedValues] = useState<string[]>([]);
+  const [searchParams] = useSearchParams();
+
+  useEffect(() => {
+    const param = searchParams.get(paramKey);
+    if (param) {
+      const values = param.split("-");
+      setSelectedValues(values);
+    } else {
+      setSelectedValues([]);
+    }
+  }, [searchParams, paramKey]);
 
   const toggleValue = (value: string) => {
     if (value === ALL_VALUE) {
