@@ -12,6 +12,7 @@ import Table from "./Table";
 import MapView from "./gis-map/MapView";
 import IndicatorDetails from "./IndicatorDetails";
 import useGetPointers from "@/hooks/useGetPointers";
+import { updateSearchParams } from "@/updateParams";
 
 export default function MainCharts() {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -28,18 +29,23 @@ export default function MainCharts() {
     }
   }, [pointers]);
 
-  const updatePointerParam = (newPointer: number) => {
-    const params = new URLSearchParams(searchParams.toString());
-    params.set("pointer", String(newPointer));
-    setSearchParams(params);
-  };
+  // const updatePointerParam = (newPointer: number) => {
+  //   const params = new URLSearchParams(searchParams.toString());
+  //   params.set("pointer", String(newPointer));
+  //   setSearchParams(params);
+  // };
 
   const handlePrev = () => {
     const current = Number(searchParams.get("pointer")) || 0;
     const currentIndex = pointersIds.indexOf(current);
     const prevId = pointersIds[currentIndex - 1];
     if (prevId !== undefined) {
-      updatePointerParam(prevId);
+      // updatePointerParam(prevId);
+      updateSearchParams(
+        setSearchParams,
+        { pointer: prevId.toString() },
+        "pointer"
+      );
     }
   };
 
@@ -48,7 +54,12 @@ export default function MainCharts() {
     const currentIndex = pointersIds.indexOf(current);
     const nextId = pointersIds[currentIndex + 1];
     if (nextId !== undefined) {
-      updatePointerParam(nextId);
+      // updatePointerParam(nextId);
+      updateSearchParams(
+        setSearchParams,
+        { pointer: nextId.toString() },
+        "pointer"
+      );
     }
   };
 

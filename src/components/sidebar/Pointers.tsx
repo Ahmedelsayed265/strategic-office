@@ -1,6 +1,7 @@
 import useGetPointers from "@/hooks/useGetPointers";
 import { useSearchParams } from "react-router";
 import { useEffect, useState } from "react";
+import { updateSearchParams } from "@/updateParams";
 
 export default function Pointers() {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -19,12 +20,15 @@ export default function Pointers() {
 
   if (!selectedSection) return null;
 
+  // const handleSelectPointer = (id: string) => {
+  //   setSearchParams((prev) => {
+  //     prev.set("pointer", id);
+  //     return prev;
+  //   });
+  // };
   const handleSelectPointer = (id: string) => {
-    setSearchParams((prev) => {
-      prev.set("pointer", id);
-      return prev;
-    });
-  };
+  updateSearchParams(setSearchParams, { pointer: id }, 'pointer');
+};
 
   const filteredPointers = pointers.filter((pointer) =>
     pointer.name.toLowerCase().includes(searchTerm.toLowerCase())

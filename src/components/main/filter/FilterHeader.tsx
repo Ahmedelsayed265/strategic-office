@@ -9,6 +9,7 @@ import {
 } from "../../ui/select";
 import MultiOptionSelect from "../../shared/MultiOptionSelect";
 import useGetFilterData from "@/hooks/useGetFilterData";
+import { updateSearchParams } from "@/updateParams";
 
 export default function FilterHeader() {
   const { data: indicatorData } = useGetFilterData();
@@ -38,7 +39,7 @@ export default function FilterHeader() {
           ].map((btn) => (
             <button
               key={btn.key}
-              onClick={() => handleParamChange("mainView", btn.key)}
+              onClick={() => updateSearchParams(setSearchParams, { mainView: btn.key }, "mainView")}
               className={`py-2 px-4 transition-colors ${
                 mainView === btn.key
                   ? "bg-[#25935F] text-white"
@@ -56,7 +57,7 @@ export default function FilterHeader() {
 
             <RadioGroup
               value={view}
-              onValueChange={(val) => handleParamChange("view", val)}
+              onValueChange={(val) => updateSearchParams(setSearchParams, { view: val }, "view")}
               className="flex flex-row gap-4"
             >
               <div className="flex items-center gap-2">

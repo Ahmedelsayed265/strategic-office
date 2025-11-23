@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router";
 import { useThemeStore } from "./store";
 import useGetSections from "@/hooks/useGetSections";
+import { updateSearchParams } from "@/updateParams";
 
 export default function Sections() {
   const { open, setOpen } = useThemeStore();
@@ -19,9 +20,12 @@ export default function Sections() {
     }
   }, [data]);
 
+  // const handleSelect = (sectionId: number) => {
+  //   setSearchParams({ section: sectionId.toString() });
+  // };
   const handleSelect = (sectionId: number) => {
-    setSearchParams({ section: sectionId.toString() });
-  };
+  updateSearchParams(setSearchParams, { section: sectionId.toString() }, 'section');
+};
 
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
     const query = e.target.value;
