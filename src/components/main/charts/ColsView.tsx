@@ -122,7 +122,7 @@ export default function ColsView() {
             tick={{ fontSize: 12 }}
             tickMargin={8}
             interval={0}
-            angle={0}
+            angle={45}
             textAnchor={isSingleDataset ? "end" : "middle"}
             height={isSingleDataset ? 80 : 40}
           />
