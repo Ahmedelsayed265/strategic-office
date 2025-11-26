@@ -1,5 +1,7 @@
 import { useSearchParams } from "react-router";
+import { useEffect, useState } from "react";
 import { RadioGroup, RadioGroupItem } from "../../ui/radio-group";
+import { updateSearchParams } from "@/updateParams";
 import {
   Select,
   SelectContent,
@@ -9,22 +11,56 @@ import {
 } from "../../ui/select";
 import MultiOptionSelect from "../../shared/MultiOptionSelect";
 import useGetFilterData from "@/hooks/useGetFilterData";
-import { updateSearchParams } from "@/updateParams";
+import useGetPointers from "@/hooks/useGetPointers";
 
 export default function FilterHeader() {
   const { data: indicatorData } = useGetFilterData();
+  const { data: pointers } = useGetPointers();
 
+  const [pointersIds, setPointersIds] = useState<number[]>([]);
   const [searchParams, setSearchParams] = useSearchParams();
 
   const mainView = searchParams.get("mainView") || "indicator";
   const chartType = searchParams.get("chartType") || "";
   const view = searchParams.get("view") || "chart";
 
+  useEffect(() => {
+    if (pointers?.data) {
+      setPointersIds(pointers.data.map((p) => p.id));
+    }
+  }, [pointers]);
+
   const handleParamChange = (key: string, value: string) => {
     const params = new URLSearchParams(searchParams.toString());
     if (value) params.set(key, value);
     else params.delete(key);
     setSearchParams(params);
+  };
+
+  const handlePrev = () => {
+    const current = Number(searchParams.get("pointer")) || 0;
+    const currentIndex = pointersIds.indexOf(current);
+    const prevId = pointersIds[currentIndex - 1];
+    if (prevId !== undefined) {
+      updateSearchParams(
+        setSearchParams,
+        { pointer: prevId.toString() },
+        "pointer"
+      );
+    }
+  };
+
+  const handleNext = () => {
+    const current = Number(searchParams.get("pointer")) || 0;
+    const currentIndex = pointersIds.indexOf(current);
+    const nextId = pointersIds[currentIndex + 1];
+    if (nextId !== undefined) {
+      updateSearchParams(
+        setSearchParams,
+        { pointer: nextId.toString() },
+        "pointer"
+      );
+    }
   };
 
   return (
@@ -39,7 +75,13 @@ export default function FilterHeader() {
           ].map((btn) => (
             <button
               key={btn.key}
-              onClick={() => updateSearchParams(setSearchParams, { mainView: btn.key }, "mainView")}
+              onClick={() =>
+                updateSearchParams(
+                  setSearchParams,
+                  { mainView: btn.key },
+                  "mainView"
+                )
+              }
               className={`py-2 px-4 transition-colors ${
                 mainView === btn.key
                   ? "bg-[#25935F] text-white"
@@ -57,7 +99,9 @@ export default function FilterHeader() {
 
             <RadioGroup
               value={view}
-              onValueChange={(val) => updateSearchParams(setSearchParams, { view: val }, "view")}
+              onValueChange={(val) =>
+                updateSearchParams(setSearchParams, { view: val }, "view")
+              }
               className="flex flex-row gap-4"
             >
               <div className="flex items-center gap-2">
@@ -190,6 +234,43 @@ export default function FilterHeader() {
           </button>
           <button className="bg-[#DFF6E7] p-2">
             <img src="/icons/Vector.svg" alt="excel" />
+          </button>
+        </div>
+      </div>
+
+      <div
+        className={`flex items-center mt-4 ${
+          mainView === "metadata" ? "justify-end" : "justify-between"
+        }`}
+      >
+        {mainView !== "metadata" && (
+          <p className="text-[16px]">
+            وحدة القياس :{" "}
+            <b className="text-[#25935F]">{indicatorData?.data.migUnit}</b>
+          </p>
+        )}
+
+        <div className="flex items-center gap-2">
+          <button
+            className="p-2 px-4 bg-gray-100"
+            onClick={handlePrev}
+            disabled={
+              !searchParams.get("pointer") ||
+              pointersIds.indexOf(Number(searchParams.get("pointer"))) <= 0
+            }
+          >
+            السابق
+          </button>
+          <button
+            className="p-2 px-4 bg-gray-100"
+            onClick={handleNext}
+            disabled={
+              !searchParams.get("pointer") ||
+              pointersIds.indexOf(Number(searchParams.get("pointer"))) ===
+                pointersIds.length - 1
+            }
+          >
+            التالى
           </button>
         </div>
       </div>

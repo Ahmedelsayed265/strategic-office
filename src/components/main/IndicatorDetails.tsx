@@ -9,7 +9,7 @@ interface IndicatorDetail {
 }
 
 export default function IndicatorDetails() {
-  const {data} = useGetFilterData();
+  const { data } = useGetFilterData();
   const detailsContent = data?.data.indicatorCardDetails;
 
   const details: IndicatorDetail[] = [
@@ -20,8 +20,7 @@ export default function IndicatorDetails() {
     },
     {
       label: "المرجعية",
-      value:
-        "المصدر: وزارة الإستثمار تقرير الإستثمار الأجنبي المباشر للعام 2024م",
+      value: detailsContent?.preferences || "",
       icon: <Link2 className="text-[#057731]" size={20} />,
     },
     {
@@ -31,7 +30,7 @@ export default function IndicatorDetails() {
     },
     {
       label: "وحدة القياس",
-      value: "الريال",
+      value: data?.data.migUnit || "",
       icon: <ChartNoAxesCombined className="text-[#057731]" size={20} />,
     },
   ];
@@ -40,10 +39,8 @@ export default function IndicatorDetails() {
     <Card className="border-none shadow-none bg-transparent p-[20px]">
       <CardTitle>
         <div className="flex items-center gap-2 mb-3">
-          <p  className="w-[2px] h-6 bg-[#25935F] block "/>
-          <span className="text-gray-600 leading-relaxed">
-            تعريف المؤشر :{" "}
-          </span>
+          <p className="w-[2px] h-6 bg-[#25935F] block " />
+          <span className="text-gray-600 leading-relaxed">تعريف المؤشر : </span>
           <p className=" text-[18px]">{detailsContent?.definition}</p>
         </div>
       </CardTitle>

@@ -17,6 +17,17 @@ export default function ColsView() {
 
   const isSingleDataset = barChartData?.data?.data?.datasets?.length === 1;
 
+  // **Global number formatter**
+  const formatNumber = (value: number) => {
+    if (value === null || value === undefined) return "";
+    const num = Number(value);
+    if (isNaN(num)) return "";
+    return num.toLocaleString("en-US", {
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2,
+    });
+  };
+
   const transformData = () => {
     if (
       !barChartData?.data?.data?.xLabels?.length ||
@@ -117,6 +128,7 @@ export default function ColsView() {
           barGap={2}
         >
           <CartesianGrid strokeDasharray="3 3" vertical={false} />
+
           <XAxis
             dataKey={xAxisKey}
             tick={{ fontSize: 12 }}
@@ -126,27 +138,25 @@ export default function ColsView() {
             textAnchor={isSingleDataset ? "end" : "middle"}
             height={isSingleDataset ? 80 : 40}
           />
+
           <YAxis
             orientation="right"
             tick={{ fontSize: 12 }}
             domain={[0, maxValue]}
-            tickFormatter={(value) =>
-              `${value}${barChartData?.data?.data?.migUnit || "%"}`
-            }
+            tickFormatter={(value) => formatNumber(value)}
             tickLine={false}
             axisLine={false}
             dx={25}
           />
+
           <Tooltip
-            formatter={(value: number, name: string) => [
-              `${value}${barChartData?.data?.data?.migUnit || "%"}`,
-              isSingleDataset ? "القيمة" : name,
-            ]}
+            formatter={(value: number) => formatNumber(value)}
             labelFormatter={(label) =>
               isSingleDataset ? `المنطقة: ${label}` : `السنة: ${label}`
             }
           />
 
+          {/* Legend for multiple datasets */}
           {!isSingleDataset && (
             <Legend
               verticalAlign="top"
@@ -200,6 +210,7 @@ export default function ColsView() {
             />
           )}
 
+          {/* Single dataset */}
           {isSingleDataset ? (
             <Bar
               dataKey="value"
@@ -213,17 +224,17 @@ export default function ColsView() {
               {chartData.map((_, index) => (
                 <Cell key={`cell-${index}`} fill={getBarColor(index)} />
               ))}
+
               <LabelList
                 dataKey="value"
                 position="top"
-                formatter={(value: React.ReactNode) =>
-                  `${value}${barChartData?.data?.data?.migUnit || "%"}`
-                }
+                formatter={(value) => formatNumber(Number(value))}
                 fontSize={11}
                 fill="#333"
               />
             </Bar>
           ) : (
+            /* Multi datasets */
             dataKeys.map((key, keyIndex) => (
               <Bar
                 key={key}
@@ -257,11 +268,7 @@ export default function ColsView() {
                             fontSize={10}
                             textAnchor="middle"
                           >
-                            {value
-                              ? `${value}${
-                                  barChartData?.data?.data?.migUnit || "%"
-                                }`
-                              : ""}
+                            {value ? formatNumber(Number(value)) : ""}
                           </text>
                         );
                       }
