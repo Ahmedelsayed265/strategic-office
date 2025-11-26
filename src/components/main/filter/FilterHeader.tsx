@@ -14,7 +14,7 @@ import useGetFilterData from "@/hooks/useGetFilterData";
 import useGetPointers from "@/hooks/useGetPointers";
 
 export default function FilterHeader() {
-  const { data: indicatorData } = useGetFilterData();
+  const { data: indicatorData, isLoading } = useGetFilterData();
   const { data: pointers } = useGetPointers();
 
   const [pointersIds, setPointersIds] = useState<number[]>([]);
@@ -125,7 +125,7 @@ export default function FilterHeader() {
       {/* مناطق - محافظات - سنوات - موشرات فرعية - نوع الرسم البيانى  */}
       <div className="flex items-center mt-4 justify-between">
         <div className="flex items-center gap-2">
-          {indicatorData?.data?.region?.length !== 0 && (
+          {indicatorData?.data?.region?.length !== 0 && !isLoading && indicatorData?.data && (
             <MultiOptionSelect
               paramKey="region"
               options={
@@ -144,7 +144,7 @@ export default function FilterHeader() {
             />
           )}
 
-          {indicatorData?.data?.govs?.length !== 0 && (
+          {indicatorData?.data?.govs?.length !== 0 && !isLoading && indicatorData?.data && (
             <MultiOptionSelect
               placeholder="المحافظات"
               paramKey="govs"
@@ -163,7 +163,7 @@ export default function FilterHeader() {
             />
           )}
 
-          {indicatorData?.data?.years?.length !== 0 && (
+          {indicatorData?.data?.years?.length !== 0 && !isLoading && indicatorData?.data && (
             <MultiOptionSelect
               placeholder="السنوات"
               paramKey="year"
@@ -182,7 +182,7 @@ export default function FilterHeader() {
             />
           )}
 
-          {indicatorData?.data?.subIndicators?.length !== 0 && (
+          {indicatorData?.data?.subIndicators?.length !== 0 && !isLoading && indicatorData?.data && (
             <MultiOptionSelect
               placeholder="المؤشر"
               paramKey="subIndicators"
