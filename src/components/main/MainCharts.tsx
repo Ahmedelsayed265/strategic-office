@@ -10,6 +10,7 @@ import CircleView from "./charts/CircleView";
 import Table from "./Table";
 import MapView from "./gis-map/MapView";
 import IndicatorDetails from "./IndicatorDetails";
+import NextPrevComponent from "./filter/NextPrevComponent";
 
 export default function MainCharts() {
   const [searchParams] = useSearchParams();
@@ -33,6 +34,7 @@ export default function MainCharts() {
             {initialChartType === "circle" && <CircleView />}
           </>
         )}
+        {mainView == "indicator" && <NextPrevComponent />}
 
         {chartType === "table" && mainView === "indicator" && <Table />}
 
