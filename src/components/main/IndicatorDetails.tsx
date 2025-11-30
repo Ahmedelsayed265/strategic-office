@@ -40,8 +40,8 @@ export default function IndicatorDetails() {
       <CardTitle>
         <div className="flex items-center gap-2 mb-3">
           <p className="w-[2px] h-6 bg-[#25935F] block " />
-          <span className="text-gray-600 leading-relaxed">تعريف المؤشر : </span>
-          <p className=" text-[18px]">{detailsContent?.definition}</p>
+          <span className="text-gray-600 leading-relaxed whitespace-nowrap">تعريف المؤشر : </span>
+          <p className="text-[18px] leading-[1.5]">{detailsContent?.definition}</p>
         </div>
       </CardTitle>
 
