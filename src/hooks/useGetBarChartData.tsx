@@ -21,13 +21,15 @@ export default function useGetBarChartData() {
   if (regions?.length) payload.regions = regions;
   if (govs?.length) payload.govs = govs;
 
+  const endPoint =
+    regions && regions.length > 0
+      ? "get-filtered-line-chart-data"
+      : "get-filtered-bar-data";
+
   const { isLoading, data, isError } = useQuery({
     queryKey: ["bar-chart-data", payload],
     queryFn: (): Promise<BarChartResponse> =>
-      postRequest<BarChartResponse>(
-        "/IndicatorsApi/get-filtered-bar-data",
-        payload
-      ),
+      postRequest<BarChartResponse>(`/IndicatorsApi/${endPoint}`, payload),
     enabled: !!indicatorId,
   });
 

@@ -153,27 +153,6 @@ export default function FilterHeader() {
               />
             )}
 
-          {indicatorData?.data?.subIndicators?.length !== 0 &&
-            !isLoading &&
-            indicatorData?.data && (
-              <MultiOptionSelect
-                placeholder="المؤشر"
-                paramKey="subIndicators"
-                options={
-                  indicatorData?.data?.subIndicators?.map((ind) => ({
-                    label: ind.name,
-                    value: ind.id.toString(),
-                  })) || []
-                }
-                onChange={(key, values) => {
-                  const params = new URLSearchParams(searchParams);
-                  if (values.length === 0) params.delete(key);
-                  else params.set(key, values.join("-"));
-                  setSearchParams(params);
-                }}
-              />
-            )}
-
           {mainView === "indicator" && view === "chart" && (
             <Select
               value={chartType}
@@ -199,6 +178,27 @@ export default function FilterHeader() {
               </SelectContent>
             </Select>
           )}
+
+          {indicatorData?.data?.subIndicators?.length !== 0 &&
+            !isLoading &&
+            indicatorData?.data && (
+              <MultiOptionSelect
+                placeholder="المؤشرات الفرعيه"
+                paramKey="subIndicators"
+                options={
+                  indicatorData?.data?.subIndicators?.map((ind) => ({
+                    label: ind.name,
+                    value: ind.id.toString(),
+                  })) || []
+                }
+                onChange={(key, values) => {
+                  const params = new URLSearchParams(searchParams);
+                  if (values.length === 0) params.delete(key);
+                  else params.set(key, values.join("-"));
+                  setSearchParams(params);
+                }}
+              />
+            )}
         </div>
 
         <div className="flex items-center gap-2">

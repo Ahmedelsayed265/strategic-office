@@ -1,27 +1,15 @@
-import GaugeComponent from "react-gauge-component";
-
 export default function PointerChart() {
   return (
-    <div className="bg-white p-4 flex flex-col ">
-      <h6 className="relative text-[18px] mb-2 after:content-[''] after:absolute after:start-[-16px] after:top-0 after:h-full after:w-[2px] after:rounded-full after:bg-[#25935F]">
-        قيمة المؤشر لعام 2025 = <b className="text-[#25935F]">{79.44}</b>
-      </h6>
+    <div className="bg-white flex items-center flex-col">
+      <div className="bg-[#03998d] text-white w-full py-2">
+        <h5 className="text-center text-[20px]">
+          قيمة المؤشر لمنطقة الباحة لعام 2025
+        </h5>
+      </div>
 
-      <GaugeComponent
-        value={79.44}
-        type="semicircle"
-        arc={{
-          subArcs: [
-            { limit: 30, color: "#EA4228" },
-            { limit: 60, color: "#F5CD19" },
-            { limit: 100, color: "#5BE12C" },
-          ],
-        }}
-        labels={{
-          valueLabel: { formatTextValue: () => "" },
-        }}
-        pointer={{ color: "#23AC6B", length: 0.7, width: 12 }}
-      />
+      <div className="h-full flex items-center justify-center p-4">
+        <img src="/images/circleChart.svg" alt="" className="h-[120px]" />
+      </div>
     </div>
   );
 }

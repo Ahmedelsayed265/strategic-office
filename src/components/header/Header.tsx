@@ -8,18 +8,22 @@ export default function Header() {
     <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
       <div className="bg-[#019a8c] p-3 flex items-center justify-center ">
         <img
-          src="/images/logo.png"
+          src="/images/logo.svg"
           alt="logo"
-          className="h-[180px] object-contain"
+          className="h-[60px] object-contain"
         />
       </div>
 
-      <div className="bg-white p-6 flex items-center ">
-        <div className="flex flex-col gap-3">
-          <p className="text-[18px]">
-            المؤشر :{" "}
-            <b className="text-[#25935F]">{data?.data.indicatorNameAndUnit}</b>
-          </p>
+      <div className="bg-white flex items-center flex-col">
+        <div className="bg-[#03998d] text-white w-full py-2">
+          <h5 className="text-center text-[20px]">
+            إســــــــــــــــــــــــــــــم المؤشـــــــــــــــــــــــــر
+          </h5>
+        </div>
+        <div className="flex items-center justify-center h-full p-4">
+          <b className="text-[#25935F] text-center">
+            {data?.data.indicatorNameAndUnit}
+          </b>
         </div>
       </div>
 
@@ -27,12 +31,25 @@ export default function Header() {
 
       <PointerChart />
 
-      <div className="bg-white p-4 flex flex-col justify-between ">
-        <h6 className="relative text-[18px] after:content-[''] after:absolute after:start-[-16px] after:top-0 after:h-full after:w-[2px] after:rounded-full after:bg-[#25935F]">
-          معدل التغير : = <b className="text-[#25935F]">25%</b>
-        </h6>
+      <div className="bg-white flex items-center flex-col">
+        <div className="bg-[#03998d] text-white w-full py-2">
+          <h5 className="text-center text-[20px]">
+            معــــــــــــــــــــــــــــــدل التغيـــــــــــــــــــــــــر
+          </h5>
+        </div>
 
-        <img src="/icons/rising.svg" alt="rising" className="h-[100px]" />
+        <div className="flex items-center justify-center h-full p-4">
+          <div className="flex items-center gap-4">
+            <div className="flex flex-col items-center justify-center">
+              <h4 className="text-[30px] font-bold text-[#019a8c]">25%</h4>
+              <span className="bg-[#019a8c] text-white px-2 text-[22px]">
+                إيجابى
+              </span>
+            </div>
+
+            <img src="/images/up.svg" alt="" className="h-[80px]" />
+          </div>
+        </div>
       </div>
     </div>
   );
