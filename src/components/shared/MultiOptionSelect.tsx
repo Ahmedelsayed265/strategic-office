@@ -79,11 +79,7 @@ export default function MultiOptionSelect({
           variant="outline"
           className="w-full justify-between bg-[#F8F9FC] text-[#737373] border-0 px-4 h-[40px] hover:bg-[#F8F9FC] shadow-none"
         >
-          {selectedValues.length > 0
-            ? isAllSelected
-              ? "الكل"
-              : `${selectedValues.length} عناصر مختارة`
-            : placeholder}
+          {placeholder}
           <ChevronDown className="h-4 w-4 opacity-50" />
         </Button>
       </PopoverTrigger>

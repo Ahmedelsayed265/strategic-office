@@ -106,6 +106,7 @@ export default function FilterHeader() {
                   const params = new URLSearchParams(searchParams);
                   if (values.length === 0) params.delete(key);
                   else params.set(key, values.join("-"));
+                  params.delete("govs");
                   setSearchParams(params);
                 }}
               />
@@ -127,6 +128,7 @@ export default function FilterHeader() {
                   const params = new URLSearchParams(searchParams);
                   if (values.length === 0) params.delete(key);
                   else params.set(key, values.join("-"));
+                  params.delete("region");
                   setSearchParams(params);
                 }}
               />
