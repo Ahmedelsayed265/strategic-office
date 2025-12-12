@@ -3,14 +3,93 @@ import useGetFilterData from "@/hooks/useGetFilterData";
 export default function Header() {
   const { data } = useGetFilterData();
 
+  const ifLogicReversed =
+    Number(data?.data.indicatorCardDetails.postiveNegative) === -1;
+
   const averageChangeRate: number = Number(
     data?.data?.values?.averageChangeRate ?? 0
   );
 
-  const circleChartSection: number =
-    (Number(data?.data?.values?.averageMaxIndVal ?? 0) -
-      Number(data?.data?.values?.averageMinIndVal ?? 0)) /
-    3;
+  const minVal = Number(data?.data?.values?.averageMinIndVal ?? 0);
+  const maxVal = Number(data?.data?.values?.averageMaxIndVal ?? 0);
+  const range = maxVal - minVal;
+  const sectionSize = range / 3;
+
+  const negativeMax = minVal + sectionSize;
+  const normalMax = minVal + sectionSize * 2;
+
+  const getStatus = (value: number | null | undefined) => {
+    if (value == null) return null;
+    const val = Number(value);
+
+    let status: string;
+    if (val <= negativeMax) {
+      status = "negative";
+    } else if (val <= normalMax) {
+      status = "normal";
+    } else {
+      status = "positive";
+    }
+
+    if (ifLogicReversed) {
+      if (status === "negative") return "positive";
+      if (status === "positive") return "negative";
+    }
+
+    return status;
+  };
+
+  const getStatusImage = (status: string | null) => {
+    switch (status) {
+      case "negative":
+        return "/images/سلبي.svg";
+      case "normal":
+        return "/images/معتدل.svg";
+      case "positive":
+        return "/images/ايجابي.svg";
+      default:
+        return "";
+    }
+  };
+
+  const getStatusText = (status: string | null) => {
+    switch (status) {
+      case "negative":
+        return "سلبي";
+      case "normal":
+        return "معتدل";
+      case "positive":
+        return "إيجابي";
+      default:
+        return "";
+    }
+  };
+
+  const getStatusColor = (status: string | null) => {
+    switch (status) {
+      case "negative":
+        return "#FF9533";
+      case "normal":
+        return "#FFD919";
+      case "positive":
+        return "#99E63F";
+      default:
+        return "";
+    }
+  };
+
+  const currentStatus = getStatus(data?.data?.values?.averageValue);
+  const previousStatus = getStatus(data?.data?.values?.averageBeforeVal);
+
+  // Determine change rate status (also reversed if needed)
+  const getChangeRateStatus = () => {
+    if (ifLogicReversed) {
+      return averageChangeRate >= 0 ? "negative" : "positive";
+    }
+    return averageChangeRate <= 0 ? "negative" : "positive";
+  };
+
+  const changeRateStatus = getChangeRateStatus();
 
   return (
     <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
@@ -22,7 +101,7 @@ export default function Header() {
         />
       </div>
 
-      <div className="bg-white flex items-center flex-col">
+      <div className="bg-white flex items-center flex-col min-h-[222px]">
         <div className="bg-[#03998d] text-white w-full py-2">
           <h5 className="text-center text-[20px]">
             إســــــــــــــــــــــــــــــم المؤشـــــــــــــــــــــــــر
@@ -35,7 +114,7 @@ export default function Header() {
         </div>
       </div>
 
-      <div className="bg-white flex items-center flex-col relative">
+      <div className="bg-white flex items-center flex-col relative min-h-[222px]">
         <div className="bg-[#03998d] text-white w-full py-2">
           <h5 className="text-center text-[20px]">
             قيمة المؤشر لمنطقة الباحة لعام {data?.data?.values?.lastYear ?? ""}
@@ -43,45 +122,26 @@ export default function Header() {
         </div>
 
         <div className="h-full flex items-center justify-center flex-col p-4 pb-[40px]">
-          {data?.data?.values?.averageValue != null &&
-            Number(data.data.values.averageValue) <= circleChartSection && (
-              <img src="/images/سلبي.svg" alt="" className="h-[120px]" />
-            )}
-          {data?.data?.values?.averageValue != null &&
-            Number(data.data.values.averageValue) <= circleChartSection * 2 &&
-            Number(data.data.values.averageValue) > circleChartSection && (
-              <img src="/images/معتدل.svg" alt="" className="h-[120px]" />
-            )}
-          {data?.data?.values?.averageValue != null &&
-            Number(data.data.values.averageValue) > circleChartSection * 2 &&
-            Number(data.data.values.averageValue) <= circleChartSection * 3 && (
-              <img src="/images/ايجابي.svg" alt="" className="h-[120px]" />
-            )}
+          {currentStatus && (
+            <img
+              src={getStatusImage(currentStatus)}
+              alt={getStatusText(currentStatus) || ""}
+              className="h-[120px]"
+            />
+          )}
 
           {data?.data?.values?.averageValue != null && (
             <div className="text-[20px] font-bold flex flex-col items-center justify-center absolute bottom-[10px]">
-              <h4>{Number(data.data.values.averageValue).toFixed(2)}</h4>
-              <p className={`px-3 text-white ${
-                Number(data.data.values.averageBeforeVal) <= circleChartSection
-                  ? "bg-[#e15f4b]"
-                  : Number(data.data.values.averageBeforeVal) <=
-                    circleChartSection * 2
-                  ? "bg-[#f5a623]"
-                  : "bg-[#019a8c]"
-              }`}>
-                {Number(data.data.values.averageValue) <= circleChartSection
-                  ? " سلبي"
-                  : Number(data.data.values.averageValue) <=
-                    circleChartSection * 2
-                  ? " معتدل"
-                  : " إيجابي"}
+              <h4 className={`text-[${getStatusColor(currentStatus)}]`}>{Number(data.data.values.averageValue).toFixed(2)}</h4>
+              <p className={`px-3 text-white bg-[${getStatusColor(currentStatus)}]`}>
+                {getStatusText(currentStatus)}
               </p>
             </div>
           )}
         </div>
       </div>
 
-      <div className="bg-white flex items-center flex-col relative">
+      <div className="bg-white flex items-center flex-col relative min-h-[222px]">
         <div className="bg-[#03998d] text-white w-full py-2">
           <h5 className="text-center text-[20px]">
             قيمة المؤشر لمنطقة الباحة لعام{" "}
@@ -90,48 +150,28 @@ export default function Header() {
         </div>
 
         <div className="h-full flex items-center justify-center flex-col p-4 pb-[40px]">
-          {data?.data?.values?.averageBeforeVal != null &&
-            Number(data.data.values.averageBeforeVal) <= circleChartSection && (
-              <img src="/images/سلبي.svg" alt="" className="h-[120px]" />
-            )}
-          {data?.data?.values?.averageBeforeVal != null &&
-            Number(data.data.values.averageBeforeVal) <=
-              circleChartSection * 2 &&
-            Number(data.data.values.averageBeforeVal) > circleChartSection && (
-              <img src="/images/معتدل.svg" alt="" className="h-[120px]" />
-            )}
-          {data?.data?.values?.averageBeforeVal != null &&
-            Number(data.data.values.averageBeforeVal) >
-              circleChartSection * 2 &&
-            Number(data.data.values.averageBeforeVal) <=
-              circleChartSection * 3 && (
-              <img src="/images/ايجابي.svg" alt="" className="h-[120px]" />
-            )}
+          {previousStatus && (
+            <img
+              src={getStatusImage(previousStatus)}
+              alt={getStatusText(previousStatus) || ""}
+              className="h-[120px]"
+            />
+          )}
 
           {data?.data?.values?.averageBeforeVal != null && (
             <div className="text-[20px] font-bold flex flex-col items-center justify-center absolute bottom-[10px]">
-              <h4>{Number(data.data.values.averageBeforeVal).toFixed(2)}</h4>
-              <p className={`px-3 text-white ${
-                Number(data.data.values.averageBeforeVal) <= circleChartSection
-                  ? "bg-[#e15f4b]"
-                  : Number(data.data.values.averageBeforeVal) <=
-                    circleChartSection * 2
-                  ? "bg-[#f5a623]"
-                  : "bg-[#019a8c]"
-              }`}>
-                {Number(data.data.values.averageBeforeVal) <= circleChartSection
-                  ? " سلبي"
-                  : Number(data.data.values.averageBeforeVal) <=
-                    circleChartSection * 2
-                  ? " معتدل"
-                  : " إيجابي"}
+              <h4 className={`text-[${getStatusColor(previousStatus)}]`}>{Number(data.data.values.averageBeforeVal).toFixed(2)}</h4>
+              <p
+                className={`px-3 text-white bg-[${getStatusColor(previousStatus)}]`}
+              >
+                {getStatusText(previousStatus)}
               </p>
             </div>
           )}
         </div>
       </div>
 
-      <div className="bg-white flex items-center flex-col">
+      <div className="bg-white flex items-center flex-col min-h-[222px]">
         <div className="bg-[#03998d] text-white w-full py-2">
           <h5 className="text-center text-[20px]">
             معــــــــــــــــــــــــــــــدل التغيـــــــــــــــــــــــــر
@@ -143,23 +183,29 @@ export default function Header() {
             <div className="flex flex-col items-center justify-center">
               <h4
                 className={`text-[30px] font-bold ${
-                  averageChangeRate <= 0 ? "text-[#e15f4b]" : "text-[#019a8c]"
+                  changeRateStatus === "negative"
+                    ? "text-[#e15f4b]"
+                    : "text-[#019a8c]"
                 }`}
               >
                 {averageChangeRate.toFixed(2)}%
               </h4>
               <span
                 className={`${
-                  averageChangeRate <= 0 ? "bg-[#e15f4b]" : "bg-[#019a8c]"
+                  changeRateStatus === "negative"
+                    ? "bg-[#e15f4b]"
+                    : "bg-[#019a8c]"
                 } text-white px-2 text-[22px] w-full text-center`}
               >
-                {averageChangeRate <= 0 ? "سلبي" : "إيجابى"}
+                {changeRateStatus === "negative" ? "سلبي" : "إيجابى"}
               </span>
             </div>
 
             <img
               src={
-                averageChangeRate <= 0 ? "/images/down.svg" : "/images/up.svg"
+                changeRateStatus === "negative"
+                  ? "/images/down.svg"
+                  : "/images/up.svg"
               }
               alt=""
               className="h-[80px]"
