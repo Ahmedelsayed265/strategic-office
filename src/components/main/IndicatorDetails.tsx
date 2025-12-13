@@ -36,7 +36,7 @@ export default function IndicatorDetails() {
   ];
 
   return (
-    <Card className="border-none shadow-none bg-transparent p-[20px]">
+    <Card className="border-none shadow-none bg-transparent p-[20px] des_card">
       <CardTitle>
         <div className="flex items-center gap-2 mb-3">
           <p className="w-[2px] h-6 bg-[#25935F] block " />

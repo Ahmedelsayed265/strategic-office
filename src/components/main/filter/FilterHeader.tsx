@@ -28,6 +28,32 @@ export default function FilterHeader() {
     setSearchParams(params);
   };
 
+  const handlePrintHeader = () => {
+    const el = document.getElementById("printable-header");
+    const style = document.createElement("style");
+    style.setAttribute("data-print-style", "true");
+    style.innerHTML = `
+      @media print {
+        body * { visibility: hidden !important; }
+        #printable-header, #printable-header * { visibility: visible !important; }
+        #printable-header { display: block !important; position: absolute; left: 0; top: 0; width: 100%; }
+      }
+    `;
+    document.head.appendChild(style);
+
+    if (!el) {
+      window.print();
+      document.head.removeChild(style);
+      return;
+    }
+
+    const previousDisplay = el.style.display;
+    el.style.display = "block";
+    window.print();
+    el.style.display = previousDisplay;
+    document.head.removeChild(style);
+  };
+
   return (
     <>
       {/* طريقه العرض  [رسم بيانى - بيانات وصفيه - خريطة] ولو رسم بيانى عرض [جدول - ورسومات بيانية ] */}
@@ -207,7 +233,7 @@ export default function FilterHeader() {
           <button className="bg-[#DFF6E7] p-2">
             <img src="/icons/pdf-02.svg" alt="pdf" />
           </button>
-          <button className="bg-[#DFF6E7] p-2">
+          <button className="bg-[#DFF6E7] p-2" onClick={handlePrintHeader}>
             <img src="/icons/Vector.svg" alt="excel" />
           </button>
         </div>

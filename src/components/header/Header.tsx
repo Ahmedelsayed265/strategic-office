@@ -92,124 +92,144 @@ export default function Header() {
   const changeRateStatus = getChangeRateStatus();
 
   return (
-    <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
-      <div className="bg-[#019a8c] p-3 flex items-center justify-center ">
-        <img
-          src="/images/logo.svg"
-          alt="logo"
-          className="h-[60px] object-contain"
-        />
-      </div>
-
-      <div className="bg-white flex items-center flex-col min-h-[222px]">
-        <div className="bg-[#03998d] text-white w-full py-2">
-          <h5 className="text-center text-[20px]">
-            إســــــــــــــــــــــــــــــم المؤشـــــــــــــــــــــــــر
-          </h5>
-        </div>
-        <div className="flex items-center justify-center h-full p-4">
-          <b className="text-[#25935F] text-center">
-            {data?.data?.indicatorNameAndUnit ?? ""}
-          </b>
-        </div>
-      </div>
-
-      <div className="bg-white flex items-center flex-col relative min-h-[222px]">
-        <div className="bg-[#03998d] text-white w-full py-2">
-          <h5 className="text-center text-[20px]">
-            قيمة المؤشر لمنطقة الباحة لعام {data?.data?.values?.lastYear ?? ""}
-          </h5>
+    <div className="print-header">
+      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
+        <div className="bg-[#019a8c] p-3 flex items-center justify-center ">
+          <img
+            src="/images/logo.svg"
+            alt="logo"
+            className="h-[60px] object-contain"
+          />
         </div>
 
-        <div className="h-full flex items-center justify-center flex-col p-4 pb-[40px]">
-          {currentStatus && (
-            <img
-              src={getStatusImage(currentStatus)}
-              alt={getStatusText(currentStatus) || ""}
-              className="h-[120px]"
-            />
-          )}
-
-          {data?.data?.values?.averageValue != null && (
-            <div className="text-[20px] font-bold flex flex-col items-center justify-center absolute bottom-[10px]">
-              <h4 className={`text-[${getStatusColor(currentStatus)}]`}>{Number(data.data.values.averageValue).toFixed(2)}</h4>
-              <p className={`px-3 text-white bg-[${getStatusColor(currentStatus)}]`}>
-                {getStatusText(currentStatus)}
-              </p>
-            </div>
-          )}
-        </div>
-      </div>
-
-      <div className="bg-white flex items-center flex-col relative min-h-[222px]">
-        <div className="bg-[#03998d] text-white w-full py-2">
-          <h5 className="text-center text-[20px]">
-            قيمة المؤشر لمنطقة الباحة لعام{" "}
-            {data?.data?.values?.yearBefore ?? ""}
-          </h5>
+        <div className="bg-white flex items-center flex-col min-h-[222px]">
+          <div className="bg-[#03998d] text-white w-full py-2">
+            <h5 className="text-center text-[20px]">
+              إســــــــــــــــــــــــــــــم المؤشـــــــــــــــــــــــــر
+            </h5>
+          </div>
+          <div className="flex items-center justify-center h-full p-4">
+            <b className="text-[#25935F] text-center">
+              {data?.data?.indicatorNameAndUnit ?? ""}
+            </b>
+          </div>
         </div>
 
-        <div className="h-full flex items-center justify-center flex-col p-4 pb-[40px]">
-          {previousStatus && (
-            <img
-              src={getStatusImage(previousStatus)}
-              alt={getStatusText(previousStatus) || ""}
-              className="h-[120px]"
-            />
-          )}
+        <div className="bg-white flex items-center flex-col relative min-h-[222px]">
+          <div className="bg-[#03998d] text-white w-full py-2">
+            <h5 className="text-center text-[20px]">
+              قيمة المؤشر لمنطقة الباحة لعام{" "}
+              {data?.data?.values?.lastYear ?? ""}
+            </h5>
+          </div>
 
-          {data?.data?.values?.averageBeforeVal != null && (
-            <div className="text-[20px] font-bold flex flex-col items-center justify-center absolute bottom-[10px]">
-              <h4 className={`text-[${getStatusColor(previousStatus)}]`}>{Number(data.data.values.averageBeforeVal).toFixed(2)}</h4>
-              <p
-                className={`px-3 text-white bg-[${getStatusColor(previousStatus)}]`}
-              >
-                {getStatusText(previousStatus)}
-              </p>
-            </div>
-          )}
+          <div className="h-full flex items-center justify-center flex-col p-4 pb-[40px]">
+            {currentStatus && (
+              <img
+                src={getStatusImage(currentStatus)}
+                alt={getStatusText(currentStatus) || ""}
+                className="h-[120px]"
+              />
+            )}
+
+            {data?.data?.values?.averageValue != null && (
+              <div className="text-[20px] font-bold flex flex-col items-center justify-center absolute bottom-[10px] left-1/2 transform -translate-x-1/2">
+                <h4
+                  style={{ color: getStatusColor(currentStatus) ?? undefined }}
+                >
+                  {Number(data.data.values.averageValue).toFixed(2)}
+                </h4>
+                <p
+                  className="px-3 text-white"
+                  style={{
+                    backgroundColor: getStatusColor(currentStatus) ?? undefined,
+                  }}
+                >
+                  {getStatusText(currentStatus)}
+                </p>
+              </div>
+            )}
+          </div>
         </div>
-      </div>
 
-      <div className="bg-white flex items-center flex-col min-h-[222px]">
-        <div className="bg-[#03998d] text-white w-full py-2">
-          <h5 className="text-center text-[20px]">
-            معــــــــــــــــــــــــــــــدل التغيـــــــــــــــــــــــــر
-          </h5>
+        <div className="bg-white flex items-center flex-col relative min-h-[222px]">
+          <div className="bg-[#03998d] text-white w-full py-2">
+            <h5 className="text-center text-[20px]">
+              قيمة المؤشر لمنطقة الباحة لعام{" "}
+              {data?.data?.values?.yearBefore ?? ""}
+            </h5>
+          </div>
+
+          <div className="h-full flex items-center justify-center flex-col p-4 pb-[40px]">
+            {previousStatus && (
+              <img
+                src={getStatusImage(previousStatus)}
+                alt={getStatusText(previousStatus) || ""}
+                className="h-[120px]"
+              />
+            )}
+
+            {data?.data?.values?.averageBeforeVal != null && (
+              <div className="text-[20px] font-bold flex flex-col items-center justify-center absolute bottom-[10px] left-1/2 transform -translate-x-1/2">
+                <h4
+                  style={{ color: getStatusColor(previousStatus) ?? undefined }}
+                >
+                  {Number(data.data.values.averageBeforeVal).toFixed(2)}
+                </h4>
+                <p
+                  className="px-3 text-white"
+                  style={{
+                    backgroundColor:
+                      getStatusColor(previousStatus) ?? undefined,
+                  }}
+                >
+                  {getStatusText(previousStatus)}
+                </p>
+              </div>
+            )}
+          </div>
         </div>
 
-        <div className="flex items-center justify-center h-full p-4">
-          <div className="flex items-center gap-4">
-            <div className="flex flex-col items-center justify-center">
-              <h4
-                className={`text-[30px] font-bold ${
+        <div className="bg-white flex items-center flex-col min-h-[222px]">
+          <div className="bg-[#03998d] text-white w-full py-2">
+            <h5 className="text-center text-[20px]">
+              معــــــــــــــــــــــــــــــدل التغيـــــــــــــــــــــــــر
+            </h5>
+          </div>
+
+          <div className="flex items-center justify-center h-full p-4">
+            <div className="flex items-center gap-4">
+              <div className="flex flex-col items-center justify-center">
+                <h4
+                  className={`text-[30px] font-bold ${
+                    changeRateStatus === "negative"
+                      ? "text-[#e15f4b]"
+                      : "text-[#019a8c]"
+                  }`}
+                >
+                  {averageChangeRate.toFixed(2)}%
+                </h4>
+                <span
+                  className={`${
+                    changeRateStatus === "negative"
+                      ? "bg-[#e15f4b]"
+                      : "bg-[#019a8c]"
+                  } text-white px-2 text-[22px] w-full text-center`}
+                >
+                  {changeRateStatus === "negative" ? "سلبي" : "إيجابى"}
+                </span>
+              </div>
+
+              <img
+                src={
                   changeRateStatus === "negative"
-                    ? "text-[#e15f4b]"
-                    : "text-[#019a8c]"
-                }`}
-              >
-                {averageChangeRate.toFixed(2)}%
-              </h4>
-              <span
-                className={`${
-                  changeRateStatus === "negative"
-                    ? "bg-[#e15f4b]"
-                    : "bg-[#019a8c]"
-                } text-white px-2 text-[22px] w-full text-center`}
-              >
-                {changeRateStatus === "negative" ? "سلبي" : "إيجابى"}
-              </span>
+                    ? "/images/down.svg"
+                    : "/images/up.svg"
+                }
+                alt=""
+                className="h-[80px]"
+              />
             </div>
-
-            <img
-              src={
-                changeRateStatus === "negative"
-                  ? "/images/down.svg"
-                  : "/images/up.svg"
-              }
-              alt=""
-              className="h-[80px]"
-            />
           </div>
         </div>
       </div>
