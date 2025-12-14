@@ -125,6 +125,11 @@
   }
 
   @media print {
+    @page {
+      margin: 0.5cm;
+      size: A4 landscape;
+    }
+
     .print-header .grid {
       display: grid !important;
       grid-template-columns: repeat(5, 1fr) !important;
@@ -140,10 +145,11 @@
     * {
       -webkit-print-color-adjust: exact !important;
       print-color-adjust: exact !important;
+      color-adjust: exact !important;
     }
 
     .print-header h5 {
-      font-size: 16px !important;
+      font-size: 14px !important;
     }
 
     .print-header h4 {
@@ -152,11 +158,13 @@
 
     .print-header img {
       max-height: 60px !important;
+      -webkit-print-color-adjust: exact !important;
+      print-color-adjust: exact !important;
     }
 
     body {
       margin: 0 !important;
-      background: #f8f9fc;
+      background: #f8f9fc !important;
     }
 
     .print-header .absolute {
@@ -167,6 +175,49 @@
 
     .des_card {
       background: #fff !important;
+    }
+
+    /* Ensure all SVG charts are visible and properly sized */
+    svg {
+      max-width: 100% !important;
+      height: auto !important;
+      overflow: visible !important;
+    }
+
+    /* Recharts specific styles */
+    .recharts-wrapper {
+      width: 100% !important;
+      height: 430px !important;
+    }
+
+    .recharts-responsive-container {
+      width: 100% !important;
+      height: 430px !important;
+    }
+
+    .recharts-surface {
+      width: 100% !important;
+      height: 100% !important;
+    }
+
+    /* Leaflet map styles */
+    .leaflet-container {
+      width: 100% !important;
+      height: 430px !important;
+    }
+
+    .leaflet-tile-container img {
+      -webkit-print-color-adjust: exact !important;
+      print-color-adjust: exact !important;
+    }
+
+    /* Ensure canvas elements are visible */
+    canvas {
+      display: block !important;
+      visibility: visible !important;
+      opacity: 1 !important;
+      -webkit-print-color-adjust: exact !important;
+      print-color-adjust: exact !important;
     }
   }
 

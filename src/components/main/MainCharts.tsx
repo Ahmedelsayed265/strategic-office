@@ -37,7 +37,8 @@ export default function MainCharts() {
             autoPlay
             loop
             muted
-          ></video>
+            className="w-full h-full object-cover"
+          />
         ) : (
           <>
             {chartType === "chart" && mainView === "indicator" && (
