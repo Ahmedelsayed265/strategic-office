@@ -1,4 +1,5 @@
 import useGetLineChartData from "@/hooks/useGetLineChartData";
+import { useEffect, useState } from "react";
 import {
   LineChart,
   Line,
@@ -12,6 +13,18 @@ import {
 
 export default function LinesView() {
   const { data: lineData, isLoading } = useGetLineChartData();
+  const [isPrinting, setIsPrinting] = useState(false);
+
+  useEffect(() => {
+    const onBeforePrint = () => setIsPrinting(true);
+    const onAfterPrint = () => setIsPrinting(false);
+    window.addEventListener("beforeprint", onBeforePrint);
+    window.addEventListener("afterprint", onAfterPrint);
+    return () => {
+      window.removeEventListener("beforeprint", onBeforePrint);
+      window.removeEventListener("afterprint", onAfterPrint);
+    };
+  }, []);
 
   const transformData = () => {
     if (!lineData?.data?.data?.datasets?.length) return [];
@@ -139,7 +152,7 @@ export default function LinesView() {
               strokeWidth={3}
               dot={{ r: 5 }}
               activeDot={{ r: 7 }}
-              isAnimationActive={true}
+              isAnimationActive={!isPrinting}
               animationDuration={1500}
               animationEasing="ease-in-out"
             />

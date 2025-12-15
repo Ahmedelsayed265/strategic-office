@@ -1,5 +1,10 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="523.519" height="905.959" viewBox="0 0 523.519 905.959">
-  <g id="Group_2" data-name="Group 2" transform="translate(-3394.41 -2274.997)">
-    <path id="Path_502" data-name="Path 502" d="M3394.41,2619.1h0l179.915,1.659v560.194h163.687V2620.762l179.917-1.658h0L3656.17,2275Z" fill="#389991"/>
-  </g>
+<svg width="46" height="80" viewBox="0 0 46 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g clip-path="url(#clip0_989_2075)">
+<path d="M0 30.3855L15.8086 30.532V79.9995H30.1913V30.5322L46 30.3858L23 0L0 30.3855Z" fill="#389991"/>
+</g>
+<defs>
+<clipPath id="clip0_989_2075">
+<rect width="46" height="80" fill="white"/>
+</clipPath>
+</defs>
 </svg>

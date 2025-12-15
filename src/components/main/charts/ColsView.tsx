@@ -1,4 +1,5 @@
 import useGetBarChartData from "@/hooks/useGetBarChartData";
+import { useEffect, useState } from "react";
 import {
   BarChart,
   Bar,
@@ -14,6 +15,18 @@ import {
 
 export default function ColsView() {
   const { data: barChartData, isLoading, isError } = useGetBarChartData();
+  const [isPrinting, setIsPrinting] = useState(false);
+
+  useEffect(() => {
+    const onBeforePrint = () => setIsPrinting(true);
+    const onAfterPrint = () => setIsPrinting(false);
+    window.addEventListener("beforeprint", onBeforePrint);
+    window.addEventListener("afterprint", onAfterPrint);
+    return () => {
+      window.removeEventListener("beforeprint", onBeforePrint);
+      window.removeEventListener("afterprint", onAfterPrint);
+    };
+  }, []);
 
   const isSingleDataset = barChartData?.data?.data?.datasets?.length === 1;
 
@@ -217,7 +230,7 @@ export default function ColsView() {
               name={barChartData?.data?.data?.datasets?.[0]?.name || "القيمة"}
               radius={[6, 6, 0, 0]}
               barSize={35}
-              isAnimationActive
+              isAnimationActive={!isPrinting}
               animationDuration={1000}
               animationEasing="ease-out"
             >
@@ -243,7 +256,7 @@ export default function ColsView() {
                 fill={getBarColor(keyIndex)}
                 radius={[6, 6, 0, 0]}
                 barSize={20}
-                isAnimationActive
+                isAnimationActive={!isPrinting}
                 animationDuration={1000}
                 animationEasing="ease-out"
               >

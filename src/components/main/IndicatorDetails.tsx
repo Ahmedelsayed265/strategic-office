@@ -37,13 +37,12 @@ export default function IndicatorDetails() {
 
   return (
     <Card className="border-none shadow-none bg-transparent p-[20px] des_card">
-      <CardTitle>
-        <div className="flex items-center gap-2 mb-3">
-          <p className="w-[2px] h-6 bg-[#25935F] block " />
-          <span className="text-gray-600 leading-relaxed whitespace-nowrap">تعريف المؤشر : </span>
-          <p className="text-[18px] leading-[1.5]">{detailsContent?.definition}</p>
-        </div>
-      </CardTitle>
+
+      <div className="flex items-center gap-2 mb-3">
+        <p className="w-[2px] h-6 bg-[#25935F] block" />
+        <span className="text-gray-600 leading-relaxed whitespace-nowrap">تعريف المؤشر : </span>
+        <p className="text-[18px] leading-[1.5]">{detailsContent?.definition}</p>
+      </div>
 
       <CardContent className="flex flex-col gap-3 p-0">
         {details.map((item, index) => (

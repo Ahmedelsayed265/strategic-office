@@ -127,7 +127,7 @@
   @media print {
     @page {
       margin: 0.5cm;
-      size: A4 landscape;
+      size: A4 portrait;
     }
 
     .print-header .grid {
@@ -180,7 +180,6 @@
     /* Ensure all SVG charts are visible and properly sized */
     svg {
       max-width: 100% !important;
-      height: auto !important;
       overflow: visible !important;
     }
 

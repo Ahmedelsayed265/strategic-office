@@ -1,4 +1,5 @@
 import { useSearchParams } from "react-router";
+import { createPortal } from "react-dom";
 import Header from "../header/Header";
 import IndicatorDetails from "./IndicatorDetails";
 import PieView from "./charts/PieView";
@@ -9,13 +10,14 @@ import MapView from "./gis-map/MapView";
 
 export default function ViewToPrint() {
   const [searchParams] = useSearchParams();
-
   const mainView = searchParams.get("mainView") || "indicator";
   const initialChartType = searchParams.get("chartType") || "cols";
-  
 
-  return (
-    <div id="printable-header" className="hidden">
+  const content = (
+    <div
+      id="printable-header"
+      className="fixed left-0 top-0 w-full bg-white opacity-0 pointer-events-none -z-10"
+    >
       <div className="flex flex-col gap-4">
         <Header />
 
@@ -30,8 +32,11 @@ export default function ViewToPrint() {
           </>
         )}
 
-         {mainView === "map" && <MapView />}
+        {mainView === "map" && <MapView />}
       </div>
     </div>
   );
+
+  if (typeof document === "undefined") return null;
+  return createPortal(content, document.body);
 }

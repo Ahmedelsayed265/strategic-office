@@ -1,4 +1,5 @@
 import useGetPieChartData from "@/hooks/useGetPieChartData";
+import { useEffect, useState } from "react";
 import { PieChart, Pie, Cell, Tooltip, ResponsiveContainer } from "recharts";
 
 interface LabelProps {
@@ -34,6 +35,18 @@ const renderLabel = (props: LabelProps) => {
 
 export default function CircleView() {
   const { data: pieChartData } = useGetPieChartData();
+  const [isPrinting, setIsPrinting] = useState(false);
+
+  useEffect(() => {
+    const onBeforePrint = () => setIsPrinting(true);
+    const onAfterPrint = () => setIsPrinting(false);
+    window.addEventListener("beforeprint", onBeforePrint);
+    window.addEventListener("afterprint", onAfterPrint);
+    return () => {
+      window.removeEventListener("beforeprint", onBeforePrint);
+      window.removeEventListener("afterprint", onAfterPrint);
+    };
+  }, []);
 
   const chartData = pieChartData?.data?.data
     ? pieChartData.data.data.labels.map((label, index) => ({
@@ -87,6 +100,7 @@ export default function CircleView() {
             cy="50%"
             outerRadius={120}
             innerRadius={0}
+            isAnimationActive={!isPrinting}
             label={(props) => renderLabel(props as unknown as LabelProps)}
             labelLine={false}
             stroke="none"
