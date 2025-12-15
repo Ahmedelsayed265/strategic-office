@@ -1,4 +1,4 @@
-import { Card, CardContent, CardTitle } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import useGetFilterData from "@/hooks/useGetFilterData";
 import { Gauge, Link2, Calculator, ChartNoAxesCombined } from "lucide-react";
 
