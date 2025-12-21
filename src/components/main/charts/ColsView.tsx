@@ -127,13 +127,13 @@ export default function ColsView() {
   }
 
   return (
-    <div className="h-[430px] p-2">
-      <ResponsiveContainer width="100%" height="100%">
+    <div className="h-[430px] p-2" style={{ width: "100%", overflow: "visible", minWidth: "100%" }}>
+      <ResponsiveContainer width="100%" height="100%" style={{ width: "100%", overflow: "visible" }}>
         <BarChart
           data={chartData}
           margin={{
             top: 30,
-            right: 20,
+            right: 40,
             left: 10,
             bottom: isSingleDataset ? 60 : 30,
           }}

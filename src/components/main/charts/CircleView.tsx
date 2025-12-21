@@ -74,7 +74,7 @@ export default function CircleView() {
   }
 
   return (
-    <div className="h-[430px] flex flex-col justify-center items-center p-2">
+    <div className="h-[430px] flex flex-col justify-center items-center p-2" style={{ width: "100%", overflow: "visible", minWidth: "100%" }}>
       <div className="flex flex-wrap justify-center gap-x-6 gap-y-2 mt-4 text-sm">
         {chartData.map((entry, index) => (
           <div key={index} className="flex items-center gap-2">

@@ -92,8 +92,16 @@ export default function Header() {
   const changeRateStatus = getChangeRateStatus();
 
   return (
-    <div className="print-header">
-      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
+    <div className="print-header" style={{ width: "100%", overflow: "visible" }}>
+      <div 
+        className="grid gap-4" 
+        style={{ 
+          gridTemplateColumns: "repeat(5, minmax(0, 1fr))",
+          display: "grid",
+          width: "100%",
+          overflow: "visible"
+        }}
+      >
         <div className="bg-[#019a8c] p-3 flex items-center justify-center ">
           <img
             src="/images/logo.svg"
