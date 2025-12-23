@@ -92,14 +92,17 @@ export default function Header() {
   const changeRateStatus = getChangeRateStatus();
 
   return (
-    <div className="print-header" style={{ width: "100%", overflow: "visible" }}>
-      <div 
-        className="grid gap-4" 
-        style={{ 
+    <div
+      className="print-header"
+      style={{ width: "100%", overflow: "visible" }}
+    >
+      <div
+        className="grid gap-4"
+        style={{
           gridTemplateColumns: "repeat(5, minmax(0, 1fr))",
           display: "grid",
           width: "100%",
-          overflow: "visible"
+          overflow: "visible",
         }}
       >
         <div className="bg-[#019a8c] p-3 flex items-center justify-center ">
@@ -141,20 +144,20 @@ export default function Header() {
             )}
 
             {data?.data?.values?.averageValue != null && (
-              <div className="text-[20px] font-bold flex flex-col items-center justify-center absolute bottom-[10px] left-1/2 transform -translate-x-1/2">
+              <div className="text-[20px] print:text-[14px] font-bold flex flex-col items-center justify-center absolute bottom-[10px] left-1/2 transform -translate-x-1/2">
                 <h4
                   style={{ color: getStatusColor(currentStatus) ?? undefined }}
                 >
                   {Number(data.data.values.averageValue).toFixed(2)}
                 </h4>
-                <p
+                <div
                   className="px-3 text-white"
                   style={{
                     backgroundColor: getStatusColor(currentStatus) ?? undefined,
                   }}
                 >
-                  {getStatusText(currentStatus)}
-                </p>
+                  <p>{getStatusText(currentStatus)}</p>
+                </div>
               </div>
             )}
           </div>
@@ -184,15 +187,15 @@ export default function Header() {
                 >
                   {Number(data.data.values.averageBeforeVal).toFixed(2)}
                 </h4>
-                <p
+                <div
                   className="px-3 text-white"
                   style={{
                     backgroundColor:
                       getStatusColor(previousStatus) ?? undefined,
                   }}
                 >
-                  {getStatusText(previousStatus)}
-                </p>
+                  <p>{getStatusText(previousStatus)}</p>
+                </div>
               </div>
             )}
           </div>
@@ -217,15 +220,18 @@ export default function Header() {
                 >
                   {averageChangeRate.toFixed(2)}%
                 </h4>
-                <span
+
+                <div
                   className={`${
                     changeRateStatus === "negative"
                       ? "bg-[#e15f4b]"
                       : "bg-[#019a8c]"
                   } text-white px-2 text-[22px] w-full text-center`}
                 >
-                  {changeRateStatus === "negative" ? "سلبي" : "إيجابى"}
-                </span>
+                  <span>
+                    {changeRateStatus === "negative" ? "سلبي" : "إيجابى"}
+                  </span>
+                </div>
               </div>
 
               <img

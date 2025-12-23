@@ -1,53 +1,38 @@
 import html2canvas from "html2canvas";
-// For jsPDF v2.x, use default import
 import jsPDF from "jspdf";
 
 /**
- * Exports the printable content to PDF
+ * Exports the printable content to PDF with proper styling
  * @param elementId - The ID of the element to export (default: "printable-content")
  */
 export async function exportToPDF(elementId: string = "printable-content"): Promise<void> {
   console.log("Starting PDF export...");
   const element = document.getElementById(elementId);
-  
+
   if (!element) {
     const errorMsg = `Element with id "${elementId}" not found. Please ensure ViewToPrint component is rendered.`;
     console.error(errorMsg);
     alert(errorMsg);
     return;
   }
-  
+
   console.log("Element found, starting export process...");
 
-  // Show the printable content temporarily
-  const originalDisplay = element.style.display;
-  const originalVisibility = element.style.visibility;
-  const originalPosition = element.style.position;
-  const originalLeft = element.style.left;
-  const originalTop = element.style.top;
-  const originalWidth = element.style.width;
-  const originalHeight = element.style.height;
-  const originalZIndex = element.style.zIndex;
-  
-  // Store original parent and position for restoration
-  const parent = element.parentElement;
-  const nextSibling = element.nextSibling;
-  
   // Remove hidden/d-none classes if present FIRST
   element.classList.remove("d-none", "hidden");
-  
+
   // Trigger print events for charts (they listen to beforeprint) BEFORE making visible
   const beforePrintEvent = new Event("beforeprint");
   window.dispatchEvent(beforePrintEvent);
   element.dispatchEvent(new Event("beforeprint"));
-  
+
   // Wait a bit for the event handlers to process
   await new Promise((resolve) => setTimeout(resolve, 100));
-  
+
   // Create a hidden clone for capture to avoid visual glitch
   const body = document.body;
   const originalBodyOverflow = body.style.overflow;
-  
+
   // Create a hidden container that won't be visible but html2canvas can capture
   const captureContainer = document.createElement("div");
   captureContainer.style.position = "absolute";
@@ -58,7 +43,7 @@ export async function exportToPDF(elementId: string = "printable-content"): Prom
   captureContainer.style.visibility = "hidden";
   captureContainer.style.pointerEvents = "none";
   document.body.appendChild(captureContainer);
-  
+
   // Clone the element for capture
   const clonedElement = element.cloneNode(true) as HTMLElement;
   clonedElement.id = "printable-content-clone";
@@ -67,8 +52,9 @@ export async function exportToPDF(elementId: string = "printable-content"): Prom
   clonedElement.style.visibility = "visible";
   clonedElement.style.opacity = "1";
   clonedElement.style.position = "relative";
+  
   // Set a fixed width that's wide enough for charts (A4 width at 96 DPI ≈ 794px)
-  const targetWidth = 794; // A4 width in pixels at 96 DPI
+  const targetWidth = 794;
   clonedElement.style.width = `${targetWidth}px`;
   clonedElement.style.maxWidth = `${targetWidth}px`;
   clonedElement.style.minWidth = `${targetWidth}px`;
@@ -77,30 +63,212 @@ export async function exportToPDF(elementId: string = "printable-content"): Prom
   clonedElement.style.background = "#ffffff";
   clonedElement.style.padding = "20px";
   clonedElement.style.boxSizing = "border-box";
-  
+
   // Set container width to match
   captureContainer.style.width = `${targetWidth}px`;
   captureContainer.style.minWidth = `${targetWidth}px`;
   captureContainer.style.maxWidth = `${targetWidth}px`;
+
+  // ===== FIX HEADER CARDS CONTAINER AND LAYOUT =====
+  // Find the header container - typically a flex or grid container with cards
+  const headerContainers = clonedElement.querySelectorAll('[class*="flex"], [class*="grid"]');
   
-  // Ensure all child containers also have proper overflow and width
-  const childContainers = clonedElement.querySelectorAll("div, svg");
+  headerContainers.forEach((container: Element) => {
+    const htmlContainer = container as HTMLElement;
+    
+    // Check if this container has multiple card-like children
+    const children = Array.from(htmlContainer.children) as HTMLElement[];
+    const hasCardChildren = children.some(child => 
+      child.classList.toString().includes("bg-") || 
+      child.style.backgroundColor
+    );
+    
+    if (hasCardChildren && children.length >= 3) {
+      // This is likely the header cards container
+      console.log("Found header cards container, fixing layout...");
+      
+      // Force horizontal flex layout
+      htmlContainer.style.display = "flex";
+      htmlContainer.style.flexDirection = "row";
+      htmlContainer.style.flexWrap = "nowrap";
+      htmlContainer.style.gap = "8px";
+      htmlContainer.style.alignItems = "stretch";
+      htmlContainer.style.justifyContent = "flex-start";
+      htmlContainer.style.width = "100%";
+      htmlContainer.style.overflow = "visible";
+      
+      // Fix each card
+      children.forEach((card, index) => {
+        // Reset any problematic positioning
+        card.style.position = "relative";
+        card.style.float = "none";
+        card.style.clear = "none";
+        
+        // Set flex properties for cards
+        card.style.flex = "1 1 0";
+        card.style.minWidth = "120px";
+        card.style.maxWidth = "180px";
+        card.style.padding = "10px";
+        card.style.margin = "0";
+        card.style.boxSizing = "border-box";
+        card.style.display = "flex";
+        card.style.flexDirection = "column";
+        card.style.alignItems = "center";
+        card.style.justifyContent = "center";
+        card.style.textAlign = "center";
+        
+        // Fix all text elements inside cards
+        const allTextElements = card.querySelectorAll("*");
+        allTextElements.forEach((el: Element) => {
+          const htmlEl = el as HTMLElement;
+          const computedStyle = window.getComputedStyle(htmlEl);
+          const currentFontSize = parseFloat(computedStyle.fontSize);
+          
+          // Reset any absolute positioning
+          htmlEl.style.position = "relative";
+          htmlEl.style.float = "none";
+          
+          // Reduce font size significantly
+          if (currentFontSize > 0) {
+            // More aggressive reduction
+            htmlEl.style.fontSize = `${Math.max(currentFontSize * 0.5, 8)}px`;
+            htmlEl.style.lineHeight = "1.2";
+          }
+          
+          // Fix specific elements
+          if (htmlEl.textContent) {
+            const text = htmlEl.textContent.trim();
+            
+            // Large numbers with %
+            if (text.includes("%") && text.length < 10) {
+              htmlEl.style.fontSize = "16px";
+              htmlEl.style.fontWeight = "700";
+              htmlEl.style.marginBottom = "2px";
+            }
+            // Labels like "سلبي", "إيجابي"
+            else if (text.length < 15 && !text.includes("2022") && !text.includes("المؤشر")) {
+              htmlEl.style.fontSize = "9px";
+              htmlEl.style.fontWeight = "500";
+            }
+            // Longer text (titles)
+            else if (text.length > 15) {
+              htmlEl.style.fontSize = "10px";
+              htmlEl.style.fontWeight = "600";
+              htmlEl.style.marginBottom = "3px";
+            }
+          }
+          
+          // Fix headings
+          if (htmlEl.tagName.match(/^H[1-6]$/)) {
+            htmlEl.style.fontSize = "11px";
+            htmlEl.style.fontWeight = "600";
+            htmlEl.style.marginBottom = "3px";
+            htmlEl.style.marginTop = "0";
+          }
+          
+          // Fix paragraphs and spans
+          if (htmlEl.tagName === "P" || htmlEl.tagName === "SPAN") {
+            if (currentFontSize > 14) {
+              htmlEl.style.fontSize = "9px";
+            }
+          }
+        });
+        
+        // Handle arrow icons or special elements
+        const svgs = card.querySelectorAll("svg");
+        svgs.forEach((svg: Element) => {
+          const htmlSvg = svg as SVGElement;
+          // Check if it's a small icon (not a gauge chart)
+          const width = htmlSvg.getAttribute("width");
+          const isSmallIcon = !width || parseInt(width) < 50;
+          
+          if (isSmallIcon) {
+            htmlSvg.setAttribute("width", "20");
+            htmlSvg.setAttribute("height", "20");
+            htmlSvg.style.maxWidth = "20px";
+            htmlSvg.style.maxHeight = "20px";
+          }
+        });
+      });
+    }
+  });
+
+  // ===== FIX INDICATOR DETAILS SECTION =====
+  // Find sections with icon + text layout
+  const detailSections = clonedElement.querySelectorAll('[class*="flex"]');
+  detailSections.forEach((section: Element) => {
+    const htmlSection = section as HTMLElement;
+    
+    // Look for rows with icon + text pattern
+    const children = Array.from(htmlSection.children) as HTMLElement[];
+    children.forEach((child) => {
+      const img = child.querySelector("img");
+      const svg = child.querySelector("svg");
+      const icon = img || svg;
+      
+      // If this element has an icon, constrain it
+      if (icon) {
+        const htmlIcon = icon as HTMLElement;
+        
+        // Check if it's actually an icon (not a chart)
+        const isChart = htmlIcon.classList.toString().includes("recharts") ||
+                       htmlIcon.closest(".recharts-wrapper") ||
+                       (svg && (svg as SVGElement).querySelector("[class*='recharts']"));
+        
+        if (!isChart) {
+          // It's an icon, constrain it
+          if (img) {
+            htmlIcon.style.width = "18px";
+            htmlIcon.style.height = "18px";
+            htmlIcon.style.maxWidth = "18px";
+            htmlIcon.style.maxHeight = "18px";
+            htmlIcon.style.minWidth = "18px";
+            htmlIcon.style.minHeight = "18px";
+            htmlIcon.style.objectFit = "contain";
+            htmlIcon.style.flex = "0 0 18px";
+          } else if (svg) {
+            (svg as SVGElement).setAttribute("width", "18");
+            (svg as SVGElement).setAttribute("height", "18");
+            htmlIcon.style.width = "18px";
+            htmlIcon.style.height = "18px";
+            htmlIcon.style.maxWidth = "18px";
+            htmlIcon.style.maxHeight = "18px";
+            htmlIcon.style.flex = "0 0 18px";
+          }
+          
+          // Constrain the parent container too
+          const parent = htmlIcon.parentElement;
+          if (parent && parent !== htmlSection) {
+            parent.style.flex = "0 0 auto";
+            parent.style.maxWidth = "30px";
+            parent.style.display = "flex";
+            parent.style.alignItems = "center";
+            parent.style.justifyContent = "center";
+          }
+        }
+      }
+    });
+  });
+
+  // Ensure all child containers have proper overflow
+  const childContainers = clonedElement.querySelectorAll("div");
   childContainers.forEach((container: Element) => {
     const htmlContainer = container as HTMLElement;
     if (htmlContainer.style) {
-      // Don't override if it's a chart container with specific overflow
+      // Don't override if it's a chart container
       if (!htmlContainer.classList.contains("recharts-wrapper")) {
         htmlContainer.style.overflow = "visible";
         // Ensure chart containers have full width
-        if (htmlContainer.querySelector(".recharts-wrapper") || htmlContainer.querySelector("svg")) {
+        if (htmlContainer.querySelector(".recharts-wrapper") || 
+            htmlContainer.querySelector("svg[class*='recharts']")) {
           htmlContainer.style.width = "100%";
           htmlContainer.style.maxWidth = "100%";
         }
       }
     }
   });
-  
-  // Fix recharts SVG overflow and width
+
+  // Fix recharts wrappers
   const rechartsWrappers = clonedElement.querySelectorAll(".recharts-wrapper");
   rechartsWrappers.forEach((wrapper: Element) => {
     const htmlWrapper = wrapper as HTMLElement;
@@ -108,34 +276,38 @@ export async function exportToPDF(elementId: string = "printable-content"): Prom
     htmlWrapper.style.width = "100%";
     htmlWrapper.style.maxWidth = "100%";
   });
-  
-  // Fix SVG elements to ensure they're not clipped
-  const svgElements = clonedElement.querySelectorAll("svg");
-  svgElements.forEach((svg: Element) => {
+
+  // Fix chart SVG elements
+  const svgElementsInClone = clonedElement.querySelectorAll("svg");
+  svgElementsInClone.forEach((svg: Element) => {
     const htmlSvg = svg as SVGElement;
-    htmlSvg.style.overflow = "visible";
-    // Remove any clipPath that might be cutting content
-    const clipPath = htmlSvg.querySelector("defs clipPath");
-    if (clipPath) {
-      clipPath.remove();
-    }
-    // Ensure SVG has proper width
-    if (htmlSvg.getAttribute("width") && htmlSvg.getAttribute("width") !== "100%") {
-      htmlSvg.setAttribute("width", "100%");
+    const width = htmlSvg.getAttribute("width");
+    const isChart = htmlSvg.classList.contains("recharts-surface") || 
+                    htmlSvg.querySelector("[class*='recharts']") ||
+                    (width && parseInt(width) > 100);
+    
+    // Only apply chart-specific styling to actual charts
+    if (isChart) {
+      htmlSvg.style.overflow = "visible";
+      // Remove any clipPath that might be cutting content
+      const clipPath = htmlSvg.querySelector("defs clipPath");
+      if (clipPath) {
+        clipPath.remove();
+      }
+      // Ensure SVG has proper width
+      if (htmlSvg.getAttribute("width") && htmlSvg.getAttribute("width") !== "100%") {
+        htmlSvg.setAttribute("width", "100%");
+      }
     }
   });
-  
+
   captureContainer.appendChild(clonedElement);
 
-  // Wait for React to render the content in the clone
+  // Wait for React to render
   await new Promise((resolve) => setTimeout(resolve, 500));
-  
-  // Force a reflow to ensure content is rendered
   void clonedElement.offsetHeight;
-  
-  // Wait for charts and map to render
   await new Promise((resolve) => setTimeout(resolve, 2000));
-  
+
   // Check if content exists
   const innerContent = clonedElement.querySelector("div > *");
   if (!innerContent) {
@@ -143,35 +315,24 @@ export async function exportToPDF(elementId: string = "printable-content"): Prom
     await new Promise((resolve) => setTimeout(resolve, 1000));
   }
 
-  // Wait for map tiles to load if map is present
+  // Wait for map tiles if present
   const mapContainer = clonedElement.querySelector(".leaflet-container") as HTMLElement;
   if (mapContainer) {
-    // Wait for map to initialize
     await new Promise((resolve) => setTimeout(resolve, 1000));
-    
-    // Try to access Leaflet map instance
     const leafletMap = (mapContainer as any)._leaflet_id;
     if (leafletMap && (window as any).L) {
       const L = (window as any).L;
-      // Get all map instances
       const maps = L.Map ? Object.values(L.Map._instances || {}) : [];
       const map = maps.find((m: any) => m._container === mapContainer);
-      
       if (map) {
-        // Invalidate size to ensure map renders correctly
         map.invalidateSize();
-        // Wait for tiles to load
         await new Promise((resolve) => setTimeout(resolve, 2000));
-        
-        // Check if tiles are loaded
         const tiles = mapContainer.querySelectorAll(".leaflet-tile-loaded");
         if (tiles.length === 0) {
-          // Wait a bit more if no tiles loaded yet
           await new Promise((resolve) => setTimeout(resolve, 2000));
         }
       }
     } else {
-      // Fallback: wait for tiles to appear
       let attempts = 0;
       while (attempts < 10 && mapContainer.querySelectorAll(".leaflet-tile-loaded").length === 0) {
         await new Promise((resolve) => setTimeout(resolve, 500));
@@ -179,142 +340,78 @@ export async function exportToPDF(elementId: string = "printable-content"): Prom
       }
     }
   }
-  
-  // Wait for any SVG charts to render
-  const svgElements = element.querySelectorAll("svg");
+
+  // Wait for SVG charts
+  const svgElements = clonedElement.querySelectorAll("svg");
   if (svgElements.length > 0) {
     await new Promise((resolve) => setTimeout(resolve, 500));
   }
 
   try {
     console.log("Capturing cloned element with html2canvas...");
-    console.log("Cloned element dimensions:", {
-      width: clonedElement.scrollWidth,
-      height: clonedElement.scrollHeight,
-      offsetWidth: clonedElement.offsetWidth,
-      offsetHeight: clonedElement.offsetHeight,
-    });
     
-    // Ensure cloned element has dimensions and content
     if (clonedElement.scrollWidth === 0 || clonedElement.scrollHeight === 0) {
-      console.warn("Cloned element has zero dimensions, waiting a bit more...");
+      console.warn("Cloned element has zero dimensions, waiting...");
       await new Promise((resolve) => setTimeout(resolve, 2000));
-      
-      // Check again
       if (clonedElement.scrollWidth === 0 || clonedElement.scrollHeight === 0) {
-        console.error("Cloned element still has zero dimensions after waiting");
         throw new Error("Element has no content to export");
       }
     }
-    
-    // Verify content exists
-    const hasContent = clonedElement.querySelector("svg, canvas, img, table, .leaflet-container") || 
-                       clonedElement.textContent?.trim().length > 0;
-    if (!hasContent) {
-      console.warn("No visible content found in cloned element, but proceeding anyway...");
-    }
-    
-    // Get the actual content width including any overflow
-    // Check all SVG elements and their containers
+
     const allSvgs = clonedElement.querySelectorAll("svg");
     let maxSvgWidth = 0;
     allSvgs.forEach((svg: Element) => {
       const htmlSvg = svg as SVGElement;
-      const svgWidth = htmlSvg.getBoundingClientRect().width || 
+      const svgWidth = htmlSvg.getBoundingClientRect().width ||
                       parseFloat(htmlSvg.getAttribute("width") || "0") ||
-                      htmlSvg.scrollWidth || 
+                      htmlSvg.scrollWidth ||
                       htmlSvg.offsetWidth || 0;
       maxSvgWidth = Math.max(maxSvgWidth, svgWidth);
     });
-    
+
     const contentWidth = Math.max(
       clonedElement.scrollWidth,
       clonedElement.offsetWidth,
-      maxSvgWidth + 40, // Add padding for margins
-      800 // Minimum width
+      maxSvgWidth + 40,
+      800
     );
-    
+
     const contentHeight = Math.max(
       clonedElement.scrollHeight,
       clonedElement.offsetHeight
     );
-    
-    console.log("Content dimensions:", { 
-      contentWidth, 
-      contentHeight, 
-      scrollWidth: clonedElement.scrollWidth,
-      offsetWidth: clonedElement.offsetWidth,
-      maxSvgWidth 
-    });
-    
-    // Capture the cloned element (not the original to avoid visual glitch)
+
+    console.log("Content dimensions:", { contentWidth, contentHeight });
+
+    // Capture with html2canvas
     const canvas = await html2canvas(clonedElement, {
       scale: 2,
       useCORS: true,
-      logging: false, // Disable logging for production
+      logging: false,
       backgroundColor: "#ffffff",
       width: contentWidth || 800,
       height: contentHeight || 600,
       windowWidth: contentWidth || 800,
       windowHeight: contentHeight || 600,
-      allowTaint: true, // Allow tainted canvas for better compatibility
-      foreignObjectRendering: false, // Disable for better compatibility
+      allowTaint: true,
+      foreignObjectRendering: false,
       removeContainer: false,
-      onclone: (clonedDoc, clonedElement) => {
-        console.log("Cloning document for capture...");
-        // Ensure all images in the cloned document are loaded
-        const images = clonedDoc.querySelectorAll("img");
-        images.forEach((img) => {
-          if (!img.complete) {
-            img.style.display = "none";
-          }
-        });
-        // Remove hidden class from cloned element and make it visible
-        const clonedPrintableContent = clonedDoc.getElementById("printable-content");
-        if (clonedPrintableContent) {
-          clonedPrintableContent.classList.remove("hidden", "d-none");
-          clonedPrintableContent.style.display = "block";
-          clonedPrintableContent.style.visibility = "visible";
-          clonedPrintableContent.style.opacity = "1";
-          clonedPrintableContent.style.position = "relative";
-          clonedPrintableContent.style.zIndex = "1";
-        }
-        // Make sure all child elements are visible
-        const allElements = clonedPrintableContent?.querySelectorAll("*");
-        allElements?.forEach((el: Element) => {
-          const htmlEl = el as HTMLElement;
-          if (htmlEl.style) {
-            if (htmlEl.style.display === "none") {
-              htmlEl.style.display = "";
-            }
-            if (htmlEl.style.visibility === "hidden") {
-              htmlEl.style.visibility = "visible";
-            }
-          }
-        });
-      },
-    });
-    
-    console.log("Canvas created:", {
-      width: canvas.width,
-      height: canvas.height,
     });
 
-    // Calculate PDF dimensions - scale to fit A4 width
-    const imgWidth = 210; // A4 width in mm
+    console.log("Canvas created:", { width: canvas.width, height: canvas.height });
+
+    // Create PDF
+    const imgWidth = 210;
     const imgHeight = (canvas.height * imgWidth) / canvas.width;
     const pdf = new jsPDF("p", "mm", "a4");
-    
-    // If content is taller than one page, split into multiple pages
-    const pageHeight = 297; // A4 height in mm
+    const pageHeight = 297;
     let heightLeft = imgHeight;
     let position = 0;
 
-    // Add first page
+    // Add pages
     pdf.addImage(canvas.toDataURL("image/png"), "PNG", 0, position, imgWidth, imgHeight);
     heightLeft -= pageHeight;
 
-    // Add additional pages if needed
     while (heightLeft > 0) {
       position = heightLeft - imgHeight;
       pdf.addPage();
@@ -322,28 +419,21 @@ export async function exportToPDF(elementId: string = "printable-content"): Prom
       heightLeft -= pageHeight;
     }
 
-    // Save the PDF
-    console.log("Saving PDF...");
     pdf.save(`report-${new Date().toISOString().split("T")[0]}.pdf`);
     console.log("PDF exported successfully!");
   } catch (error) {
     console.error("Error generating PDF:", error);
     const errorMessage = error instanceof Error ? error.message : "Unknown error";
     alert(`حدث خطأ أثناء تصدير PDF: ${errorMessage}. يرجى المحاولة مرة أخرى.`);
-    throw error; // Re-throw to be caught by the button handler
+    throw error;
   } finally {
-    // Clean up the cloned element and container (no visual glitch since it was hidden)
+    // Clean up
     if (captureContainer && captureContainer.parentNode) {
       captureContainer.parentNode.removeChild(captureContainer);
     }
-    
-    // Restore body overflow
     body.style.overflow = originalBodyOverflow;
-
-    // Trigger afterprint event
     const afterPrintEvent = new Event("afterprint");
     window.dispatchEvent(afterPrintEvent);
     element.dispatchEvent(afterPrintEvent);
   }
 }
-

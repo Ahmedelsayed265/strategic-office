@@ -19,7 +19,6 @@ export default function ViewToPrint() {
     
     const handleBeforePrint = () => {
       setIsPrinting(true);
-      // Ensure element is visible
       if (element) {
         element.classList.remove("hidden", "d-none");
         element.style.display = "block";
@@ -65,7 +64,6 @@ export default function ViewToPrint() {
         width: "100%",
         maxWidth: "100%",
         overflow: "visible",
-        // Always render content even when hidden
         position: isPrinting ? "relative" : "absolute",
         left: isPrinting ? "auto" : "-9999px",
         top: isPrinting ? "auto" : "0",

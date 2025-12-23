@@ -13,7 +13,6 @@ import MultiOptionSelect from "../../shared/MultiOptionSelect";
 import useGetFilterData from "@/hooks/useGetFilterData";
 import NextPrevComponent from "./NextPrevComponent";
 import { exportToPDF } from "@/lib/pdfExport";
-import { openPrintDialog } from "@/lib/printUtils";
 
 export default function FilterHeader() {
   const { data: indicatorData, isLoading } = useGetFilterData();
@@ -246,26 +245,8 @@ export default function FilterHeader() {
             )}
           </button>
 
-          <button 
-            className="bg-[#DFF6E7] p-2 hover:bg-[#c8e6d3] transition-colors"
-            onClick={(e) => {
-              e.preventDefault();
-              e.stopPropagation();
-              console.log("Print button clicked");
-              openPrintDialog();
-            }}
-            title="طباعة"
-            type="button"
-          >
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M6 9V2H18V9" stroke="#25935F" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-              <path d="M6 18H4C2.89543 18 2 17.1046 2 16V11C2 9.89543 2.89543 9 4 9H20C21.1046 9 22 9.89543 22 11V16C22 17.1046 21.1046 18 20 18H18" stroke="#25935F" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-              <path d="M6 14H18V22H6V14Z" stroke="#25935F" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-            </svg>
-          </button>
-
-          <button className="bg-[#DFF6E7] p-2 hover:bg-[#c8e6d3] transition-colors" title="تصدير Excel">
-            <img src="/icons/Vector.svg" alt="excel" />
+          <button className="bg-[#DFF6E7] p-2 hover:bg-[#c8e6d3] transition-colors" title="طباعه">
+            <img src="/icons/Vector.svg" alt="print" />
           </button>
         </div>
       </div>
